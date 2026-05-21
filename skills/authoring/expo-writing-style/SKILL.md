@@ -16,10 +16,6 @@ Apply Expo's documentation writing style when authoring or reviewing prose for `
 
 ## Core Principles
 
-1. **Write for the reader who is mid-task.** Short sentences, one idea per sentence, present tense, active voice.
-2. **Be neutral and direct.** No marketing language. No first-person plural ("we" / "our") outside tutorials. No jargon when a common word works.
-3. **Show, then tell.** Lead with a working example, then explain the why and how. Use visuals and code samples to demonstrate concepts rather than abstract descriptions.
-
 ## When to Use
 
 - Drafting new docs pages (`.mdx` under `expo/docs/pages/`)
@@ -37,11 +33,12 @@ For deterministic checks (Oxford commas, em dash entities, spelling), run Vale f
 
 These are the highest-leverage rules. The reference has the complete list.
 
-1. **Second person, present tense, active voice.** Tutorial pages are the only exception that uses "we" / "our".
-2. **Sentence case for headings**, title case for button labels. Bold for file and directory names.
-3. **`&mdash;` entity** instead of the literal `—` character. Never paste the literal.
-4. **Platform order:** "Android, iOS, and Web".
-5. **No marketing language**, no vague link text ("here", "learn more"), no emojis.
-6. **Spell out symbols:** "and" instead of `&`, "plus" instead of `+`.
-
-For TSDoc and API reference style, use the `expo-api-docs` skill instead.
+1. **Write for the reader who is mid-task.** Short sentences, one idea per sentence, present tense, active voice.
+2. **Be neutral and direct.** No marketing language. No first-person plural ("we" / "our") outside tutorials. No jargon when a common word works.
+3. **Show, then tell.** Lead with a working example, then explain the why and how. Use visuals and code samples to demonstrate concepts rather than abstract descriptions.
+4. **Second person, present tense, active voice.** Tutorial pages are the only exception that uses "we" / "our".
+5. **Sentence case for headings**, title case for button labels. Bold for file and directory names.
+6. **`&mdash;` entity** instead of the literal `—` character. Never paste the literal.
+7. **Platform order:** "Android, iOS, and Web".
+8. **No marketing language**, no vague link text ("here", "learn more"), no emojis.
+9. **Spell out symbols:** "and" instead of `&`, "plus" instead of `+`.

@@ -1,25 +1,28 @@
 import { Box, Text } from 'ink';
-import type { PendingAction, Skill } from '../lib/types';
+import type { Mode, PendingChanges, Skill } from '../lib/types';
 
 type Props = {
   skills: Skill[];
   selectedIndex: number;
-  pending: Map<string, PendingAction>;
+  pending: PendingChanges;
+  mode: Mode;
 };
 
 const statusIcon: Record<Skill['status'], string> = {
   linked: '✓',
   unlinked: '◯',
+  partial: '◐',
   conflict: '⚠',
 };
 
 const statusColor: Record<Skill['status'], string> = {
   linked: 'green',
   unlinked: 'gray',
+  partial: 'yellow',
   conflict: 'yellow',
 };
 
-export function SkillList({ skills, selectedIndex, pending }: Props) {
+export function SkillList({ skills, selectedIndex, pending, mode }: Props) {
   if (skills.length === 0) {
     return (
       <Box>
@@ -32,19 +35,22 @@ export function SkillList({ skills, selectedIndex, pending }: Props) {
     <Box flexDirection="column">
       {skills.map((skill, i) => {
         const isSelected = i === selectedIndex;
-        const pendingAction = pending.get(skill.name);
+        const focusedInSkillMode = isSelected && mode === 'skill';
+        const pendingCount = pending.get(skill.name)?.size ?? 0;
         return (
           <Box key={skill.name}>
-            <Text color={isSelected ? 'cyan' : undefined}>
-              {isSelected ? '▸ ' : '  '}
+            <Text color={focusedInSkillMode ? 'cyan' : undefined}>
+              {focusedInSkillMode ? '▸ ' : isSelected ? '· ' : '  '}
             </Text>
             <Text color={statusColor[skill.status]}>{statusIcon[skill.status]} </Text>
-            <Text color={isSelected ? 'cyan' : undefined} bold={isSelected}>
+            <Text
+              color={focusedInSkillMode ? 'cyan' : undefined}
+              bold={focusedInSkillMode}>
               {skill.name.padEnd(28)}
             </Text>
             <Text dimColor>[{skill.category}]</Text>
-            {pendingAction && (
-              <Text color="yellow"> · pending {pendingAction}</Text>
+            {pendingCount > 0 && (
+              <Text color="yellow"> · {pendingCount} pending</Text>
             )}
           </Box>
         );

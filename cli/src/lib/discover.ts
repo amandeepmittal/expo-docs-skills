@@ -1,7 +1,7 @@
 import { readdir, readFile, lstat, readlink } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
-import { GLOBAL_DIR, SKILLS_ROOT } from './paths';
-import type { Skill, SkillStatus } from './types';
+import { AGENT_TARGETS, SKILLS_ROOT } from './paths';
+import type { Skill, SkillStatus, SkillTargetState, TargetStatus } from './types';
 
 function parseFrontmatter(content: string): Record<string, string> {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
@@ -15,7 +15,7 @@ function parseFrontmatter(content: string): Record<string, string> {
   return result;
 }
 
-async function getStatus(source: string, target: string): Promise<SkillStatus> {
+async function getTargetStatus(source: string, target: string): Promise<TargetStatus> {
   try {
     const stat = await lstat(target);
     if (!stat.isSymbolicLink()) return 'conflict';
@@ -27,6 +27,14 @@ async function getStatus(source: string, target: string): Promise<SkillStatus> {
     if (code === 'ENOENT') return 'unlinked';
     throw err;
   }
+}
+
+function aggregate(targets: SkillTargetState[]): SkillStatus {
+  if (targets.some(t => t.status === 'conflict')) return 'conflict';
+  const linkedCount = targets.filter(t => t.status === 'linked').length;
+  if (linkedCount === 0) return 'unlinked';
+  if (linkedCount === targets.length) return 'linked';
+  return 'partial';
 }
 
 export async function discoverSkills(): Promise<Skill[]> {
@@ -64,16 +72,21 @@ export async function discoverSkills(): Promise<Skill[]> {
 
       const fm = parseFrontmatter(content);
       const name = fm.name ?? skillDir.name;
-      const targetPath = join(GLOBAL_DIR, name);
-      const status = await getStatus(sourcePath, targetPath);
+
+      const targets: SkillTargetState[] = [];
+      for (const target of AGENT_TARGETS) {
+        const targetPath = join(target.globalDir, name);
+        const status = await getTargetStatus(sourcePath, targetPath);
+        targets.push({ target, status });
+      }
 
       skills.push({
         name,
         category: cat.name,
         description: fm.description ?? '',
         sourcePath,
-        targetPath,
-        status,
+        status: aggregate(targets),
+        targets,
       });
     }
   }
