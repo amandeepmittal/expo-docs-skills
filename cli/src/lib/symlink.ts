@@ -1,13 +1,19 @@
-import { lstat, mkdir, symlink, unlink } from 'node:fs/promises';
-import { dirname } from 'node:path';
+import { lstat, mkdir, readlink, symlink, unlink } from 'node:fs/promises';
+import { dirname, resolve } from 'node:path';
+import { SKILLS_ROOT } from './paths';
 
 export async function ensureGlobalDir(dir: string): Promise<void> {
   try {
     const stat = await lstat(dir);
     if (stat.isSymbolicLink()) {
-      throw new Error(
-        `${dir} is itself a symlink. Refusing to operate inside it.`
-      );
+      const target = await readlink(dir);
+      const resolved = resolve(dir, '..', target);
+      if (resolved.startsWith(SKILLS_ROOT)) {
+        throw new Error(
+          `${dir} is a symlink pointing inside this repo's skills/. Refusing to create recursive symlinks.`
+        );
+      }
+      return;
     }
   } catch (err) {
     const code = (err as NodeJS.ErrnoException).code;

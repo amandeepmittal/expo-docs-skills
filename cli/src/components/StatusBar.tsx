@@ -16,23 +16,21 @@ export function StatusBar({ pendingCount, phase, errors }: Props) {
     );
   }
 
-  if (phase === 'done') {
-    return (
-      <Box flexDirection="column">
-        <Text color="green">Done. Press q to quit.</Text>
-        {errors.map((e, i) => (
-          <Text key={i} color="red">
-            {e}
-          </Text>
-        ))}
-      </Box>
-    );
-  }
-
   return (
-    <Box>
-      <Text dimColor>[↑↓] navigate  [space] toggle  [enter] apply  [q] quit</Text>
-      {pendingCount > 0 && <Text color="yellow">    {pendingCount} pending</Text>}
+    <Box flexDirection="column">
+      {phase === 'done' ? (
+        <Text color="green">Done. Press q to quit.</Text>
+      ) : (
+        <Box>
+          <Text dimColor>[↑↓] navigate  [space] toggle  [enter] apply  [q] quit</Text>
+          {pendingCount > 0 && <Text color="yellow">    {pendingCount} pending</Text>}
+        </Box>
+      )}
+      {errors.map((e, i) => (
+        <Text key={i} color="red">
+          {e}
+        </Text>
+      ))}
     </Box>
   );
 }
