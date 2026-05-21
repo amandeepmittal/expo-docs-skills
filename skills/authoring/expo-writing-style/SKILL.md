@@ -14,6 +14,12 @@ Apply Expo's documentation writing style when authoring or reviewing prose for `
 
 **Apply these conventions while drafting, not as a cleanup pass.**
 
+## Core Principles
+
+1. **Write for the reader who is mid-task.** Short sentences, one idea per sentence, present tense, active voice.
+2. **Be neutral and direct.** No marketing language. No first-person plural ("we" / "our") outside tutorials. No jargon when a common word works.
+3. **Show, then tell.** Lead with a working example, then explain the why and how. Use visuals and code samples to demonstrate concepts rather than abstract descriptions.
+
 ## When to Use
 
 - Drafting new docs pages (`.mdx` under `expo/docs/pages/`)

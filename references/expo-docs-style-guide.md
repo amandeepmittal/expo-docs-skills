@@ -4,14 +4,6 @@ The comprehensive reference for writing prose in Expo's documentation. Distills 
 
 For deterministic checks (Oxford commas, em dash entities, spelling), run Vale from `expo/docs/` via `pnpm lint-prose` or `.vale/bin/vale`. This reference covers what Vale cannot see.
 
-For TSDoc and API reference style, see the `expo-api-docs` skill in the expo/expo monorepo.
-
-## Core Principles
-
-1. **Write for the reader who is mid-task.** Short sentences, one idea per sentence, present tense, active voice.
-2. **Be neutral and direct.** No marketing language. No first-person plural ("we" / "our") outside tutorials. No jargon when a common word works.
-3. **Show, then tell.** Lead with a working example, then explain the why and how. Use visuals and code samples to demonstrate concepts rather than abstract descriptions.
-
 ## Voice and tone
 
 - Use **second person** ("you do X") in general docs. Use **third-person declarative** ("Returns Y") in API reference.
