@@ -1,6 +1,6 @@
 # expo-docs-skills
 
-A collection of agent skills (slash commands and behaviors) for the Expo documentation.
+A collection of agent skills (slash commands and behaviors) for writing and auditing Expo documentation.
 
 ## Install
 
