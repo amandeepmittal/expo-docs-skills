@@ -10,8 +10,6 @@ A collection of agent skills (slash commands and behaviors) for the Expo documen
 
 ## Reference
 
-### Engineering
-
 ### Technical Writing
 
 ### Productivity
