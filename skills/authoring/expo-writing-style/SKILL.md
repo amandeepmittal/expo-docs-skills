@@ -77,7 +77,7 @@ After:
 - **Do not skip heading levels.** No H4 directly under H2.
 - **Numbered lists start with `1`**, not `0`.
 - **Collapsibles** do not use a bullet point when they contain a single item.
-- **Keyboard shortcuts.** Format with `<kbd>` elements and a literal `+` between keys: `<kbd>Cmd ⌘</kbd> + <kbd>T</kbd>` for macOS, `<kbd>Ctrl</kbd> + <kbd>T</kbd>` for Windows.
+- **Keyboard shortcuts.** Format with `<kbd>` elements and a literal `+` between keys, each key as its own tag. Capitalize all key names: modifiers (`Cmd ⌘`, `Ctrl`, `Shift`, `Option`, `Alt`, `Fn`), named keys (`Return`, `Enter`, `Space`, `Tab`, `Esc`, `Delete`), and single-letter keys (`R`, `M`, `T`). This also applies to standalone prompts in prose — write `Press <kbd>Y</kbd>`, not `Press Y` or `Press y`. Examples: `<kbd>Cmd ⌘</kbd> + <kbd>T</kbd>` (macOS), `<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd>` (Windows/VS Code).
 - **Visualization tools.** Use diagrams for relationships between components, screenshots to confirm visual features, videos for flows and interactions, and `<SnackInline>` blocks for runnable code examples.
 - **Callouts.** Use `> **info**`, `> **warning**`, or `> **note**` for inline alerts. Keep each callout to a single paragraph. Fold longer prose into the main flow.
 - **Code blocks.** Open fenced blocks with a language tag (`ts`, `tsx`, `js`, `json`, `swift`, `kotlin`, `sh`). When the code belongs to a specific file, append the path after the language tag: ` ```ts app/(tabs)/index.tsx `.
