@@ -1,0 +1,8 @@
+{
+  "name": "expo-docs-skills",
+  "private": true,
+  "scripts": {
+    "start": "bun --cwd cli start",
+    "dev": "bun --cwd cli dev"
+  }
+}
