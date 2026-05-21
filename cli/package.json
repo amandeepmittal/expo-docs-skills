@@ -1,0 +1,19 @@
+{
+  "name": "expo-docs-skills-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "bun src/cli.tsx",
+    "dev": "bun --watch src/cli.tsx"
+  },
+  "dependencies": {
+    "ink": "^5.0.1",
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/react": "^18.3.3",
+    "typescript": "^5.4.5"
+  }
+}
