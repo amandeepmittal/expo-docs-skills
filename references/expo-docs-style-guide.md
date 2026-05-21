@@ -82,20 +82,20 @@ After:
 | app config              | generic term                                              | "app.json" (only when the specific file matters) |
 | Apple App Store         | proper noun, capitalized                                  | "the app store" (generic)                        |
 | Google Play Store       | proper noun, capitalized                                  | "the play store" (generic)                       |
-| app stores              | lowercase as generic                                      | "App Stores"                                     |
-| npm                     | lowercase                                                 | "NPM" or "Npm"                                   |
+| app stores              | lowercase as generic in flowing prose (capitalize at sentence/cell/heading start as usual) | "App Stores" mid-sentence                       |
+| npm                     | lowercase always, including at sentence start (brand convention) | "NPM" or "Npm"                                   |
 | React Native            | two words, both capitalized                               | "react-native" in prose, "Reactive Native"       |
 | TypeScript              | one word, two caps                                        | "Typescript", "typescript" in prose              |
 | JavaScript              | one word, two caps                                        | "Javascript"                                     |
 | CocoaPods               | one word, two caps                                        | "Cocoa Pods", "cocoapods"                        |
-| macOS                   | lowercase m                                               | "MacOS", "Mac OS"                                |
+| macOS                   | lowercase m always, including at sentence start (Apple brand style) | "MacOS", "Mac OS"                                |
 | GitHub                  | two caps                                                  | "Github"                                         |
 | managed workflow        | Expo projects that use Continuous Native Generation (CNG) | "managed workflow" (deprecated term)             |
 | bare apps/bare workflow | Existing React Native apps                                | "bare workflow" (deprecated term)                |
 | custom clients          | synonym for development builds                            | n/a — both names are valid, just be consistent   |
 | standalone build        | production build submitted to app stores                  | "release build" (Android-only term)              |
 | SDK 56 and later        | preferred for version ranges                              | "SDK 56 and above"                               |
-| Android, iOS, and web   | platform order in prose                                   | "iOS and Android" or "web, iOS, Android"         |
+| Android, iOS, and web   | platform order in flowing prose (does not apply to table cells, column values, headings, sidebar labels, or any sentence-initial position; standard English capitalization applies there) | "iOS and Android" or "web, iOS, Android"         |
 
 ### Term meanings
 

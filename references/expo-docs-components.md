@@ -174,7 +174,6 @@ Pass `open` to `Prerequisites` to render the block expanded by default.
 Gotchas:
 
 - `Requirement` titles end up in the heading map, so keep them noun phrases.
-- Do not put a `Terminal` block inside a `Requirement` body. Inline backticks are enough for a single install command.
 
 ## Collapsible
 
@@ -254,7 +253,6 @@ import { BookOpen02Icon } from '@expo/styleguide-icons/outline/BookOpen02Icon';
 Gotchas:
 
 - Use root-relative paths for internal links: `/router/introduction/`. The export pipeline rewrites these for `.md` siblings.
-- Do not stack more than four `BoxLink` cards in a row. Break into sections with H3 headings.
 
 ## SnackInline
 
@@ -287,7 +285,7 @@ export default function Screen() {
 
 Gotchas:
 
-- Inline annotations: `/* @info text */ ... /* @end */` reveals on hover; `/* @hide text */ ... /* @end */` hides in docs but ships to Snack. Add `{/* prettier-ignore */}` and `{/* oxfmt-ignore */}` above the fence so formatters do not strip the annotations.
+- Inline annotations: `/* @info text */ ... /* @end */` reveals on hover; `/* @hide text */ ... /* @end */` hides in docs but ships to Snack. Add `{/* prettier-ignore */}` above the fence so formatters do not strip the annotations.
 - Missing a dependency in `dependencies` makes the Snack fail to bundle, even when the docs page renders fine.
 
 ## ContentSpotlight
@@ -594,6 +592,6 @@ Inside a fenced block, three special comment shapes drive Snack-style behavior:
 
 - `/* @info Hover text */ ... /* @end */` highlights a span and reveals the info text on hover.
 - `/* @hide preview text */ ... /* @end */` hides a block in the docs but keeps it in the Snack copy.
-- `/* prettier-ignore */` and `/* oxfmt-ignore */` placed immediately before a fence prevent formatters from stripping the annotations.
+- `/* prettier-ignore */` placed immediately before a fence prevent formatters from stripping the annotations.
 
 Inline annotations are supported in `SnackInline` blocks and in standalone fenced blocks.
