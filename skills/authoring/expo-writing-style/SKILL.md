@@ -114,7 +114,7 @@ After:
 | custom clients          | synonym for development builds                            | n/a — both names are valid, just be consistent   |
 | standalone build        | production build submitted to app stores                  | "release build" (Android-only term)              |
 | SDK 56 and later        | preferred for version ranges                              | "SDK 56 and above"                               |
-| Android, iOS, and Web   | platform order in prose                                   | "iOS and Android" or "Web, iOS, Android"         |
+| Android, iOS, and web   | platform order in prose                                   | "iOS and Android" or "web, iOS, Android"         |
 
 ### Term meanings
 
