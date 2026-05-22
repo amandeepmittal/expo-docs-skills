@@ -128,6 +128,8 @@ Each comment's `body` field renders on GitHub's Files Changed tab. Write it so t
 
 The fence language is critical: `` ```suggestion `` (not `` ```mdx ``, `` ```md ``, `` ```sh ``) is the only fence GitHub renders as an apply-button suggestion. For non-suggestion code samples inside a body, regular fences are fine.
 
+**Multi-line suggestion blocks.** When the replacement spans more than one line in the head file, set `start_line` to the first line of the range and `line` to the last. Both must be on the same side (`start_side: "RIGHT"`, `side: "RIGHT"`). The `suggestion` block then replaces the entire `start_line`-through-`line` range with its contents, and GitHub still renders a single **Commit suggestion** button. Without `start_line`, the suggestion only replaces the single line at `line` — usually wrong for fixes like swapping a fenced code block for a `Terminal` component.
+
 ### Phase 3: Output
 
 Write two files per changed `.mdx`:
@@ -166,6 +168,18 @@ Print a one-line summary per file to stdout when done, with the verdict and path
       "rule_ref": "expo-docs-components.md#terminal",
       "body": "**[design]** Shell commands must use the `Terminal` component (`expo-docs-components.md#terminal`).\n\n```suggestion\n<Terminal cmd={['$ npx expo install expo-camera']} />\n```",
       "resolved": false
+    },
+    {
+      "path": "docs/pages/guides/errors.mdx",
+      "line": 87,
+      "start_line": 78,
+      "side": "RIGHT",
+      "start_side": "RIGHT",
+      "line_content": "```bash",
+      "severity": "design",
+      "rule_ref": "expo-docs-components.md#mandatory-usage",
+      "body": "**[design]** Replace the multi-line bash fence with a `Terminal` invocation.\n\n```suggestion\n<Terminal\n  cmd={[\n    '$ eas observe:events',\n  ]}\n/>\n```",
+      "resolved": false
     }
   ]
 }
@@ -175,6 +189,7 @@ Print a one-line summary per file to stdout when done, with the verdict and path
 
 - `path` repeats the top-level `file` value for every comment in this file's report. Identical across the array, but required per-comment by the API.
 - `side` is always `"RIGHT"` because the skill only flags lines that were added or modified by the PR (the head version of the file). Deleted lines are out of scope.
+- `start_line` and `start_side` are optional. Include both when the suggestion replaces a multi-line range; omit both for single-line suggestions. `start_side` should match `side`.
 
 #### Verdict
 

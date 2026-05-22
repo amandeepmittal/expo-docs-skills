@@ -32,6 +32,8 @@ type ReviewComment = {
   path: string;
   line: number;
   side: 'RIGHT' | 'LEFT';
+  start_line?: number;
+  start_side?: 'RIGHT' | 'LEFT';
   line_content: string;
   severity: Severity;
   rule_ref: string;
@@ -252,6 +254,9 @@ async function postPendingReview(
       line: c.line,
       side: c.side,
       body: c.body,
+      ...(c.start_line !== undefined
+        ? { start_line: c.start_line, start_side: c.start_side ?? c.side }
+        : {}),
     })),
   };
   if ('event' in payload) {
@@ -300,7 +305,8 @@ async function main(): Promise<void> {
     console.log(reviewBody);
     console.log('\nComments:');
     for (const c of comments) {
-      console.log(`  ${c.path}:${c.line} [${c.severity}] (${c.rule_ref})`);
+      const range = c.start_line !== undefined ? `${c.start_line}-${c.line}` : `${c.line}`;
+      console.log(`  ${c.path}:${range} [${c.severity}] (${c.rule_ref})`);
     }
     exit(0);
   }
