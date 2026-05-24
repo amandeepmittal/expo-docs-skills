@@ -27,7 +27,7 @@
  *   GITHUB_TOKEN environment variable.
  *
  * CREDIT:
- * This script is inspired from and follows. Kudo Chien's [deep-code-review](https://gist.github.com/Kudo/9b531c5bbd573e2d2c2434cd7a9b8ae3)
+ * This script is inspired from and follows/modified for Expo docs from Kudo Chien's [deep-code-review](https://gist.github.com/Kudo/9b531c5bbd573e2d2c2434cd7a9b8ae3) Skill.
  */
 
 import { spawnSync } from "node:child_process";
