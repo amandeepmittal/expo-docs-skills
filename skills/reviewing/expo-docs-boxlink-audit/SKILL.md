@@ -1,6 +1,6 @@
 ---
 name: expo-docs-boxlink-audit
-description: Audit `<BoxLink>` components in an Expo docs PR and flag mismatches between the Icon prop and the destination URL, then stage findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "audit boxlink icons", "review boxlinks", "check boxlink icons", or "/expo-docs-boxlink-audit". Reads the canonical mapping at references/expo-docs-boxlink-icons.md (co-located). Produces one JSON + Markdown report per changed .mdx file at /tmp/expo-docs-boxlink-audit-pr-{number}-{file-slug}.{json,md}, then invokes the post-review.ts script in the expo-docs-review skill folder to stage comments as PENDING. Public PRs only. Narrow scope: icon mismatches only, not other BoxLink props (title, description, href format).
+description: Audit `<BoxLink>` components in an Expo docs PR and flag mismatches between the Icon prop and the destination URL, then stage findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "audit boxlink icons", "review boxlinks", "check boxlink icons", or "/expo-docs-boxlink-audit". Reads the canonical mapping at references/expo-docs-boxlink-icons.md (co-located). Produces one JSON + Markdown report per changed .mdx file at /tmp/expo-docs-boxlink-audit-pr-{number}-{file-slug}.{json,md}, then invokes the shared skills/reviewing/scripts/post-review.ts script to stage comments as PENDING. Public PRs only. Narrow scope: icon mismatches only, not other BoxLink props (title, description, href format).
 license: MIT
 compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
@@ -10,7 +10,7 @@ metadata:
 
 # Expo Docs BoxLink Audit
 
-Review a public Expo docs PR for `<BoxLink>` components whose `Icon` prop does not match the destination URL's canonical icon. Outputs one JSON + Markdown report per changed `.mdx` file to `/tmp/`, then stages the findings as a PENDING review on the PR via the `post-review.ts` script in the `expo-docs-review` skill folder.
+Review a public Expo docs PR for `<BoxLink>` components whose `Icon` prop does not match the destination URL's canonical icon. Outputs one JSON + Markdown report per changed `.mdx` file to `/tmp/`, then stages the findings as a PENDING review on the PR via the shared `skills/reviewing/scripts/post-review.ts` script.
 
 **Single concern: icon mismatches only.** This skill does not check BoxLink title length, description presence, href format, or any other style rule. Those are handled by the broader `expo-docs-review` skill.
 
@@ -180,20 +180,20 @@ Group by severity, sorted within group by line number. Omit empty sections.
 
 ### Phase 4: Stage as PENDING review on GitHub
 
-Invoke the `post-review.ts` script in the `expo-docs-review` skill folder. It is shared infrastructure; this skill reuses it without modification.
+Invoke the shared `post-review.ts` script at `skills/reviewing/scripts/post-review.ts`. It is shared infrastructure for the reviewing-category skills; this skill reuses it without modification.
 
 1. Collect every JSON path written in Phase 3 for this PR.
-2. Run the script with all paths in one invocation (consolidated pending review):
+2. Run the script with all paths in one invocation (consolidated pending review). Run from the repo root, or use the absolute path:
 
    ```sh
-   bun /Users/amanhimself/Documents/GitHub/expo-docs-skills/skills/reviewing/expo-docs-review/post-review.ts \
+   bun skills/reviewing/scripts/post-review.ts \
      /tmp/expo-docs-boxlink-audit-pr-{number}-*.json
    ```
 
 3. On iteration 2 or later, pass `--replace` so prior pending reviews from the same user on this PR are deleted first:
 
    ```sh
-   bun /Users/amanhimself/Documents/GitHub/expo-docs-skills/skills/reviewing/expo-docs-review/post-review.ts \
+   bun skills/reviewing/scripts/post-review.ts \
      --replace /tmp/expo-docs-boxlink-audit-pr-{number}-*.json
    ```
 

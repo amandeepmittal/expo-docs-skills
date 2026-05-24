@@ -1,6 +1,6 @@
 ---
 name: expo-docs-review
-description: Review an Expo docs pull request against the Expo writing style guide and MDX component conventions, and stage the findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "review this pr", "review this docs pr", "audit this pr", "check this pr against the style guide", or "/expo-docs-review". Produces one JSON + Markdown report per changed .mdx file at /tmp/expo-docs-review-pr-{number}-{file-slug}.{json,md} with severity-classified findings (critical, design, suggestion, nit), then invokes the bundled post-review.ts script to stage the comments as a PENDING review (visible only to the user, requires manual submit on github.com to publish). Public PRs only. Iteration-aware: re-running re-fetches the PR, re-resolves prior findings via line_content matching, and replaces the prior pending review.
+description: Review an Expo docs pull request against the Expo writing style guide and MDX component conventions, and stage the findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "review this pr", "review this docs pr", "audit this pr", "check this pr against the style guide", or "/expo-docs-review". Produces one JSON + Markdown report per changed .mdx file at /tmp/expo-docs-review-pr-{number}-{file-slug}.{json,md} with severity-classified findings (critical, design, suggestion, nit), then invokes the shared skills/reviewing/scripts/post-review.ts script to stage the comments as a PENDING review (visible only to the user, requires manual submit on github.com to publish). Public PRs only. Iteration-aware: re-running re-fetches the PR, re-resolves prior findings via line_content matching, and replaces the prior pending review.
 license: MIT
 compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
@@ -10,7 +10,7 @@ metadata:
 
 # Expo Docs Review
 
-Review a public Expo docs PR against the Expo writing style guide and MDX component conventions. Outputs one JSON + Markdown report per changed `.mdx` file to `/tmp/`, then stages the findings as a PENDING review on the PR via the bundled `post-review.ts` script. The pending review is private to the user that runs the skill; publication (Approve / Comment / Request changes) is a manual action on github.com.
+Review a public Expo docs PR against the Expo writing style guide and MDX component conventions. Outputs one JSON + Markdown report per changed `.mdx` file to `/tmp/`, then stages the findings as a PENDING review on the PR via the shared `skills/reviewing/scripts/post-review.ts` script. The pending review is private to the user that runs the skill; publication (Approve / Comment / Request changes) is a manual action on github.com.
 
 **Context before critique. Read the PR description and the changed file in full before flagging individual lines.**
 
@@ -268,18 +268,18 @@ After writing the reports, invoke `post-review.ts` to stage the findings as a **
 Invocations:
 
 ```sh
-# Single-file PR.
-bun /path/to/skills/reviewing/expo-docs-review/post-review.ts \
+# Single-file PR. Run from the repo root, or pass an absolute path to the script.
+bun skills/reviewing/scripts/post-review.ts \
   /tmp/expo-docs-review-pr-{number}-{file-slug}.json
 
 # Multi-file PR: pass every JSON from this PR in one call.
-bun post-review.ts /tmp/expo-docs-review-pr-{N}-foo.json /tmp/expo-docs-review-pr-{N}-bar.json
+bun skills/reviewing/scripts/post-review.ts /tmp/expo-docs-review-pr-{N}-foo.json /tmp/expo-docs-review-pr-{N}-bar.json
 
 # Iteration 2+: clear any prior pending review from the same user on this PR.
-bun post-review.ts --replace /tmp/expo-docs-review-pr-{N}-foo.json
+bun skills/reviewing/scripts/post-review.ts --replace /tmp/expo-docs-review-pr-{N}-foo.json
 
 # Dry-run (skip the API call). Use when the user asked to "preview" or "dry-run".
-bun post-review.ts --dry-run /tmp/expo-docs-review-pr-{N}-foo.json
+bun skills/reviewing/scripts/post-review.ts --dry-run /tmp/expo-docs-review-pr-{N}-foo.json
 ```
 
 Authentication: the script reads `GITHUB_TOKEN` if set, otherwise runs `gh auth token`. The token user owns the pending review (so it stays private until they submit).

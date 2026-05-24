@@ -2,9 +2,13 @@
 /**
  * post-review.ts
  *
- * Stages findings from `expo-docs-review` skill JSON reports as a PENDING
- * review on a GitHub pull request. The pending review is private to the
- * authenticated user until they submit it manually on github.com.
+ * Shared script used by the `expo-docs-review` and `expo-docs-boxlink-audit`
+ * skills. Stages findings from their JSON reports as a PENDING review on a
+ * GitHub pull request. The pending review is private to the authenticated
+ * user until they submit it manually on github.com.
+ *
+ * Lives at `skills/reviewing/scripts/post-review.ts` (shared by the
+ * reviewing-category skills, not inside any single skill folder).
  *
  * SAFETY CONTRACT:
  * This script NEVER submits a review. It only POSTs to GitHub's create-review
