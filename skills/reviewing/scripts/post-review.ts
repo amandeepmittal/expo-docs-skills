@@ -25,19 +25,22 @@
  * Authentication:
  *   Uses `gh auth token` if available, otherwise falls back to the
  *   GITHUB_TOKEN environment variable.
+ *
+ * CREDIT:
+ * This script is inspired from and follows. Kudo Chien's [deep-code-review](https://gist.github.com/Kudo/9b531c5bbd573e2d2c2434cd7a9b8ae3)
  */
 
-import { spawnSync } from 'node:child_process';
-import { argv, exit, env } from 'node:process';
+import { spawnSync } from "node:child_process";
+import { argv, exit, env } from "node:process";
 
-type Severity = 'critical' | 'design' | 'suggestion' | 'nit';
+type Severity = "critical" | "design" | "suggestion" | "nit";
 
 type ReviewComment = {
   path: string;
   line: number;
-  side: 'RIGHT' | 'LEFT';
+  side: "RIGHT" | "LEFT";
   start_line?: number;
-  start_side?: 'RIGHT' | 'LEFT';
+  start_side?: "RIGHT" | "LEFT";
   line_content: string;
   severity: Severity;
   rule_ref: string;
@@ -58,7 +61,7 @@ type ReviewReport = {
   page_type: string;
   iteration: number;
   summary: string;
-  verdict: 'ready' | 'has-suggestions' | 'needs-changes';
+  verdict: "ready" | "has-suggestions" | "needs-changes";
   comments: ReviewComment[];
 };
 
@@ -73,11 +76,11 @@ function parseArgs(args: string[]): CliArgs {
   let dryRun = false;
   let replace = false;
   for (const arg of args) {
-    if (arg === '--dry-run') {
+    if (arg === "--dry-run") {
       dryRun = true;
-    } else if (arg === '--replace') {
+    } else if (arg === "--replace") {
       replace = true;
-    } else if (arg.startsWith('--')) {
+    } else if (arg.startsWith("--")) {
       console.error(`Unknown flag: ${arg}`);
       exit(2);
     } else {
@@ -91,10 +94,10 @@ function getToken(): string {
   if (env.GITHUB_TOKEN) {
     return env.GITHUB_TOKEN;
   }
-  const result = spawnSync('gh', ['auth', 'token'], { encoding: 'utf-8' });
+  const result = spawnSync("gh", ["auth", "token"], { encoding: "utf-8" });
   if (result.status !== 0) {
-    console.error('Could not get GitHub token.');
-    console.error('Set GITHUB_TOKEN, or run `gh auth login` first.');
+    console.error("Could not get GitHub token.");
+    console.error("Set GITHUB_TOKEN, or run `gh auth login` first.");
     exit(1);
   }
   return result.stdout.trim();
@@ -116,12 +119,8 @@ function validateSamePR(reports: ReviewReport[]): void {
   }
   const first = reports[0];
   for (const r of reports.slice(1)) {
-    if (
-      r.owner !== first.owner ||
-      r.repo !== first.repo ||
-      r.pull_number !== first.pull_number
-    ) {
-      console.error('Reports reference different PRs. All inputs must belong to the same PR.');
+    if (r.owner !== first.owner || r.repo !== first.repo || r.pull_number !== first.pull_number) {
+      console.error("Reports reference different PRs. All inputs must belong to the same PR.");
       console.error(`  First:    ${first.owner}/${first.repo}#${first.pull_number}`);
       console.error(`  Mismatch: ${r.owner}/${r.repo}#${r.pull_number}`);
       exit(2);
@@ -145,35 +144,37 @@ function flattenComments(reports: ReviewReport[]): ReviewComment[] {
 function buildReviewBody(reports: ReviewReport[]): string {
   const lines: string[] = [];
   lines.push(
-    '_Pending review staged by the `expo-docs-review` skill. Each comment is editable on the Files Changed tab. Submit, edit, or discard before publishing._'
+    "_Pending review staged by the `expo-docs-review` skill. Each comment is editable on the Files Changed tab. Submit, edit, or discard before publishing._",
   );
-  lines.push('');
+  lines.push("");
   for (const r of reports) {
     lines.push(`### \`${r.file}\``);
-    lines.push(`**Verdict:** \`${r.verdict}\`  ·  **Iteration:** ${r.iteration}  ·  **Page type:** ${r.page_type}`);
-    lines.push('');
+    lines.push(
+      `**Verdict:** \`${r.verdict}\`  ·  **Iteration:** ${r.iteration}  ·  **Page type:** ${r.page_type}`,
+    );
+    lines.push("");
     lines.push(r.summary);
-    lines.push('');
+    lines.push("");
   }
-  return lines.join('\n').trim();
+  return lines.join("\n").trim();
 }
 
 type GithubResponse<T> = { ok: true; data: T } | { ok: false; status: number; text: string };
 
 async function githubRequest<T>(
   token: string,
-  method: 'GET' | 'POST' | 'DELETE',
+  method: "GET" | "POST" | "DELETE",
   path: string,
-  body?: object
+  body?: object,
 ): Promise<GithubResponse<T>> {
   const headers: Record<string, string> = {
-    Accept: 'application/vnd.github+json',
+    Accept: "application/vnd.github+json",
     Authorization: `Bearer ${token}`,
-    'X-GitHub-Api-Version': '2022-11-28',
-    'User-Agent': 'expo-docs-review-post-review',
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "expo-docs-review-post-review",
   };
   if (body) {
-    headers['Content-Type'] = 'application/json';
+    headers["Content-Type"] = "application/json";
   }
   const res = await fetch(`https://api.github.com${path}`, {
     method,
@@ -188,7 +189,7 @@ async function githubRequest<T>(
 }
 
 async function getCurrentUserLogin(token: string): Promise<string> {
-  const res = await githubRequest<{ login: string }>(token, 'GET', '/user');
+  const res = await githubRequest<{ login: string }>(token, "GET", "/user");
   if (!res.ok) {
     console.error(`Failed to identify current user: ${res.status} ${res.text}`);
     exit(1);
@@ -200,22 +201,20 @@ async function findPriorPendingReviewIds(
   token: string,
   owner: string,
   repo: string,
-  pullNumber: number
+  pullNumber: number,
 ): Promise<number[]> {
   const myLogin = await getCurrentUserLogin(token);
   type ReviewListItem = { id: number; state: string; user: { login: string } };
   const res = await githubRequest<ReviewListItem[]>(
     token,
-    'GET',
-    `/repos/${owner}/${repo}/pulls/${pullNumber}/reviews`
+    "GET",
+    `/repos/${owner}/${repo}/pulls/${pullNumber}/reviews`,
   );
   if (!res.ok) {
     console.error(`Failed to list reviews: ${res.status} ${res.text}`);
     exit(1);
   }
-  return res.data
-    .filter((r) => r.state === 'PENDING' && r.user.login === myLogin)
-    .map((r) => r.id);
+  return res.data.filter((r) => r.state === "PENDING" && r.user.login === myLogin).map((r) => r.id);
 }
 
 async function deletePendingReview(
@@ -223,12 +222,12 @@ async function deletePendingReview(
   owner: string,
   repo: string,
   pullNumber: number,
-  reviewId: number
+  reviewId: number,
 ): Promise<void> {
   const res = await githubRequest<unknown>(
     token,
-    'DELETE',
-    `/repos/${owner}/${repo}/pulls/${pullNumber}/reviews/${reviewId}`
+    "DELETE",
+    `/repos/${owner}/${repo}/pulls/${pullNumber}/reviews/${reviewId}`,
   );
   if (!res.ok) {
     console.error(`Failed to delete pending review ${reviewId}: ${res.status} ${res.text}`);
@@ -243,7 +242,7 @@ async function postPendingReview(
   pullNumber: number,
   commitId: string,
   bodyText: string,
-  comments: ReviewComment[]
+  comments: ReviewComment[],
 ): Promise<{ id: number; html_url: string }> {
   // SAFETY: `event` is intentionally omitted. Omitting it creates a PENDING
   // review. Adding `event: 'APPROVE' | 'COMMENT' | 'REQUEST_CHANGES'` would
@@ -263,16 +262,16 @@ async function postPendingReview(
         : {}),
     })),
   };
-  if ('event' in payload) {
+  if ("event" in payload) {
     throw new Error(
-      'post-review.ts safety check failed: payload includes `event` field. This script must never submit reviews.'
+      "post-review.ts safety check failed: payload includes `event` field. This script must never submit reviews.",
     );
   }
   const res = await githubRequest<{ id: number; html_url: string }>(
     token,
-    'POST',
+    "POST",
     `/repos/${owner}/${repo}/pulls/${pullNumber}/reviews`,
-    payload
+    payload,
   );
   if (!res.ok) {
     console.error(`Failed to create pending review: ${res.status} ${res.text}`);
@@ -284,7 +283,9 @@ async function postPendingReview(
 async function main(): Promise<void> {
   const args = parseArgs(argv.slice(2));
   if (args.files.length === 0) {
-    console.error('Usage: bun post-review.ts <json-file> [<json-file> ...] [--dry-run] [--replace]');
+    console.error(
+      "Usage: bun post-review.ts <json-file> [<json-file> ...] [--dry-run] [--replace]",
+    );
     exit(2);
   }
   const reports = await readReports(args.files);
@@ -294,20 +295,22 @@ async function main(): Promise<void> {
   const reviewBody = buildReviewBody(reports);
 
   console.log(`PR:        ${first.pr_url}`);
-  console.log(`Files:     ${reports.map((r) => r.file).join(', ')}`);
-  console.log(`Comments:  ${comments.length} unresolved (across ${reports.length} file report${reports.length === 1 ? '' : 's'})`);
+  console.log(`Files:     ${reports.map((r) => r.file).join(", ")}`);
+  console.log(
+    `Comments:  ${comments.length} unresolved (across ${reports.length} file report${reports.length === 1 ? "" : "s"})`,
+  );
   console.log(`Head SHA:  ${first.head_sha}`);
 
   if (comments.length === 0) {
-    console.log('\nNo unresolved comments to post. Exiting.');
+    console.log("\nNo unresolved comments to post. Exiting.");
     exit(0);
   }
 
   if (args.dryRun) {
-    console.log('\n--- DRY RUN, no API call will be made ---\n');
-    console.log('Review body:');
+    console.log("\n--- DRY RUN, no API call will be made ---\n");
+    console.log("Review body:");
     console.log(reviewBody);
-    console.log('\nComments:');
+    console.log("\nComments:");
     for (const c of comments) {
       const range = c.start_line !== undefined ? `${c.start_line}-${c.line}` : `${c.line}`;
       console.log(`  ${c.path}:${range} [${c.severity}] (${c.rule_ref})`);
@@ -318,7 +321,12 @@ async function main(): Promise<void> {
   const token = getToken();
 
   if (args.replace) {
-    const priorIds = await findPriorPendingReviewIds(token, first.owner, first.repo, first.pull_number);
+    const priorIds = await findPriorPendingReviewIds(
+      token,
+      first.owner,
+      first.repo,
+      first.pull_number,
+    );
     if (priorIds.length > 0) {
       console.log(`\nDeleting ${priorIds.length} prior pending review(s) authored by you...`);
       for (const id of priorIds) {
@@ -336,13 +344,15 @@ async function main(): Promise<void> {
     first.pull_number,
     first.head_sha,
     reviewBody,
-    comments
+    comments,
   );
 
-  console.log('\nPending review created.');
+  console.log("\nPending review created.");
   console.log(`Review URL: ${review.html_url}`);
-  console.log('\nThis review is PRIVATE to you until you submit it on github.com.');
-  console.log('To finalize: open the URL, eyeball the comments, then click "Submit review" on the Files Changed tab.');
+  console.log("\nThis review is PRIVATE to you until you submit it on github.com.");
+  console.log(
+    'To finalize: open the URL, eyeball the comments, then click "Submit review" on the Files Changed tab.',
+  );
 }
 
 main().catch((err: unknown) => {
