@@ -5,7 +5,7 @@ license: MIT
 compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
   author: amandeepmittal
-  version: "1.3.1"
+  version: "1.4.0"
 ---
 
 # Expo Docs Review
@@ -91,7 +91,7 @@ Classify findings into four severity buckets:
 | `critical`   | Breaks rendering or breaks an example. Missing `dependencies` on `SnackInline`. Indented JSX inside `<Tab>`. Blank-line rule violated in `ConfigPluginExample`. Broken internal link. Wrong import path on a component. |
 | `design`     | Wrong component for the pattern. Bare ```` ```sh ```` block instead of `Terminal`. Numbered Markdown list instead of `Step` wrappers. "click here" link instead of descriptive `BoxLink`. Hand-authored API section that `APISection` would generate. |
 | `suggestion` | Could be sharper. Sentence longer than ~25 words. Passive voice where active works. First-person plural outside a tutorial. Missing intro example before explanation. |
-| `nit`        | Mechanical. Missing Oxford comma. Literal `—` instead of `&mdash;`. "iOS and Android" instead of "Android, iOS, and Web". Vague link text like "here" or "this page". |
+| `nit`        | Mechanical. Missing Oxford comma. "iOS and Android" instead of "Android, iOS, and Web". Vague link text like "here" or "this page". |
 
 Every finding needs:
 

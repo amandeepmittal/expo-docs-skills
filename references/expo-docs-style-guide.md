@@ -2,7 +2,7 @@
 
 The comprehensive reference for writing prose in Expo's documentation. Distills the [Expo Documentation Writing Style Guide](https://github.com/expo/expo/blob/main/guides/Expo%20Documentation%20Writing%20Style%20Guide.md) on GitHub and adds operational rules for working in `expo/docs/pages/`.
 
-For deterministic checks (Oxford commas, em dash entities, spelling), run Vale from `expo/docs/` via `pnpm lint-prose` or `.vale/bin/vale`. This reference covers what Vale cannot see.
+For deterministic checks (Oxford commas, spelling), run Vale from `expo/docs/` via `pnpm lint-prose` or `.vale/bin/vale`. This reference covers what Vale cannot see.
 
 ## Core Principles
 
@@ -37,7 +37,6 @@ After:
 
 - **Double quotes** in prose. Single quotes only in code.
 - **Oxford commas** in lists, except in headings.
-- **Em dashes:** write the HTML entity `&mdash;`. Never paste the literal `—` character. The literal is an AI-writing tell. Also, don't over use it. If you find yourself writing multiple em dashes in a paragraph, consider breaking it up into sentences.
 - **Spell out symbols.** Write "and" instead of `&`, and "plus" instead of `+`, in prose, headings, tables, and navigation. Exception: keyboard shortcuts use a literal `+` between keys.
 - Latin abbreviations: write **"that is"** and **"for example"** instead of "i.e." and "e.g."
 - **Apostrophes and possessives:** singular nouns add `'s` ("Expo's logo"). Plural nouns ending in "s" add only `'` ("the developers' guide"). Pronoun possessives (`its`, `hers`, `theirs`, `yours`) never take an apostrophe.
@@ -108,7 +107,6 @@ When usage is ambiguous, follow these definitions:
 
 ## Anti-patterns
 
-- **Literal em dash character (`—`)** in prose. Use `&mdash;` instead. Catches AI-written drafts.
 - **Emojis** in docs prose. Do not use them in headings, callouts, tables, or body text.
 - **First-person plural** ("we", "our") in non-tutorial docs.
 - **Marketing adjectives:** "seamlessly", "effortlessly", "powerful", "robust".
@@ -134,12 +132,11 @@ When usage is ambiguous, follow these definitions:
 - Sentence case headings, title case button labels
 - Bold for file and directory names
 - Descriptive link text
-- `&mdash;` entity instead of `—`
 - Platform order: Android, iOS, and Web
 
 **Don't:**
 
-- Use literal `—`, marketing adjectives, or vague link text
+- Use marketing adjectives or vague link text
 - Write "we" / "our" outside tutorials
 - Skip heading levels
 - Use "managed workflow" or "bare workflow"
