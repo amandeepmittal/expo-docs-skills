@@ -1,8 +1,6 @@
 import { Box, Text, useApp, useInput } from 'ink';
-import { useEffect, useState } from 'react';
-import { SkillDetails } from './components/SkillDetails';
+import { useEffect, useRef, useState } from 'react';
 import { SkillList } from './components/SkillList';
-import { StatusBar } from './components/StatusBar';
 import { discoverSkills } from './lib/discover';
 import { AGENT_TARGETS } from './lib/paths';
 import {
@@ -10,58 +8,63 @@ import {
   linkSkillToTarget,
   unlinkSkillFromTarget,
 } from './lib/symlink';
-import type {
-  Mode,
-  PendingAction,
-  PendingChanges,
-  Phase,
-  Skill,
-} from './lib/types';
+import type { PendingChanges, Skill } from './lib/types';
+
+const TARGET_KEY_MAP: Record<string, string> = {
+  '1': 'claude',
+  '2': 'codex',
+};
 
 function totalPending(pending: PendingChanges): number {
   let n = 0;
-  for (const m of pending.values()) n += m.size;
+  for (const s of pending.values()) n += s.size;
   return n;
 }
 
 export function App() {
   const { exit } = useApp();
   const [skills, setSkills] = useState<Skill[]>([]);
-  const [skillIndex, setSkillIndex] = useState(0);
-  const [targetIndex, setTargetIndex] = useState(0);
-  const [mode, setMode] = useState<Mode>('skill');
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [pending, setPending] = useState<PendingChanges>(new Map());
-  const [phase, setPhase] = useState<Phase>('browsing');
-  const [errors, setErrors] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [flash, setFlash] = useState<{ kind: 'ok' | 'err'; text: string } | null>(null);
+  const flashTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  async function refresh() {
+    const fresh = await discoverSkills();
+    setSkills(fresh);
+    setSelectedIndex(i => Math.min(i, Math.max(0, fresh.length - 1)));
+  }
 
   useEffect(() => {
     void (async () => {
       try {
         await ensureAllGlobalDirs();
-        const discovered = await discoverSkills();
-        setSkills(discovered);
+        await refresh();
       } catch (err) {
-        setErrors([`Failed to load skills: ${(err as Error).message}`]);
+        setFlash({ kind: 'err', text: `Load failed: ${(err as Error).message}` });
       } finally {
         setLoaded(true);
       }
     })();
+    return () => {
+      if (flashTimer.current) clearTimeout(flashTimer.current);
+    };
   }, []);
 
-  function setTargetPending(
-    skillName: string,
-    targetId: string,
-    action: PendingAction | null
-  ) {
+  function showFlash(kind: 'ok' | 'err', text: string, ms = 1500) {
+    if (flashTimer.current) clearTimeout(flashTimer.current);
+    setFlash({ kind, text });
+    flashTimer.current = setTimeout(() => setFlash(null), ms);
+  }
+
+  function toggleTargetForSkill(skillName: string, targetId: string) {
     setPending(prev => {
       const next = new Map(prev);
-      const inner = new Map(next.get(skillName) ?? new Map());
-      if (action === null) {
-        inner.delete(targetId);
-      } else {
-        inner.set(targetId, action);
-      }
+      const inner = new Set(next.get(skillName) ?? new Set<string>());
+      if (inner.has(targetId)) inner.delete(targetId);
+      else inner.add(targetId);
       if (inner.size === 0) next.delete(skillName);
       else next.set(skillName, inner);
       return next;
@@ -69,177 +72,193 @@ export function App() {
   }
 
   function toggleAllForSkill(skill: Skill) {
-    // If every link-able target is currently linked, toggle "unlink all".
-    // Otherwise, "link all". Conflicts are skipped.
-    const linkable = skill.targets.filter(t => t.status !== 'conflict');
-    if (linkable.length === 0) return;
-    const allLinked = linkable.every(t => t.status === 'linked');
-    const desired: PendingAction = allLinked ? 'unlink' : 'link';
-
+    const eligible = skill.targets.filter(t => t.status !== 'conflict');
+    if (eligible.length === 0) return;
     setPending(prev => {
       const next = new Map(prev);
-      const inner = new Map(next.get(skill.name) ?? new Map());
-
-      for (const t of linkable) {
-        const wouldMatchCurrent =
-          (desired === 'link' && t.status === 'linked') ||
-          (desired === 'unlink' && t.status === 'unlinked');
-        if (wouldMatchCurrent) {
-          inner.delete(t.target.id);
-        } else {
-          inner.set(t.target.id, desired);
-        }
+      const inner = new Set(next.get(skill.name) ?? new Set<string>());
+      const allMarked = eligible.every(t => inner.has(t.target.id));
+      if (allMarked) {
+        for (const t of eligible) inner.delete(t.target.id);
+      } else {
+        for (const t of eligible) inner.add(t.target.id);
       }
-
       if (inner.size === 0) next.delete(skill.name);
       else next.set(skill.name, inner);
       return next;
     });
   }
 
-  function toggleOneTarget(skill: Skill, targetIdx: number) {
-    const t = skill.targets[targetIdx];
-    if (!t || t.status === 'conflict') return;
-
-    const currentPending = pending.get(skill.name)?.get(t.target.id);
-    const desired: PendingAction = t.status === 'linked' ? 'unlink' : 'link';
-
-    if (currentPending === desired) {
-      setTargetPending(skill.name, t.target.id, null);
-    } else {
-      setTargetPending(skill.name, t.target.id, desired);
-    }
-  }
-
-  useInput((input, key) => {
-    if (input === 'q') {
-      exit();
-      return;
-    }
-
-    if (phase !== 'browsing') return;
-    const skill = skills[skillIndex] ?? null;
-
-    if (mode === 'skill') {
-      if (key.upArrow) {
-        setSkillIndex(i => Math.max(0, i - 1));
-      } else if (key.downArrow) {
-        setSkillIndex(i => Math.min(skills.length - 1, i + 1));
-      } else if (key.tab) {
-        if (skill && skill.targets.length > 0) {
-          setMode('target');
-          setTargetIndex(0);
-        }
-      } else if (input === ' ') {
-        if (skill) toggleAllForSkill(skill);
-      } else if (key.return) {
-        void applyChanges();
-      }
-      return;
-    }
-
-    // mode === 'target'
-    if (!skill) {
-      setMode('skill');
-      return;
-    }
-
-    if (key.escape) {
-      setMode('skill');
-    } else if (key.upArrow) {
-      setTargetIndex(i => Math.max(0, i - 1));
-    } else if (key.downArrow) {
-      setTargetIndex(i => Math.min(skill.targets.length - 1, i + 1));
-    } else if (input === ' ') {
-      toggleOneTarget(skill, targetIndex);
-    } else if (key.return) {
-      void applyChanges();
-    }
-  });
-
   async function applyChanges() {
-    if (totalPending(pending) === 0) return;
-    setPhase('applying');
+    if (totalPending(pending) === 0 || busy) return;
+    setBusy(true);
     const failures: string[] = [];
+    const touched: string[] = [];
 
-    for (const [skillName, perTarget] of pending) {
+    for (const [skillName, targetIds] of pending) {
       const skill = skills.find(s => s.name === skillName);
       if (!skill) continue;
-      for (const [targetId, action] of perTarget) {
+      for (const targetId of targetIds) {
         const target = AGENT_TARGETS.find(t => t.id === targetId);
-        if (!target) continue;
+        const ts = skill.targets.find(t => t.target.id === targetId);
+        if (!target || !ts || ts.status === 'conflict') continue;
+        const action = ts.status === 'linked' ? 'unlink' : 'link';
         try {
           if (action === 'link') {
             await linkSkillToTarget(skill.sourcePath, skill.name, target);
           } else {
             await unlinkSkillFromTarget(skill.name, target);
           }
+          touched.push(`${skill.name}/${target.id}`);
         } catch (err) {
-          failures.push(`${skillName} → ${target.label}: ${(err as Error).message}`);
+          failures.push(`${skillName} -> ${target.label}: ${(err as Error).message}`);
         }
       }
     }
 
-    const fresh = await discoverSkills();
-    setSkills(fresh);
+    await refresh();
     setPending(new Map());
-    setErrors(failures);
-    setPhase('done');
+    setBusy(false);
+
+    if (failures.length > 0) {
+      showFlash('err', failures[0]!, 4000);
+    } else {
+      showFlash('ok', `Applied ${touched.length} change${touched.length === 1 ? '' : 's'}`);
+    }
   }
+
+  function discardPending() {
+    if (pending.size === 0) return;
+    setPending(new Map());
+    showFlash('ok', 'Discarded pending changes', 1000);
+  }
+
+  useInput((input, key) => {
+    if (busy) return;
+
+    if (input === 'q' || (key.ctrl && input === 'c')) {
+      exit();
+      return;
+    }
+
+    if (skills.length === 0) return;
+
+    if (key.upArrow || input === 'k') {
+      setSelectedIndex(i => Math.max(0, i - 1));
+      return;
+    }
+    if (key.downArrow || input === 'j') {
+      setSelectedIndex(i => Math.min(skills.length - 1, i + 1));
+      return;
+    }
+    if (input === 'g') {
+      setSelectedIndex(0);
+      return;
+    }
+    if (input === 'G') {
+      setSelectedIndex(skills.length - 1);
+      return;
+    }
+
+    const skill = skills[selectedIndex];
+    if (!skill) return;
+
+    if (input === ' ') {
+      toggleAllForSkill(skill);
+      return;
+    }
+
+    const targetId = TARGET_KEY_MAP[input];
+    if (targetId) {
+      const ts = skill.targets.find(t => t.target.id === targetId);
+      if (ts && ts.status !== 'conflict') {
+        toggleTargetForSkill(skill.name, targetId);
+      }
+      return;
+    }
+
+    if (key.return) {
+      void applyChanges();
+      return;
+    }
+    if (key.escape || input === 'd') {
+      discardPending();
+      return;
+    }
+    if (input === 'r') {
+      void refresh();
+      showFlash('ok', 'Refreshed', 800);
+      return;
+    }
+  });
 
   if (!loaded) {
     return (
-      <Box>
+      <Box paddingX={1}>
         <Text dimColor>Loading skills...</Text>
       </Box>
     );
   }
 
-  const current = skills[skillIndex] ?? null;
-  const pendingForSkill = current ? pending.get(current.name) : undefined;
+  const current = skills[selectedIndex] ?? null;
+  const pendingCount = totalPending(pending);
 
   return (
     <Box flexDirection="column" paddingX={1}>
-      <Box
-        borderStyle="round"
-        borderColor="cyan"
-        paddingX={2}
-        marginBottom={1}>
-        <Text bold color="cyan">EXPO DOCS SKILLS</Text>
+      <Box justifyContent="space-between" marginBottom={1}>
+        <Box>
+          <Text bold color="cyan">expo-docs-skills</Text>
+          <Text dimColor>  symlink manager</Text>
+        </Box>
+        <Box>
+          {pendingCount > 0 ? (
+            <Text color="yellow" bold>{pendingCount} pending</Text>
+          ) : (
+            <Text dimColor>no pending changes</Text>
+          )}
+        </Box>
       </Box>
+
       <Box marginBottom={1}>
-        <Text dimColor>Manage local skill symlinks (Claude Code, Cursor, Codex)</Text>
+        <Text dimColor>Targets:  </Text>
+        <Text color="green" bold>C</Text>
+        <Text dimColor>=Claude  </Text>
+        <Text color="green" bold>X</Text>
+        <Text dimColor>=Codex    </Text>
+        <Text dimColor>(green linked, grey unlinked, red conflict)</Text>
       </Box>
 
       <SkillList
         skills={skills}
-        selectedIndex={skillIndex}
+        selectedIndex={selectedIndex}
         pending={pending}
-        mode={mode}
       />
 
-      <Box
-        marginTop={1}
-        borderStyle="single"
-        borderColor={mode === 'target' ? 'cyan' : 'gray'}
-        paddingX={1}
-        paddingY={0}
-        flexDirection="column">
-        <SkillDetails
-          skill={current}
-          mode={mode}
-          selectedTargetIndex={targetIndex}
-          pendingForSkill={pendingForSkill}
-        />
-      </Box>
+      {current && (
+        <Box marginTop={1} flexDirection="column">
+          <Box>
+            <Text bold>{current.name}</Text>
+            <Text dimColor>  ({current.category})</Text>
+          </Box>
+          {current.description && (
+            <Box marginTop={0}>
+              <Text>{current.description}</Text>
+            </Box>
+          )}
+          <Box>
+            <Text dimColor>{current.sourcePath}</Text>
+          </Box>
+        </Box>
+      )}
 
-      <Box marginTop={1}>
-        <StatusBar
-          pendingCount={totalPending(pending)}
-          phase={phase}
-          mode={mode}
-          errors={errors}
-        />
+      <Box marginTop={1} flexDirection="column">
+        <Text dimColor>
+          [j/k or up/down] move  [space] toggle all  [1/2] toggle Claude/Codex  [enter] apply  [d/esc] discard  [r] refresh  [q] quit
+        </Text>
+        {busy && <Text color="yellow">Applying changes...</Text>}
+        {!busy && flash && (
+          <Text color={flash.kind === 'ok' ? 'green' : 'red'}>{flash.text}</Text>
+        )}
       </Box>
     </Box>
   );

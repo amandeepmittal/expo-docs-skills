@@ -13,7 +13,7 @@ A collection of agent skills (slash commands and behaviors) for writing and audi
    bun start
    ```
 
-   The TUI lists each skill in this repo and lets you stage symlinks to `~/.claude/skills/`, `~/.cursor/skills/`, and `~/.codex/skills/`. Press `space` to toggle all three, or `tab` for per-target control, then `enter` to apply.
+   The TUI lists each skill in this repo and lets you stage symlinks to `~/.claude/skills/` and `~/.codex/skills/`. Press `1` to toggle Claude, `2` to toggle Codex, `space` to toggle both, then `enter` to apply.
 
 3. **Claude Code setup: grant read access to this repo.** The references live at the repo root and the skill files live in `skills/<category>/<name>/`. When you invoke a skill from a Claude Code session in another project (for example, `expo/`), Claude Code treats reads from this repo as cross-project and prompts every time. To silence the prompts, add this repo to the read allowlist in `~/.claude/settings.json`:
 
@@ -45,7 +45,7 @@ For the `expo-docs-review` skill, pass a public Expo docs PR URL. Any of these p
 
 > audit https://github.com/expo/expo/pull/XXXXX against the style guide
 
-The skill writes one JSON + Markdown report per changed `.mdx` to `/tmp/expo-docs-review-pr-{number}-{file-slug}.{json,md}`, then stages the findings as a **PENDING** review on the PR via the bundled `post-review.ts` script. PENDING reviews are private to your GitHub account; the skill never submits or publishes. You open the resulting Review URL on github.com, edit or delete comments inline, and click **Submit review** (or cancel) to finalize.
+The skill writes one JSON + Markdown report per changed `.mdx` to `/tmp/expo-docs-review-pr-{number}-{file-slug}.{json,md}`, then stages the findings as a **PENDING** review on the PR via the shared `skills/reviewing/scripts/post-review.ts` script. PENDING reviews are private to your GitHub account; the skill never submits or publishes. You open the resulting Review URL on github.com, edit or delete comments inline, and click **Submit review** (or cancel) to finalize.
 
 ## Reference
 

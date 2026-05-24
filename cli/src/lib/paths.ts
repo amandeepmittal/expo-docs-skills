@@ -7,13 +7,12 @@ const here = fileURLToPath(new URL('.', import.meta.url));
 export const SKILLS_ROOT = resolve(here, '../../../skills');
 
 export type AgentTarget = {
-  id: 'claude' | 'cursor' | 'codex';
+  id: 'claude' | 'codex';
   label: string;
   globalDir: string;
 };
 
 export const AGENT_TARGETS: AgentTarget[] = [
   { id: 'claude', label: 'Claude Code', globalDir: join(homedir(), '.claude', 'skills') },
-  { id: 'cursor', label: 'Cursor', globalDir: join(homedir(), '.cursor', 'skills') },
   { id: 'codex', label: 'Codex', globalDir: join(homedir(), '.codex', 'skills') },
 ];

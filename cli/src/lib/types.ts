@@ -18,12 +18,6 @@ export type Skill = {
   targets: SkillTargetState[];
 };
 
-export type PendingAction = 'link' | 'unlink';
-
-// Per-skill-per-target pending changes.
-// Outer key: skill name. Inner key: target id.
-export type PendingChanges = Map<string, Map<string, PendingAction>>;
-
-export type Phase = 'browsing' | 'applying' | 'done';
-
-export type Mode = 'skill' | 'target';
+// Flip-intent: outer key skill name, inner set of target ids to toggle.
+// "Toggle" means: if currently linked, unlink; if unlinked, link. Conflicts skipped.
+export type PendingChanges = Map<string, Set<string>>;
