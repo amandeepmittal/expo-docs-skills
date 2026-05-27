@@ -4,7 +4,6 @@ description: Apply Expo's documentation writing style and MDX component conventi
 license: MIT
 compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
-  author: amandeepmittal
   version: "1.3.0"
 ---
 

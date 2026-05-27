@@ -4,7 +4,6 @@ description: Audit `<BoxLink>` components in an Expo docs PR and flag mismatches
 license: MIT
 compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
-  author: amandeepmittal
   version: "1.0.0"
 ---
 

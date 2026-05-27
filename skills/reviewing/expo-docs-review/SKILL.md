@@ -299,12 +299,13 @@ Authentication: the script reads `GITHUB_TOKEN` if set, otherwise runs `gh auth 
 - Propose the exact fix. Show the MDX or prose that should replace the flagged content.
 - Treat tutorial pages differently than reference. The voice rules diverge.
 - Respect `{/* vale off */}` blocks and `hideFromSearch: true`. Those are explicit opt-outs.
-- Acknowledge subject-matter trade-offs when a rule is borderline. "This sentence is 28 words but reads cleanly because of the parallel structure" is useful. Do not justify the severity choice itself ("Suggestion rather than design because..."). The severity tag at the top of the comment is the classification; meta-reasoning about it is noise.
+- Acknowledge subject-matter trade-offs only when a rule is genuinely borderline. "Borderline" means one of two things: (a) two style guide rules conflict on the same line, or (b) the rule itself names exceptions that arguably apply. "I had to think about it" is not borderline — that's just the rule applying. When you find yourself constructing a reason a rule doesn't apply, the rule applies. When borderlineness is real, acknowledge the trade-off in the comment body ("This sentence is 28 words but reads cleanly because of the parallel structure"). Do not justify the severity choice itself ("Suggestion rather than design because..."). The severity tag at the top of the comment is the classification; meta-reasoning about it is noise.
 - When the PR adds a component you have not seen before, read the source under `expo/docs/ui/components/` or `expo/docs/components/plugins/` before commenting on its usage.
 
 ## DON'T
 
 - Submit, approve, comment, or request-changes on the review. The pending review created by `post-review.ts` must stay in PENDING state. Publication (Approve / Comment / Request changes) is exclusively a manual action the user takes on github.com after eyeballing each comment.
+- Invent exceptions to a rule. The rule's documented carve-outs are exhaustive (for example, the platform-order rule exempts table cells, headings, and sentence-initial position — nothing else). If a rule names a pattern on a line in the diff, flag it. "PR is small", "violation is mild", "the pairing is conceptually tied", "feels like piling on", "the author probably knows" are not valid skip reasons. A review is a review; PR size does not change which rules apply.
 - Flag pre-existing violations outside the PR's diff. The author cannot act on noise from elsewhere in the file.
 - Classify style preferences as `critical`. Reserve `critical` for things that break rendering or break examples.
 - Suggest a component swap without naming the component and showing the import.
