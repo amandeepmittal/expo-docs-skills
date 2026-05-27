@@ -4,7 +4,7 @@ description: Review an Expo docs pull request against the Expo writing style gui
 license: MIT
 metadata:
   author: amandeepmittal
-  version: "1.6.0"
+  version: "1.8.0"
 ---
 
 # Expo Docs Review
@@ -233,6 +233,12 @@ Below are the excuses you might generate to skip a finding, paired with the corr
 
 - Submit, approve, comment, or request-changes on the review. The pending review created by `post-review.ts` must stay in PENDING state. Publication is exclusively a manual action the user takes on github.com.
 - Invent exceptions to a rule. The rule's documented carve-outs are exhaustive. If a rule names a pattern on a line in the diff, flag it. See the [Rationalizations Table](#rationalizations-table) for common excuses and corrective actions.
+- Invent a violation of a non-existent rule. Before flagging, confirm the rule you're about to cite explicitly **names or prohibits** what you're flagging. Two failure modes:
+  1. **No rule at all.** The only rule you can cite is generic (`voice-and-tone`) for an issue that is not voice or tone (sentence fragments, apposition punctuation, modal hedging like "should"). The rule does not name your finding.
+  2. **Rule covers the area but not the pattern.** The rule exists (`callouts`, `word-usage`) and the area matches, but the rule's prose and gotchas don't name your specific finding. Examples in a rule's reference are illustrative, not exhaustive: they show one valid form, they don't restrict other valid forms. `**info** **Tip:**` after the leading keyword is not forbidden by the callouts rule; spelling out `TypeScript (TS)` is not forbidden by the word-usage rule.
+
+  In both cases, drop the finding rather than dressing up a stylistic preference as a rule citation. "Citing a rule" means matching the rule's named prohibitions, not citing the section heading. The over-flagging failure mode is the mirror of the under-flagging one: skipping cites a fake carve-out, over-flagging cites a fake rule. Both are invalid.
+- Write a `suggestion` block that violates a rule you're supposed to enforce. Every `suggestion` block must pass the same review you would apply to the original. Specifically: no em dashes (`—`) — the Expo style guide prefers separate sentences over em dashes, and em dashes are banned outright in this user's writing. If the natural rewrite uses an em dash, restructure into separate sentences with periods. This rule applies to the comment `body` prose too, not just the `suggestion` block.
 - Flag pre-existing violations outside the PR's diff. The author cannot act on noise from elsewhere in the file.
 - Classify style preferences as `critical`. Reserve `critical` for things that break rendering or break examples.
 - Suggest a component swap without naming the component and showing the import.
