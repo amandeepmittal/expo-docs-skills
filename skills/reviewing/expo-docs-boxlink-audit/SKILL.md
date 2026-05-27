@@ -2,7 +2,6 @@
 name: expo-docs-boxlink-audit
 description: Audit `<BoxLink>` components in an Expo docs PR and flag mismatches between the Icon prop and the destination URL, then stage findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "audit boxlink icons", "review boxlinks", "check boxlink icons", or "/expo-docs-boxlink-audit". Reads the canonical mapping at references/expo-docs-boxlink-icons.md (co-located). Produces one JSON + Markdown report per changed .mdx file at /tmp/expo-docs-boxlink-audit-pr-{number}-{file-slug}.{json,md}, then invokes the shared skills/reviewing/scripts/post-review.ts script to stage comments as PENDING. Public PRs only. Narrow scope: icon mismatches only, not other BoxLink props (title, description, href format).
 license: MIT
-compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
   version: "1.0.0"
 ---

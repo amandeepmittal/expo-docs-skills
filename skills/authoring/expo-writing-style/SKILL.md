@@ -2,7 +2,6 @@
 name: expo-writing-style
 description: Apply Expo's documentation writing style and MDX component conventions. MUST USE when writing or editing .mdx files under expo/docs/pages/, reviewing prose or component usage in docs PRs. Covers voice, tone, punctuation, headings, link text, capitalization, platform order, the Expo glossary, AND the MDX component catalog (Terminal, Tabs, Step, BoxLink, SnackInline, APISection, ConfigPluginExample, ProgressTracker, etc.). Does NOT cover API/TSDoc reference style. See expo-api-docs for that.
 license: MIT
-compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
   version: "1.3.0"
 ---

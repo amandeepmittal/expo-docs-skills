@@ -2,7 +2,6 @@
 name: expo-docs-terminal-audit
 description: Audit `<Terminal>` components in local Expo docs `.mdx` files and flag single-package-manager commands that should be multi-PM per established Expo conventions. MUST USE when the user provides a local `.mdx` path (or directory of `.mdx` files) and says "audit terminal commands", "audit multi-pm", "check terminal blocks", "review terminal", or "/expo-docs-terminal-audit". Reads the canonical mapping at references/expo-docs-terminal-multi-pm.md (co-located). Produces an in-session report showing each flagged block, the canonical fix, and the rule reference. After the user reviews, applies the suggested conversions directly to the `.mdx` files (only with explicit user approval, per finding or in batch). Does not call GitHub, does not write JSON, does not post PR comments. Narrow scope: single-PM-to-multi-PM conversions for command shapes Expo already documents with multi-PM examples. Does not invent new patterns; does not flag inline prose mentions, shell commands, `eas`/`expo` CLI invocations, `npx expo`/`npx eas-cli` runners, or `npm run` scripts.
 license: MIT
-compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
   version: "1.0.0"
 ---

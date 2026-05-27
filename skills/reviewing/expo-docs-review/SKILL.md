@@ -2,7 +2,6 @@
 name: expo-docs-review
 description: Review an Expo docs pull request against the Expo writing style guide and MDX component conventions, and stage the findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "review this pr", "review this docs pr", "audit this pr", "check this pr against the style guide", or "/expo-docs-review". Produces one JSON + Markdown report per changed .mdx file at /tmp/expo-docs-review-pr-{number}-{file-slug}.{json,md} with severity-classified findings (critical, design, suggestion, nit), then invokes the shared skills/reviewing/scripts/post-review.ts script to stage the comments as a PENDING review (visible only to the user, requires manual submit on github.com to publish). Public PRs only. Iteration-aware: re-running re-fetches the PR, re-resolves prior findings via line_content matching, and replaces the prior pending review.
 license: MIT
-compatibility: Works with Claude Code, Cursor, and skills.sh-compatible agents.
 metadata:
   author: amandeepmittal
   version: "1.4.0"
