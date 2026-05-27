@@ -1,6 +1,12 @@
 ---
 name: expo-docs-terminal-audit
-description: Audit `<Terminal>` components in local Expo docs `.mdx` files and flag single-package-manager commands that should be multi-PM per established Expo conventions. MUST USE when the user provides a local `.mdx` path (or directory of `.mdx` files) and says "audit terminal commands", "audit multi-pm", "check terminal blocks", "review terminal", or "/expo-docs-terminal-audit". Reads the canonical mapping at references/expo-docs-terminal-multi-pm.md (co-located). Produces an in-session report showing each flagged block, the canonical fix, and the rule reference. After the user reviews, applies the suggested conversions directly to the `.mdx` files (only with explicit user approval, per finding or in batch). Does not call GitHub, does not write JSON, does not post PR comments. Narrow scope: single-PM-to-multi-PM conversions for command shapes Expo already documents with multi-PM examples. Does not invent new patterns; does not flag inline prose mentions, shell commands, `eas`/`expo` CLI invocations, `npx expo`/`npx eas-cli` runners, or `npm run` scripts.
+description: >-
+  Audit local Expo docs `.mdx` files for `<Terminal>` blocks that use a single
+  package-manager command where Expo conventions call for multi-PM variants.
+  MUST USE when the user provides a local `.mdx` file, directory, or glob and
+  asks to "audit terminal commands", "audit multi-pm", "check terminal blocks",
+  "review terminal", or run "/expo-docs-terminal-audit". Reports findings
+  in-session and edits only after explicit user approval.
 license: MIT
 metadata:
   version: "1.0.0"
@@ -71,7 +77,7 @@ For each file:
 
 Print a markdown report to the chat directly. Shape:
 
-````
+```
 # Terminal multi-PM audit
 
 **Files reviewed:** N (X with findings, Y clean)
@@ -84,7 +90,7 @@ Print a markdown report to the chat directly. Shape:
 **Current:**
 ```mdx
 <Terminal cmd={['$ npx create-expo-app@latest --template default@sdk-56']} />
-````
+```
 
 **Suggested:**
 
@@ -148,7 +154,7 @@ If the user has already applied some changes from the prior run, those Terminal 
 - Print the report in-session as markdown. The user reads it inline; do not write to `/tmp/` or any other file.
 - Show the FULL current `<Terminal>` block and the FULL suggested multi-PM block in each finding. The user needs to see what will change.
 - Cite the specific Expo gold-standard page for the conversion (e.g. `pages/more/create-expo.mdx:15-22` for scaffolds). The author should be able to see the documented precedent.
-- Use the long flag form for npm (`--global`, `--save-dev`) in suggestions. Per the gold-standard `eas/cli.mdx`.
+- Before emitting a suggestion block, verify all PM lines use the same flag form. If one column uses a long flag (`--global`, `--save-dev`), every column that supports a long equivalent must use it. See `references/expo-docs-terminal-multi-pm.md#long-flag-rule` for per-PM long-form support.
 - For chained commands (`&&`-joined), suggest the multi-PM-with-`cmdCopy` shape from `develop/development-builds/create-a-build.mdx:104`. Do NOT split into multiple Terminal blocks.
 - For the `bun install` vs `bun add` ambiguity, suggest `bun add` (per the reference's adaptive cross-check rule).
 - Ask for explicit approval before applying any edit. Default is no-op.
@@ -159,10 +165,9 @@ If the user has already applied some changes from the prior run, those Terminal 
 - Write to GitHub. This skill is local-only. No `gh` calls, no PR fetching, no post-review.ts.
 - Write JSON output files. The report is in-session markdown; the user does not need a machine-readable copy.
 - Apply changes without explicit approval. The default response to the report is to do nothing.
-- Flag shell commands, installed-CLI invocations (`eas`, `expo`), `npx expo` family, `npx eas-cli` runners, `npm run` scripts, or any pattern in the exceptions catalog of the reference.
+- Flag shell commands, installed-CLI invocations (`eas`, `expo`), `npx eas-cli` runners, or any pattern in the exceptions catalog of the reference.
 - Flag command shapes not documented in the canonical conversion table. If Expo has no established multi-PM pattern for the shape, drop the finding rather than inventing a fix.
 - Suggest splitting chained commands. The gold standard is multi-PM-with-`cmdCopy`, not multiple Terminal blocks.
 - Use short flags (`-g`, `-D`) in suggestions when the long form is the gold-standard. The flag form in the original block is the author's choice; only the suggestion uses the canonical long form.
 - Flag prose mentions of `npm install` or other PM commands in the body of an MDX page. The audit scope is `<Terminal>` blocks only.
 - Edit files in directories the audit was not pointed at. If the user passes a single file path, only that file is in scope; do not walk siblings.
-```

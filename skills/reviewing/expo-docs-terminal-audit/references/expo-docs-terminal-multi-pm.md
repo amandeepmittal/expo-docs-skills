@@ -17,6 +17,8 @@ These are the canonical sources for multi-PM `<Terminal>` patterns. When suggest
 | Chained install + CLI invocation | `expo/docs/pages/develop/development-builds/create-a-build.mdx:104` | Multi-PM `cmd={{...}}` with `cmdCopy` per variant |
 | Dev dependency install | (none yet established) | Skill does not flag if no gold-standard exists |
 | Plain dependency install | `expo/docs/pages/workflow/upgrading-expo-sdk-walkthrough.mdx:30-37` | Same as pinned shape |
+| Script run (`npm run <script>` and aliases `npm test`, `npm start`) | `expo/docs/pages/guides/publishing-websites.mdx:376-383` | Four-variant `<pm> run <script>` set |
+| Expo CLI invocation (`npx expo <sub>`, all subcommands) | `expo/docs/pages/more/expo-cli.mdx:25,27,532` and `pages/guides/using-bun.mdx:33` | Implicit precedent (prose + single-PM Terminal blocks across yarn/bun: e.g. `yarn expo -h`, `yarn expo install`, `bun expo install`). No multi-PM `cmd={{...}}` Terminal block exists yet; the four-variant shape is mechanical and applies to every subcommand (`start`, `prebuild`, `run:ios`, `run:android`, `install`, `export`, `customize`, `config`, `doctor`, `lint`, `whoami`, `login`). |
 
 ## Canonical conversion table
 
@@ -25,11 +27,13 @@ For each command shape the skill flags, this is the four-variant set the suggest
 | Command shape | npm | yarn | pnpm | bun |
 | ------------- | --- | ---- | ---- | --- |
 | Local dep install | `npm install <pkg>` | `yarn add <pkg>` | `pnpm add <pkg>` | `bun add <pkg>` |
-| Dev dep install | `npm install --save-dev <pkg>` | `yarn add --dev <pkg>` | `pnpm add -D <pkg>` | `bun add --dev <pkg>` |
-| Global install | `npm install --global <pkg>` | `yarn global add <pkg>` | `pnpm add -g <pkg>` | `bun add -g <pkg>` |
+| Dev dep install | `npm install --save-dev <pkg>` | `yarn add --dev <pkg>` | `pnpm add --save-dev <pkg>` | `bun add --dev <pkg>` |
+| Global install | `npm install --global <pkg>` | `yarn global add <pkg>` | `pnpm add --global <pkg>` | `bun add --global <pkg>` |
 | Project scaffold | `npx create-<pkg>` | `yarn create <pkg>` | `pnpm create <pkg>` | `bun create <pkg>` |
 | One-shot runner | `npx <pkg>` | `yarn dlx <pkg>` | `pnpm dlx <pkg>` | `bunx <pkg>` |
 | Pinned dep install | `npm install <pkg>@<version>` | `yarn add <pkg>@<version>` | `pnpm add <pkg>@<version>` | `bun add <pkg>@<version>` |
+| Script run | `npm run <script>` | `yarn run <script>` | `pnpm run <script>` | `bun run <script>` |
+| Expo CLI invocation | `npx expo <sub>` | `yarn expo <sub>` | `pnpm expo <sub>` | `bun expo <sub>` |
 
 **Sources:**
 
@@ -56,7 +60,16 @@ If the user wants the skill to match the upgrading-expo guide's pattern instead,
 
 ## Long-flag rule
 
-When the skill suggests a multi-PM block on a page, the npm variant uses the long flag form: `--global` (not `-g`), `--save-dev` (not `-D`). This matches the authoritative `eas/cli.mdx` gold standard and the first-occurrence-on-page convention.
+When the skill suggests a multi-PM block on a page, **all PMs that support a long flag form must use it** — not just npm. Concretely:
+
+- npm: `--global` (not `-g`), `--save-dev` (not `-D`)
+- pnpm: `--global` (not `-g`), `--save-dev` (not `-D`)
+- bun: `--global` (not `-g`), `--dev` (no longer form supported)
+- yarn 1: `yarn global add` is a subcommand (no flag); `--dev` for dev deps
+
+Rationale: long flags read clearly across all four columns. Mixing `--global` for npm and `-g` for pnpm/bun looks like an oversight, not a choice.
+
+**Note on gold standard:** `eas/cli.mdx:17-24` currently uses `pnpm add -g` and `bun add -g` (short flags). The skill's suggestion blocks use the long forms regardless, per this rule. If the gold-standard page is updated for consistency, the reference and suggestions remain aligned.
 
 If the same page later uses short flags inline, that is acceptable and the skill does not flag it. Only the suggestion block produced by the skill uses long flags.
 
@@ -86,9 +99,7 @@ Skip the Terminal block if the first non-comment line of `cmd` matches any of th
 | ------- | ------ | ----------- |
 | Shell / system commands: `cd`, `mkdir`, `git`, `echo`, `base64`, `cp`, `mv`, `sudo`, `pod`, `xcodebuild`, `gradle`, `adb`, `brew`, `gem`, `ruby` | Not a JS-ecosystem package manager command | `pages/build-reference/ios-builds.mdx` |
 | Installed CLI invocation: `eas <sub>`, `expo <sub>` (running, not installing), `claude <sub>`, `codex <sub>`, `node`, `tsc`, `jest`, `vitest`, `prettier`, `eslint` | Running an already-installed binary, not a PM action | `pages/eas/cli.mdx` (after install block) |
-| `npx expo <sub>` family: `install`, `run:ios`, `run:android`, `start`, `prebuild`, `customize`, `export`, `config`, `doctor`, `lint`, `whoami`, `login` | Convention: Expo CLI invocations stay single-PM. 113 single-PM hits across the docs vs. 1 multi-PM exception. | `pages/get-started/start-developing.mdx` |
-| `npx eas-cli <sub>` runner invocations | Same posture as `npx expo`: an Expo-ecosystem CLI runner. Single-PM by convention. | `pages/eas/cli.mdx` (in prose, not the runner gold-standard block) |
-| `npm run <script>` and equivalents (`npm test`, `npm start`) | Convention: package.json script runs stay single-PM in current Expo docs | `pages/develop/development-builds/use-development-builds.mdx` |
+| `npx eas-cli <sub>` runner invocations | Expo-ecosystem CLI runner. Single-PM by convention. | `pages/eas/cli.mdx` (in prose, not the runner gold-standard block) |
 | Already multi-PM (`cmd={{...}}` object form) | Nothing to flag | Many |
 | Interactive prompts or shell output (lines without a leading `$ `) | Not a command, just output | `pages/more/create-expo.mdx:28` |
 | Registry actions: `npm publish`, `npm login`, `npm view`, `npm whoami` | Yarn/pnpm/bun forms differ semantically; not a clean conversion | `pages/modules/publish.mdx` |
@@ -102,15 +113,16 @@ Run for each `<Terminal cmd={[...]}>` block found in the head version of a chang
 2. **Extract the first command line.** Strip the leading `$ ` prompt. Call this `line`.
 3. **Skip if `line` matches the shell / system regex:** `^(cd|mkdir|git|echo|base64|cp|mv|sudo|pod|xcodebuild|gradle|adb|brew|gem|ruby) `
 4. **Skip if `line` starts with an installed CLI binary** (no `npx` prefix): `^(eas|expo|claude|codex|node|tsc|jest|vitest|prettier|eslint) `
-5. **Skip if `line` matches the Expo CLI runner family:** `^npx (expo|eas-cli) `
-6. **Skip if `line` matches the script-run family:** `^npm (run |test$|start$)`
-7. **Skip if `line` matches a registry-action:** `^npm (publish|login|view|whoami)`
-8. **Flag (severity: `design`) if `line` matches any of:**
+5. **Skip if `line` matches the `npx eas-cli` runner:** `^npx eas-cli `
+6. **Skip if `line` matches a registry-action:** `^npm (publish|login|view|whoami)`
+7. **Flag (severity: `design`) if `line` matches any of:**
    - Local or dev dep install: `^npm install (--save-dev |-D )?[^-]`
    - Global install: `^npm install (--global |-g )[^-]`
    - Project scaffold runner: `^npx create-[\w@/-]+`
-   - Yarn / pnpm / bun single-PM equivalents of the above
-9. **Flag (severity: `suggestion`) if `line` matches:**
+   - Script run: `^npm (run |test$|start$)` (and equivalent `yarn|pnpm|bun run` / `yarn|pnpm|bun test|start`)
+   - Expo CLI invocation: `^npx expo ` (any subcommand) and equivalent `^(yarn|pnpm|bun) expo `
+   - Yarn / pnpm / bun single-PM equivalents of the install and scaffold shapes above
+8. **Flag (severity: `suggestion`) if `line` matches:**
    - A pattern that COULD be intentionally single-PM in a topic-specific context (e.g. a guide whose subject is the specific dev tool). Skill should err toward flagging; the author can dismiss.
 
 For chained commands (`&&`-joined), apply the rules to the first segment only. The conversion rule for chained commands is the `cmdCopy`-per-variant shape documented above.
