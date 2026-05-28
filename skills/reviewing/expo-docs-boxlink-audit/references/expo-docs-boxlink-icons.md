@@ -1,8 +1,6 @@
 # Expo Docs BoxLink Icon Conventions
 
-Canonical mapping of `<BoxLink>` destination URL patterns to their expected icons. Compiled from a survey of 625 `<BoxLink>` usages across `expo/docs/pages/**/*.mdx`. The authoritative sources are the EAS landing page (`pages/eas/index.mdx`), the tutorial overview (`pages/tutorial/overview.mdx`), and the modules getting-started page (`pages/modules/get-started.mdx`).
-
-Use this reference to flag `<BoxLink>` components whose `Icon=` prop does not match the destination's canonical icon.
+Canonical mapping of `<BoxLink>` destination URL patterns to their expected icons.
 
 ## Canonical mapping
 
@@ -54,4 +52,3 @@ These are intentional overrides that the table treats as canonical for their spe
 - `pages/eas/index.mdx` : authoritative for EAS service icons.
 - `pages/tutorial/overview.mdx` : authoritative for tutorial icons.
 - `pages/modules/get-started.mdx` : authoritative for modules icons.
-- `docs/ui/components/BoxLink/index.tsx` : component definition; confirms the `Icon` prop has no default (every usage passes an icon explicitly).
