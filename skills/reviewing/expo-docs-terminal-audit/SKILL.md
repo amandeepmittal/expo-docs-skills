@@ -1,12 +1,6 @@
 ---
 name: expo-docs-terminal-audit
-description: >-
-  Audit local Expo docs `.mdx` files for `<Terminal>` blocks that use a single
-  package-manager command where Expo conventions call for multi-PM variants.
-  MUST USE when the user provides a local `.mdx` file, directory, or glob and
-  asks to "audit terminal commands", "audit multi-pm", "check terminal blocks",
-  "review terminal", or run "/expo-docs-terminal-audit". Reports findings
-  in-session and edits only after explicit user approval.
+description: Audit local Expo docs `.mdx` files for `<Terminal>` blocks that use a single package-manager command where Expo conventions call for multi-PM variants. MUST USE when the user provides a local `.mdx` file, directory, or glob and asks to "audit terminal commands", "audit multi-pm", "check terminal blocks", "review terminal", or run "/expo-docs-terminal-audit". Reports findings in-session and edits only after explicit user approval.
 license: MIT
 metadata:
   version: "1.0.0"
