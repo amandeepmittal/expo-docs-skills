@@ -24,13 +24,13 @@ When the fix is a literal replacement of one or more contiguous lines, follow th
 ```
 ````
 
-The fence language is critical: `` ```suggestion `` (not `` ```mdx ``, `` ```md ``, `` ```sh ``) is the only fence GitHub renders as an apply-button suggestion. For non-suggestion code samples inside a body, regular fences are fine.
+The fence language must be exactly `suggestion`. Other fence languages render as regular code blocks without an apply button.
 
 ## When the fix needs judgment
 
-When the fix needs judgment (split a sentence, restructure a paragraph, rewrite a heading) AND you can write the concrete replacement text, still use a `suggestion` block — the author can edit before applying, so the apply button doesn't lock them in.
+When the fix needs judgment (split a sentence, restructure a paragraph, rewrite a heading) but you can still write the concrete replacement, use a `suggestion` block. The author can edit before applying.
 
-Use a prose-only comment (no `suggestion` block) only when you genuinely cannot write the concrete replacement (for example: "this heading needs a noun-phrase rewrite, but the right phrasing depends on the section content I haven't read"). In that case the body is a paragraph or bullet list explaining the issue and the desired direction:
+Use a prose-only comment (no `suggestion` block) only when you genuinely cannot write the concrete replacement. Example:
 
 ```
 **[suggestion]** Sentence is 28 words with a nested parenthetical and a compound condition (`expo-docs-style-guide.md#voice-and-tone`). Consider splitting into two shorter sentences so the parallel between the two clauses lands on first read.
@@ -40,10 +40,3 @@ Use a prose-only comment (no `suggestion` block) only when you genuinely cannot 
 
 When the replacement spans more than one line in the head file, set `start_line` to the first line of the range and `line` to the last. Both must be on the same side (`start_side: "RIGHT"`, `side: "RIGHT"`). The `suggestion` block then replaces the entire `start_line`-through-`line` range with its contents, and GitHub still renders a single **Commit suggestion** button. Without `start_line`, the suggestion only replaces the single line at `line` — usually wrong for fixes like swapping a fenced code block for a `Terminal` component, or folding a colon + bullet into a paragraph.
 
-## Length
-
-Each comment body should be 1-3 short sentences. Lead with the rule violation, follow with the fix (`suggestion` block or direct prose). If a finding needs more than 3 sentences to explain, it is either two findings or it does not belong as an inline comment.
-
-## Acknowledging trade-offs
-
-When borderlineness is real — two rules conflict on the same line, or the rule itself names exceptions that arguably apply — acknowledge the trade-off in the body. Example: "This sentence is 28 words but reads cleanly because of the parallel structure." When borderlineness is not real, do not invent it. See the Rationalizations Table in the main skill file.
