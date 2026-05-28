@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 const here = fileURLToPath(new URL('.', import.meta.url));
 
 export const SKILLS_ROOT = resolve(here, '../../../skills');
+export const DEPRECATED_ROOT = resolve(here, '../../../deprecated');
 
 export type AgentTarget = {
   id: 'claude' | 'codex';
