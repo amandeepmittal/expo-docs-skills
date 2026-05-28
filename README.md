@@ -54,5 +54,4 @@ The skill writes one JSON + Markdown report per changed `.mdx` to `/tmp/expo-doc
 
 Tools kep around but barely used.
 
-
 ## Layout
