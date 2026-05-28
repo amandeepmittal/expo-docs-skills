@@ -4,7 +4,7 @@ description: Review an Expo docs pull request against the Expo writing style gui
 license: MIT
 metadata:
   author: amandeepmittal
-  version: "1.8.25"
+  version: "1.8.26"
 ---
 
 # Expo Docs Review
@@ -60,7 +60,7 @@ Use the `gh` CLI for GitHub fetches.
      -H "Accept: application/vnd.github.raw"
    ```
 
-5. **Read the PR title and body.** The intent shapes what counts as a `design`-level violation.
+5. **Read the PR title and body.**
 6. **Note the page type for each file:** tutorial (`pages/tutorial/`, `pages/get-started/`), guide (`pages/guides/`, `pages/router/`), SDK reference (`pages/versions/{ver}/sdk/`). Tutorials allow "we"/"our"; reference does not.
 
 ### Phase 2: Analyze
@@ -130,7 +130,6 @@ Use `--replace` on iteration 2+ to clear prior pending reviews. Use `--dry-run` 
 
 ## DO
 
-- Read the PR title and body before reviewing. The author's stated intent shapes severity calls.
 - Cross-reference base vs. head when a finding is ambiguous: is this violation **introduced by this PR**, or was it already there? Flag only the former.
 - Treat tutorial pages differently than reference. The voice rules diverge.
 - Respect `{/* vale off */}` blocks and `hideFromSearch: true`. Those are explicit opt-outs.
