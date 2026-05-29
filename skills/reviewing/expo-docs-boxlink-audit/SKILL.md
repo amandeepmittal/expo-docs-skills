@@ -1,6 +1,6 @@
 ---
 name: expo-docs-boxlink-audit
-description: Audit `<BoxLink>` components in an Expo docs PR and flag mismatches between the Icon prop and the destination URL, then stage findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "audit boxlink icons", "review boxlinks", "check boxlink icons", or "/expo-docs-boxlink-audit". Public PRs only. Narrow scope: icon mismatches only, not other BoxLink props.
+description: 'Audit `<BoxLink>` components in an Expo docs PR and flag mismatches between the Icon prop and the destination URL, then stage findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "audit boxlink icons", "review boxlinks", "check boxlink icons", or "/expo-docs-boxlink-audit". Public PRs only. Narrow scope: icon mismatches only, not other BoxLink props.'
 license: MIT
 metadata:
   version: "1.0.19"
