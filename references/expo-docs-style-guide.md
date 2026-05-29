@@ -29,7 +29,7 @@ After:
 
 ## Word usage
 
-- **Abbreviations on first mention.** Spell out abbreviations the first time they appear on a page, then use the short form: "source (src)". The following are treated as known and do not require expansion: API, CD, CI, CLI, CSS, CSV, DOM, E2E, HTML, HTTP, ID, JPEG, JS, JSON, JSX, OS, OTA, PNG, SDK, TS, TSX, UI, URL, npm, pnpm, yarn, and the build artifact extensions `.ipa`, `.apk`, and `.aab`. Prefer "identifier" over "ID" when it reads more naturally.
+- **Abbreviations on first mention.** Spell out abbreviations the first time they appear on a page, then use the short form: "source (src)". The following are treated as known and do not require expansion: API, CD, CI, CLI, CSS, CSV, DOM, E2E, HIPAA, HTML, HTTP, ID, JPEG, JS, JSON, JSX, OS, OTA, PNG, SDK, SOC 2, TS, TSX, UI, URL, npm, pnpm, yarn, and the build artifact extensions `.ipa`, `.apk`, and `.aab`. Prefer "identifier" over "ID" when it reads more naturally.
 - **App vs. application vs. project.** Use "app" or "application" interchangeably for the built artifact (`.ipa`, `.apk`, `.aab`). Use "project" for the source repository before it has been built. Example: "EAS Build takes a project and produces an app".
 - **Bytes and bits.** Always capital `B` for bytes (`kB`, `MB`, `GB`, `TB`). Lowercase `b` for bits (`kbit`, `Mbit`, `Gbit`). Insert a space between the number and unit: `10 MiB`, not `10MiB`.
 
