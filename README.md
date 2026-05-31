@@ -4,12 +4,11 @@ A collection of agent skills (slash commands and behaviors) for writing and audi
 
 ## Install
 
-1. **Clone the repo** to wherever your dotskills live (this README assumes `~/Documents/GitHub/expo-docs-skills/`).
+1. **Clone the repo** to wherever your repository lives.
 
 2. **Symlink the skills into your agent target(s):**
 
    ```sh
-   cd ~/Documents/GitHub/expo-docs-skills
    bun start
    ```
 
@@ -21,7 +20,7 @@ A collection of agent skills (slash commands and behaviors) for writing and audi
    {
      "permissions": {
        "allow": [
-         "Read(/Users/<you>/Documents/GitHub/expo-docs-skills/**)"
+         "Read(/Users/<your-username>/<your-path>/expo-docs-skills/**)"
        ]
      }
    }
