@@ -12,11 +12,18 @@ bun start
 
 ## What it does
 
-- Discovers every `skills/<category>/<name>/SKILL.md` in the parent repo.
-- For each skill, shows its status: `✓ linked`, `◯ unlinked`, or `⚠ conflict`.
-- Use `↑` / `↓` to navigate, `space` to queue a link or unlink, `enter` to apply, `q` to quit.
-- Symlinks live in `~/.claude/skills/<name>` and point at the source skill directory.
+- Discovers every `skills/<category>/<name>/SKILL.md` in the parent repo and groups the list by category.
+- Tracks two link targets per skill: Claude (`~/.claude/skills/<name>`) and Codex (`~/.codex/skills/<name>`).
+- Shows per-target status with a glyph and color: `● linked` (green), `○ unlinked` (grey), `▲ conflict` (red). The header rolls up totals for each target.
+- Stage toggles, then apply them in one pass. A staged target shows `→ link` or `→ unlink` (yellow) until you apply.
+- The detail panel shows the selected skill's description, both target paths, and, for a conflict, the reason (for example, `links elsewhere: ...`).
 - Safety: the CLI refuses to overwrite non-symlink files at the target. Resolve those manually.
+
+## Keys
+
+- `↑`/`↓` or `j`/`k`: move. `g`/`G`: jump to top/bottom.
+- `c` (or `1`): toggle the Claude target. `x` (or `2`): toggle the Codex target. `space`: toggle both.
+- `enter`: apply staged changes. `d` or `esc`: discard them. `r`: refresh. `q`: quit.
 
 ## Layout
 
@@ -29,11 +36,11 @@ cli/
     ├── App.tsx            # Ink root component
     ├── components/
     │   ├── SkillList.tsx
-    │   ├── SkillDetails.tsx
-    │   └── StatusBar.tsx
+    │   └── Detail.tsx
     └── lib/
-        ├── discover.ts    # walks skills/, parses frontmatter
+        ├── discover.ts    # walks skills/, parses frontmatter, resolves link status
         ├── symlink.ts     # link/unlink primitives with safety checks
-        ├── paths.ts       # SKILLS_ROOT and GLOBAL_DIR constants
+        ├── paths.ts       # SKILLS_ROOT, DEPRECATED_ROOT, and AGENT_TARGETS
+        ├── theme.ts       # colors and glyphs
         └── types.ts
 ```

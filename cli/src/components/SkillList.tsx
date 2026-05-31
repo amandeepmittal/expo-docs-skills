@@ -1,5 +1,7 @@
 import { Box, Text } from 'ink';
-import type { PendingChanges, Skill, TargetStatus } from '../lib/types';
+import { AGENT_TARGETS } from '../lib/paths';
+import { glyph, ui } from '../lib/theme';
+import type { PendingChanges, Skill, SkillTargetState } from '../lib/types';
 
 type Props = {
   skills: Skill[];
@@ -7,31 +9,71 @@ type Props = {
   pending: PendingChanges;
 };
 
-const dotColor: Record<Skill['status'], string> = {
-  linked: 'green',
-  partial: 'yellow',
-  unlinked: 'gray',
-  conflict: 'red',
-};
+const GUTTER = 2;
+const NAME_W = 30;
+const CELL_W = 12;
 
-const targetLetter: Record<string, string> = {
-  claude: 'C',
-  codex: 'X',
-};
+function Cell({ state, willToggle }: { state: SkillTargetState; willToggle: boolean }) {
+  let color: string = ui.unlinked;
+  let text = `${glyph.unlinked} unlinked`;
 
-function effectiveStatus(
-  current: TargetStatus,
-  willToggle: boolean
-): TargetStatus {
-  if (current === 'conflict') return 'conflict';
-  if (!willToggle) return current;
-  return current === 'linked' ? 'unlinked' : 'linked';
+  if (state.status === 'conflict') {
+    color = ui.conflict;
+    text = `${glyph.conflict} conflict`;
+  } else if (willToggle) {
+    color = ui.pending;
+    text = state.status === 'linked' ? `${glyph.toggle} unlink` : `${glyph.toggle} link`;
+  } else if (state.status === 'linked') {
+    color = ui.linked;
+    text = `${glyph.linked} linked`;
+  }
+
+  return (
+    <Box width={CELL_W}>
+      <Text color={color} bold={willToggle}>
+        {text}
+      </Text>
+    </Box>
+  );
 }
 
-function letterColor(status: TargetStatus, willToggle: boolean): string {
-  if (status === 'conflict') return 'red';
-  const eff = effectiveStatus(status, willToggle);
-  return eff === 'linked' ? 'green' : 'gray';
+function ColumnHeader() {
+  return (
+    <Box>
+      <Box width={GUTTER}>
+        <Text> </Text>
+      </Box>
+      <Box width={NAME_W}>
+        <Text bold dimColor>
+          SKILL
+        </Text>
+      </Box>
+      {AGENT_TARGETS.map(t => (
+        <Box width={CELL_W} key={t.id}>
+          <Text bold color={t.accent}>
+            {t.label.toUpperCase()}
+          </Text>
+        </Box>
+      ))}
+    </Box>
+  );
+}
+
+function CategoryHeader({ name }: { name: string }) {
+  const ruleLen = Math.max(4, NAME_W + CELL_W * 2 - name.length - 1);
+  return (
+    <Box marginTop={1}>
+      <Box width={GUTTER}>
+        <Text> </Text>
+      </Box>
+      <Text bold color={ui.category}>
+        {name}{' '}
+      </Text>
+      <Text color={ui.rule} dimColor>
+        {'─'.repeat(ruleLen)}
+      </Text>
+    </Box>
+  );
 }
 
 export function SkillList({ skills, selectedIndex, pending }: Props) {
@@ -47,47 +89,37 @@ export function SkillList({ skills, selectedIndex, pending }: Props) {
 
   return (
     <Box flexDirection="column">
+      <ColumnHeader />
       {skills.map((skill, i) => {
         const isSelected = i === selectedIndex;
         const pendingSet = pending.get(skill.name);
-        const pendingCount = pendingSet?.size ?? 0;
+        const showCategory = i === 0 || skills[i - 1]!.category !== skill.category;
 
         return (
-          <Box key={skill.name}>
-            <Text color={isSelected ? 'cyan' : undefined}>
-              {isSelected ? '▸ ' : '  '}
-            </Text>
-            <Text color={dotColor[skill.status]}>● </Text>
-            <Box width={32}>
-              <Text
-                color={isSelected ? 'cyan' : 'white'}
-                bold={isSelected}>
-                {skill.name}
-              </Text>
-            </Box>
-            <Box width={18}>
-              <Text dimColor>{skill.category}</Text>
-            </Box>
+          <Box key={skill.name} flexDirection="column">
+            {showCategory && <CategoryHeader name={skill.category} />}
             <Box>
-              {skill.targets.map((t, ti) => {
-                const willToggle = pendingSet?.has(t.target.id) ?? false;
-                const color = letterColor(t.status, willToggle);
-                return (
-                  <Text key={t.target.id}>
-                    {ti > 0 ? ' ' : ''}
-                    <Text
-                      color={color}
-                      bold={willToggle}
-                      underline={willToggle}>
-                      {targetLetter[t.target.id] ?? '?'}
-                    </Text>
-                  </Text>
-                );
-              })}
+              <Box width={GUTTER}>
+                <Text color={ui.selected} bold>
+                  {isSelected ? `${glyph.selected} ` : '  '}
+                </Text>
+              </Box>
+              <Box width={NAME_W}>
+                <Text
+                  color={isSelected ? ui.selected : undefined}
+                  bold={isSelected}
+                  wrap="truncate-end">
+                  {skill.name}
+                </Text>
+              </Box>
+              {skill.targets.map(t => (
+                <Cell
+                  key={t.target.id}
+                  state={t}
+                  willToggle={pendingSet?.has(t.target.id) ?? false}
+                />
+              ))}
             </Box>
-            {pendingCount > 0 && (
-              <Text color="yellow">  {pendingCount}*</Text>
-            )}
           </Box>
         );
       })}

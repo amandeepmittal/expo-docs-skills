@@ -1,8 +1,10 @@
-import { Box, Text, useApp, useInput } from 'ink';
+import { Box, Text, useApp, useInput, useStdout } from 'ink';
 import { useEffect, useRef, useState } from 'react';
+import { Detail } from './components/Detail';
 import { SkillList } from './components/SkillList';
 import { discoverSkills } from './lib/discover';
 import { AGENT_TARGETS } from './lib/paths';
+import { glyph, ui } from './lib/theme';
 import {
   ensureAllGlobalDirs,
   linkSkillToTarget,
@@ -10,10 +12,11 @@ import {
 } from './lib/symlink';
 import type { PendingChanges, Skill } from './lib/types';
 
-const TARGET_KEY_MAP: Record<string, string> = {
-  '1': 'claude',
-  '2': 'codex',
-};
+const TARGET_KEY_MAP: Record<string, string> = {};
+AGENT_TARGETS.forEach((t, i) => {
+  TARGET_KEY_MAP[t.key] = t.id;
+  TARGET_KEY_MAP[String(i + 1)] = t.id;
+});
 
 function totalPending(pending: PendingChanges): number {
   let n = 0;
@@ -21,8 +24,23 @@ function totalPending(pending: PendingChanges): number {
   return n;
 }
 
+function useContentWidth(): number {
+  const { stdout } = useStdout();
+  const [cols, setCols] = useState<number>(stdout?.columns ?? 80);
+  useEffect(() => {
+    if (!stdout) return;
+    const onResize = () => setCols(stdout.columns ?? 80);
+    stdout.on('resize', onResize);
+    return () => {
+      stdout.off('resize', onResize);
+    };
+  }, [stdout]);
+  return Math.min(Math.max(cols - 2, 44), 88);
+}
+
 export function App() {
   const { exit } = useApp();
+  const width = useContentWidth();
   const [skills, setSkills] = useState<Skill[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [pending, setPending] = useState<PendingChanges>(new Map());
@@ -195,69 +213,85 @@ export function App() {
   if (!loaded) {
     return (
       <Box paddingX={1}>
-        <Text dimColor>Loading skills...</Text>
+        <Text color={ui.subtitle}>Loading skills...</Text>
       </Box>
     );
   }
 
   const current = skills[selectedIndex] ?? null;
   const pendingCount = totalPending(pending);
+  const counts = AGENT_TARGETS.map(t => ({
+    target: t,
+    linked: skills.filter(s =>
+      s.targets.some(x => x.target.id === t.id && x.status === 'linked')
+    ).length,
+  }));
+  const conflictCount = skills.reduce(
+    (n, s) => n + s.targets.filter(t => t.status === 'conflict').length,
+    0
+  );
 
   return (
     <Box flexDirection="column" paddingX={1}>
-      <Box justifyContent="space-between" marginBottom={1}>
-        <Box>
-          <Text bold color="cyan">expo-docs-skills</Text>
-          <Text dimColor>  symlink manager</Text>
-        </Box>
-        <Box>
+      <Box
+        borderStyle="round"
+        borderColor={ui.border}
+        paddingX={1}
+        flexDirection="column"
+        width={width}>
+        <Box justifyContent="space-between">
+          <Box>
+            <Text bold color={ui.title}>
+              expo-docs-skills
+            </Text>
+            <Text dimColor> · symlink manager</Text>
+          </Box>
           {pendingCount > 0 ? (
-            <Text color="yellow" bold>{pendingCount} pending</Text>
+            <Text color={ui.pending} bold>
+              {pendingCount} pending
+            </Text>
           ) : (
-            <Text dimColor>no pending changes</Text>
+            <Text dimColor>no changes staged</Text>
           )}
         </Box>
-      </Box>
-
-      <Box marginBottom={1}>
-        <Text dimColor>Targets:  </Text>
-        <Text color="green" bold>C</Text>
-        <Text dimColor>=Claude  </Text>
-        <Text color="green" bold>X</Text>
-        <Text dimColor>=Codex    </Text>
-        <Text dimColor>(green linked, grey unlinked, red conflict)</Text>
-      </Box>
-
-      <SkillList
-        skills={skills}
-        selectedIndex={selectedIndex}
-        pending={pending}
-      />
-
-      {current && (
-        <Box marginTop={1} flexDirection="column">
-          <Box>
-            <Text bold>{current.name}</Text>
-            <Text dimColor>  ({current.category})</Text>
-          </Box>
-          {current.description && (
-            <Box marginTop={0}>
-              <Text>{current.description}</Text>
+        <Box>
+          <Text dimColor>{skills.length} skills</Text>
+          {counts.map(c => (
+            <Box key={c.target.id} marginLeft={3}>
+              <Text color={c.target.accent}>{c.target.label} </Text>
+              <Text color={ui.linked}>
+                {glyph.linked} {c.linked}
+              </Text>
+              <Text dimColor>/{skills.length}</Text>
+            </Box>
+          ))}
+          {conflictCount > 0 && (
+            <Box marginLeft={3}>
+              <Text color={ui.conflict}>
+                {glyph.conflict} {conflictCount} conflict{conflictCount === 1 ? '' : 's'}
+              </Text>
             </Box>
           )}
-          <Box>
-            <Text dimColor>{current.sourcePath}</Text>
-          </Box>
+        </Box>
+      </Box>
+
+      <Box marginTop={1}>
+        <SkillList skills={skills} selectedIndex={selectedIndex} pending={pending} />
+      </Box>
+
+      {current && (
+        <Box marginTop={1}>
+          <Detail skill={current} width={width} />
         </Box>
       )}
 
       <Box marginTop={1} flexDirection="column">
         <Text dimColor>
-          [j/k or up/down] move  [space] toggle all  [1/2] toggle Claude/Codex  [enter] apply  [d/esc] discard  [r] refresh  [q] quit
+          ↑↓/jk move · space all · c/x targets · ⏎ apply · d discard · r refresh · q quit
         </Text>
-        {busy && <Text color="yellow">Applying changes...</Text>}
+        {busy && <Text color={ui.pending}>Applying changes...</Text>}
         {!busy && flash && (
-          <Text color={flash.kind === 'ok' ? 'green' : 'red'}>{flash.text}</Text>
+          <Text color={flash.kind === 'ok' ? ui.linked : ui.conflict}>{flash.text}</Text>
         )}
       </Box>
     </Box>

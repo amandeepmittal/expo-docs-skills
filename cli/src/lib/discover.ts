@@ -21,16 +21,22 @@ function parseFrontmatter(content: string): Record<string, string> {
   return result;
 }
 
-async function getTargetStatus(source: string, target: string): Promise<TargetStatus> {
+async function getTargetStatus(
+  source: string,
+  target: string
+): Promise<{ status: TargetStatus; reason?: string }> {
   try {
     const stat = await lstat(target);
-    if (!stat.isSymbolicLink()) return 'conflict';
+    if (!stat.isSymbolicLink()) {
+      return { status: 'conflict', reason: 'path exists and is not a symlink' };
+    }
     const linkTarget = await readlink(target);
     const resolved = resolve(target, '..', linkTarget);
-    return resolved === source ? 'linked' : 'conflict';
+    if (resolved === source) return { status: 'linked' };
+    return { status: 'conflict', reason: `links elsewhere: ${resolved}` };
   } catch (err) {
     const code = (err as NodeJS.ErrnoException).code;
-    if (code === 'ENOENT') return 'unlinked';
+    if (code === 'ENOENT') return { status: 'unlinked' };
     throw err;
   }
 }
@@ -82,8 +88,8 @@ export async function discoverSkills(): Promise<Skill[]> {
       const targets: SkillTargetState[] = [];
       for (const target of AGENT_TARGETS) {
         const targetPath = join(target.globalDir, name);
-        const status = await getTargetStatus(sourcePath, targetPath);
-        targets.push({ target, status });
+        const { status, reason } = await getTargetStatus(sourcePath, targetPath);
+        targets.push({ target, status, targetPath, reason });
       }
 
       skills.push({
@@ -97,7 +103,9 @@ export async function discoverSkills(): Promise<Skill[]> {
     }
   }
 
-  return skills.sort((a, b) => a.name.localeCompare(b.name));
+  return skills.sort(
+    (a, b) => a.category.localeCompare(b.category) || a.name.localeCompare(b.name)
+  );
 }
 
 export async function listDeprecatedSkills(): Promise<DeprecatedSkill[]> {

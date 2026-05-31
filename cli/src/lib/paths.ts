@@ -10,10 +10,12 @@ export const DEPRECATED_ROOT = resolve(here, '../../../deprecated');
 export type AgentTarget = {
   id: 'claude' | 'codex';
   label: string;
+  accent: string;
+  key: string;
   globalDir: string;
 };
 
 export const AGENT_TARGETS: AgentTarget[] = [
-  { id: 'claude', label: 'Claude Code', globalDir: join(homedir(), '.claude', 'skills') },
-  { id: 'codex', label: 'Codex', globalDir: join(homedir(), '.codex', 'skills') },
+  { id: 'claude', label: 'Claude', accent: 'magenta', key: 'c', globalDir: join(homedir(), '.claude', 'skills') },
+  { id: 'codex', label: 'Codex', accent: 'blue', key: 'x', globalDir: join(homedir(), '.codex', 'skills') },
 ];

@@ -7,6 +7,8 @@ export type SkillStatus = 'linked' | 'unlinked' | 'partial' | 'conflict';
 export type SkillTargetState = {
   target: AgentTarget;
   status: TargetStatus;
+  targetPath: string;
+  reason?: string;
 };
 
 export type Skill = {
