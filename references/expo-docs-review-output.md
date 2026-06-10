@@ -26,8 +26,8 @@ JSON + Markdown reports written by the skill. The JSON is the source of truth; `
       "side": "RIGHT",
       "line_content": "Run npm install expo-camera",
       "severity": "design",
-      "rule_ref": "expo-docs-components.md#terminal",
-      "body": "**[design]** Shell commands must use the `Terminal` component (`expo-docs-components.md#terminal`).\n\n```suggestion\n<Terminal cmd={['$ npx expo install expo-camera']} />\n```",
+      "rule_ref": "components.md#terminal",
+      "body": "**[design]** Shell commands must use the `Terminal` component (`components.md#terminal`).\n\n```suggestion\n<Terminal cmd={['$ npx expo install expo-camera']} />\n```",
       "resolved": false
     },
     {
@@ -38,7 +38,7 @@ JSON + Markdown reports written by the skill. The JSON is the source of truth; `
       "start_side": "RIGHT",
       "line_content": "```bash",
       "severity": "design",
-      "rule_ref": "expo-docs-components.md#mandatory-usage",
+      "rule_ref": "components.md#mandatory-usage",
       "body": "**[design]** Replace the multi-line bash fence with a `Terminal` invocation.\n\n```suggestion\n<Terminal\n  cmd={[\n    '$ eas observe:events',\n  ]}\n/>\n```",
       "resolved": false
     }

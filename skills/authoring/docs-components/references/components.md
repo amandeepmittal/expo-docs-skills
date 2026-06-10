@@ -11,7 +11,7 @@ These characters break the build if used unescaped in prose, table cells, or hea
 | `{` `}`   | Interpreted as JS expressions    | Wrap in backticks: `` `{}` ``        |
 | `<` `>`   | Interpreted as JSX elements      | Use `&lt;` `&gt;` or wrap in backticks |
 
-A component used without a matching `import` line is a silent build failure on production export. Component imports go at the top of the file, after the frontmatter block.
+A component used without a matching `import` line fails the page at export time. Component imports go at the top of the file, after the frontmatter block.
 
 Indented JSX is parsed as a code block. Keep component opening and closing tags flush left, not indented.
 
@@ -26,7 +26,7 @@ Indented JSX is parsed as a code block. Keep component opening and closing tags 
 | `Collapsible`              | Hidden-by-default secondary content with a clickable summary                       | `~/ui/components/Collapsible`       |
 | `FAQ`                      | Wrap a set of `Collapsible` items and emit FAQ structured data                     | `~/ui/components/FAQ`               |
 | `BoxLink`                  | Cross-link card with title, description, and optional icon                         | `~/ui/components/BoxLink`           |
-| `SnackInline`              | Inline runnable code example that opens on Snack                                   | `~/components/plugins/SnackInline`  |
+| `SnackInline`              | Inline runnable code example that opens on Snack                                   | `~/ui/components/Snippet`           |
 | `ContentSpotlight`         | Image, video, or component preview with light/dark variants                        | `~/ui/components/ContentSpotlight`  |
 | `VideoBoxLink`             | Link card for a YouTube video on the Expo channel                                  | `~/ui/components/VideoBoxLink`      |
 | `APISection`               | Auto-generated API reference from TypeDoc JSON                                     | `~/components/plugins/APISection`   |
@@ -59,7 +59,7 @@ Do not use bare Markdown or HTML when one of these components fits:
 | Inline runnable code with dependencies            | `SnackInline`            |
 | Auto-generated SDK reference content             | `APISection`             |
 
-Bare `<img>` tags and unscoped `<video>` tags do not get processed by the markdown export pipeline. Use `ContentSpotlight` for both.
+The `.md` export pipeline drops bare `<img>` tags entirely and passes bare `<video>` through as raw HTML. Use `ContentSpotlight` for both.
 
 ## Terminal
 
@@ -67,7 +67,7 @@ Renders shell commands with a copy-to-clipboard action. Lines that start with `$
 
 | Prop            | Type                              | Required | Description                                                                                  |
 | --------------- | --------------------------------- | -------- | -------------------------------------------------------------------------------------------- |
-| `cmd`           | `string[]`                        | Yes      | Lines to render. Use `$` for commands, `#` for comments, `""` for spacing.                   |
+| `cmd`           | `string[] \| PackageManagerCommandSet` | Yes | Lines to render. Use `$` for commands, `#` for comments, `""` for spacing.                |
 | `cmdCopy`       | `string`                          | No       | Override the auto-generated copy text. Use when chaining commands with `&&`.                 |
 | `title`         | `string`                          | No       | Override the default header label of "Terminal".                                             |
 | `browserAction` | `{ href: string; label: string }` | No       | Add a launch button that opens a related browser flow in a new tab.                          |
@@ -154,7 +154,7 @@ Gotchas:
 
 ## Prerequisites and Requirement
 
-Collapsible block at the top of a guide that lists what the reader needs before starting. Each `Requirement` becomes a row with a heading slug, so it can be linked from elsewhere.
+Collapsible block at the top of a guide that lists what the reader needs before starting. The `Prerequisites` wrapper registers a single `#prerequisites` heading anchor; individual `Requirement` rows are not linkable.
 
 ```mdx
 import { Prerequisites, Requirement } from '~/ui/components/Prerequisites';
@@ -173,7 +173,7 @@ Pass `open` to `Prerequisites` to render the block expanded by default.
 
 Gotchas:
 
-- `Requirement` titles end up in the heading map, so keep them noun phrases.
+- `Requirement` titles accept any JSX (`ReactNode`); keep them short noun phrases for scanability.
 
 ## Collapsible
 
@@ -233,7 +233,7 @@ Card-shaped cross-link. Use on overview pages and at the bottom of guides to poi
 | Prop          | Type        | Required | Description                                                     |
 | ------------- | ----------- | -------- | --------------------------------------------------------------- |
 | `title`       | `string`    | Yes      | Primary card label.                                             |
-| `href`        | `string`    | Yes      | Destination URL. External URLs open in a new tab.               |
+| `href`        | `string`    | No (always pass it) | Destination URL. External URLs open in a new tab.    |
 | `description` | `ReactNode` | No       | Sub-label rendered under the title.                             |
 | `Icon`        | Component   | No       | Icon component rendered to the left of the title.               |
 | `imageUrl`    | `string`    | No       | Square image rendered in the icon slot. Mutually exclusive with `Icon`. |
@@ -260,15 +260,15 @@ Inline runnable code example that opens on `snack.expo.dev` when the reader clic
 
 | Prop              | Type                       | Required | Description                                                                  |
 | ----------------- | -------------------------- | -------- | ---------------------------------------------------------------------------- |
-| `dependencies`    | `string[]`                 | Yes      | Packages the snippet depends on. Include version with `package@version` if needed. |
+| `dependencies`    | `string[]`                 | No (defaults to `[]`) | Packages the snippet depends on. Include version with `package@version` if needed. |
 | `label`           | `string`                   | No       | Header label for the snippet block.                                          |
-| `defaultPlatform` | `'android' \| 'ios' \| 'web'` | No    | Initial Snack preview platform. Defaults to `android`.                       |
+| `defaultPlatform` | `string`                   | No       | Initial Snack preview platform (`android`, `ios`, or `web`). Defaults to `android`.          |
 | `platforms`       | `string[]`                 | No       | Restrict the Snack preview platforms.                                        |
 | `files`           | `Record<string, string>`   | No       | Additional files included in the Snack workspace.                            |
 | `contentHidden`   | `boolean`                  | No       | Hide the code body in the page but ship it to Snack.                         |
 
 ```mdx
-import SnackInline from '~/components/plugins/SnackInline';
+import { SnackInline } from '~/ui/components/Snippet';
 
 <SnackInline label="Camera preview" dependencies={['expo-camera']}>
 
@@ -318,7 +318,7 @@ import { ContentSpotlight } from '~/ui/components/ContentSpotlight';
 Gotchas:
 
 - Videos must be MP4 generated with the `ffmpeg` recipe in the docs README. Other containers do not play on all platforms.
-- For images at `variant="component"`, the frame is fixed (540 px landscape, 220 px portrait). Choose source assets at the correct aspect ratio; the frame does not crop.
+- For images at `variant="component"`, the frame constrains aspect ratio (3:2 at 540 px wide landscape, 9:16 at 220 px portrait) and crops overflow with `object-cover`. Choose source assets at the matching aspect ratio or expect cropping.
 
 ## VideoBoxLink
 
@@ -328,7 +328,7 @@ Card-shaped link to a YouTube video on the Expo channel.
 | ------------- | -------- | -------- | ---------------------------------------------------------------------- |
 | `videoId`     | `string` | Yes      | YouTube ID, the value after `v=` in the watch URL.                     |
 | `title`       | `string` | Yes      | Card title.                                                            |
-| `description` | `string` | No       | Sub-label rendered under the title.                                    |
+| `description` | `ReactNode` | Yes   | Sub-label rendered under the title.                                    |
 
 ```mdx
 import { VideoBoxLink } from '~/ui/components/VideoBoxLink';
@@ -346,7 +346,7 @@ Auto-generated reference for an Expo SDK package, sourced from the JSON files un
 
 | Prop             | Type                       | Required | Description                                                                    |
 | ---------------- | -------------------------- | -------- | ------------------------------------------------------------------------------ |
-| `packageName`    | `string \| string[]`       | Yes      | Package directory name as it appears in the static-data folder.                |
+| `packageName`    | `string \| string[]`       | No (effectively required) | Package directory name as it appears in the static-data folder. |
 | `apiName`        | `string`                   | No       | Override the displayed API name. Defaults to the package name.                 |
 | `forceVersion`   | `string`                   | No       | Force a specific SDK version for the data lookup.                              |
 | `headersMapping` | `Record<string, string>`   | No       | Rename auto-generated section headings.                                        |
@@ -422,7 +422,7 @@ import { ConfigPluginExample, ConfigPluginProperties } from '~/ui/components/Con
 Gotchas:
 
 - Leave a blank line before and after the fenced code block inside `ConfigPluginExample`, or the runtime throws an error pointing at the missing blank lines.
-- `ConfigPluginProperties` expects `default` as a string. Wrap defaults that include quotes in escaped string syntax.
+- `ConfigPluginProperties` expects `default` as an optional string. Wrap defaults that include quotes in escaped string syntax.
 
 ## ConfigReactNative
 
@@ -455,7 +455,7 @@ Gotchas:
 
 `FileTree` renders a labelled directory tree. Pass `files` as an array of paths; nesting is inferred from `/` separators. Use it to show project layout in tutorials.
 
-`Diagram` renders a light/dark image pair as a captioned diagram block. Pass `image`, `darkImage`, and `alt`. The frame is wider than `ContentSpotlight` and centers the image.
+`Diagram` renders a light/dark image pair as a captioned diagram block. Pass `source`, `darkSource` (optional), and `alt`. The frame is wider than `ContentSpotlight` and centers the image.
 
 `DiffBlock` renders a unified `git diff` patch with syntax highlighting. Pass `source` (a URL to a `.diff` file) or `raw` (the diff string). Use for upgrade walkthroughs where the reader needs to see exact changes.
 
@@ -465,7 +465,7 @@ Inline row of platform badges. Used in SDK reference page headers and in tables 
 
 | Prop        | Type             | Required | Description                                                                              |
 | ----------- | ---------------- | -------- | ---------------------------------------------------------------------------------------- |
-| `platforms` | `PlatformName[]` | Yes      | Array of platform identifiers. Valid values: `'ios'`, `'android'`, `'web'`, `'tvos'`.    |
+| `platforms` | `PlatformName[]` | No       | Platform identifiers: `'ios'`, `'ios-nosim'`, `'android'`, `'android-noemu'`, `'web'`, `'expo'`, `'macos'`, `'tvos'`. Renders nothing when omitted or empty. |
 | `prefix`    | `string`         | No       | Inline label rendered before the badges (for example, `"Available on"`).                 |
 
 ```mdx
@@ -509,7 +509,7 @@ import { ProgressTracker } from '~/ui/components/ProgressTracker';
 
 Gotchas:
 
-- The chapter list is defined in `~/ui/components/ProgressTracker/TutorialData.tsx`. Adding a new tutorial chapter without updating that file leaves the checkbox unable to find its entry.
+- The chapter lists are defined in `~/ui/components/ProgressTracker/TutorialData.ts` (`GET_STARTED_TUTORIAL_CHAPTERS` and `EAS_TUTORIAL_INITIAL_CHAPTERS`). Adding a new tutorial chapter without updating that file leaves the checkbox unable to find its entry.
 - Place `ProgressTracker` at the very end of a chapter page. Anything below it is visually outside the tutorial flow.
 
 ## Less common authoring components
@@ -526,7 +526,7 @@ Each accepts a small prop surface (`children`, a node-id, a `schema` object resp
 
 ## Callouts
 
-Markdown blockquote with a leading bolded keyword renders as a styled callout. Defined as a remark plugin, not a JSX component. No import needed.
+Markdown blockquote with a leading bolded keyword renders as a styled callout (the `InlineHelp` component, mapped to `blockquote` in the markdown renderer). No import needed.
 
 ```md
 > Normal callout for a note that does not demand much attention.
