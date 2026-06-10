@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * expo-docs-webp/convert.ts — conversion only.
+ * docs-webp/convert.ts — conversion only.
  *
  * Finds the PNG screenshots referenced via src="/static/images/....png" in the
  * scoped Expo docs .mdx file(s) and writes a sibling .webp for each, using lossy
