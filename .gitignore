@@ -15,3 +15,6 @@
 
 # Local symlink artifacts (defensive)
 node_modules/
+
+# Machine-local skill config (account/project/org/docs_repo); config.example.json is the committed template
+skills/**/config.json
