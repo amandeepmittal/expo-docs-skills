@@ -2,7 +2,7 @@
 /**
  * post-review.ts
  *
- * Shared script used by the `expo-docs-review` and `expo-docs-boxlink-audit`
+ * Shared script used by the `expo-docs-review` and `docs-boxlink-audit`
  * skills. Stages findings from their JSON reports as a PENDING review on a
  * GitHub pull request. The pending review is private to the authenticated
  * user until they submit it manually on github.com.
