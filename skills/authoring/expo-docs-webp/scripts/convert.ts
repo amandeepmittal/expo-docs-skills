@@ -46,11 +46,8 @@ import {
 import { join, dirname, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 
-// Matches a display image reference like src="/static/images/tutorial/foo.png".
-// The capture is the absolute-from-public ref path. Quote-agnostic (" or ').
-// PNG paths inside code fences use require('@/assets/...png') — a different
-// shape with no src= — so they are never matched.
-const PNG_REF = /src=(["'])(\/static\/images\/[^"']+?\.png)\1/g;
+// Matches src= or darkSrc= display image refs; require('@/assets/...png') in code fences never matches.
+const PNG_REF = /\b(?:src|darkSrc)=(["'])(\/static\/images\/[^"']+?\.png)\1/g;
 
 const argv = process.argv.slice(2);
 const scope = argv.find(a => !a.startsWith('--'));
