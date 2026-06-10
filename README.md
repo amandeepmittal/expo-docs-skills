@@ -33,7 +33,7 @@ The review skills take a public Expo docs PR URL:
 
 > /expo-docs-review https://github.com/expo/expo/pull/XXXXX
 
-`expo-docs-review` and `expo-docs-boxlink-audit` write reports to `/tmp/` and stage findings as a **pending** GitHub review (private to your account, never submitted). You open the Review URL on github.com to edit, then submit or cancel.
+`expo-docs-review` and `docs-boxlink-audit` write reports to `/tmp/` and stage findings as a **pending** GitHub review (private to your account, never submitted). You open the Review URL on github.com to edit, then submit or cancel.
 
 ## Skills
 
@@ -52,7 +52,7 @@ Skills live in `skills/<category>/<name>/SKILL.md`.
 | Skill | What it does |
 | --- | --- |
 | `expo-docs-review` | Review a docs PR against the style guide and MDX conventions; stage a pending GitHub review. Public PRs only. |
-| `expo-docs-boxlink-audit` | Audit `<BoxLink>` components for Icon-prop vs destination-URL mismatches; stage a pending review. |
+| `docs-boxlink-audit` | Audit `<BoxLink>` components for Icon-prop vs destination-URL mismatches; stage a pending review. |
 
 The review skills share `skills/review/scripts/post-review.ts`, which stages comments via `gh`.
 
@@ -67,7 +67,7 @@ Shared reference docs at the repo root, read by the skills:
 | `references/expo-docs-review-output.md` | Report output format for the review skills. |
 | `references/expo-docs-review-comments.md` | Comment body format for staged review comments. |
 
-`expo-docs-boxlink-audit` also carries its own scoped references.
+`docs-boxlink-audit` also carries its own scoped references.
 
 ## Layout
 
@@ -77,7 +77,7 @@ expo-docs-skills/
 ├── references/     # shared reference docs (see above)
 ├── skills/
 │   ├── authoring/  # docs-writing-style, docs-pr, docs-ja-translator
-│   └── review/  # expo-docs-review, expo-docs-boxlink-audit, screenshot-audit
+│   └── review/  # expo-docs-review, docs-boxlink-audit, screenshot-audit
 │                   # + scripts/post-review.ts (stages pending GitHub reviews)
 ├── deprecated/     # retired skills; CLI skips this folder
 └── package.json
