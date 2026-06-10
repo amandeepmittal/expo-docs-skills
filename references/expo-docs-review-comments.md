@@ -17,7 +17,7 @@ The severity tag at the top of the comment is the classification. Do not justify
 When the fix is a literal replacement of one or more contiguous lines, follow the first line with a GitHub `suggestion` block. GitHub renders it as a green/red diff with a one-click **Commit suggestion** button:
 
 ````
-**[nit]** File and directory names should be bold, not inline code (`expo-docs-style-guide.md#formatting-and-structure`). The same file follows this rule on line 69.
+**[nit]** File and directory names should be bold, not inline code (`style-guide.md#formatting-and-structure`). The same file follows this rule on line 69.
 
 ```suggestion
 **android/gradle.properties**
@@ -33,7 +33,7 @@ When the fix needs judgment (split a sentence, restructure a paragraph, rewrite 
 Use a prose-only comment (no `suggestion` block) only when you genuinely cannot write the concrete replacement. Example:
 
 ```
-**[suggestion]** Sentence is 28 words with a nested parenthetical and a compound condition (`expo-docs-style-guide.md#voice-and-tone`). Consider splitting into two shorter sentences so the parallel between the two clauses lands on first read.
+**[suggestion]** Sentence is 28 words with a nested parenthetical and a compound condition (`style-guide.md#voice-and-tone`). Consider splitting into two shorter sentences so the parallel between the two clauses lands on first read.
 ```
 
 ## Multi-line suggestion blocks

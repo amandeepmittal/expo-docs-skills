@@ -27,7 +27,7 @@ Agent skills (slash commands and behaviors) for writing and auditing Expo docume
 
 Once a skill is linked, invoke it from Claude Code with a focused prompt:
 
-> Audit the keyboard shortcuts section in `expo/docs/pages/get-started/start-developing.mdx` against the expo-writing-style skill. Report `<kbd>` formatting violations with line numbers.
+> Audit the keyboard shortcuts section in `expo/docs/pages/get-started/start-developing.mdx` against the docs-writing-style skill. Report `<kbd>` formatting violations with line numbers.
 
 The review skills take a public Expo docs PR URL:
 
@@ -43,7 +43,7 @@ Skills live in `skills/<category>/<name>/SKILL.md`.
 
 | Skill | What it does |
 | --- | --- |
-| `expo-writing-style` | Apply Expo's docs writing style and MDX component conventions. Use when writing or editing `.mdx` under `expo/docs/pages/`. |
+| `docs-writing-style` | Apply Expo's docs writing style. Use when writing or editing `.mdx` under `expo/docs/pages/`. |
 | `docs-pr` | Generate a PR description (Why, How, Test Plan, Checklist). `--short` outputs only the How section. Text only. |
 | `docs-ja-translator` | Translate an MDX docs page to Japanese, mirrored to `pages/ja/<same-path>`. Preserves frontmatter, JSX, code, links, and imports. |
 
@@ -62,7 +62,7 @@ Shared reference docs at the repo root, read by the skills:
 
 | File | Purpose |
 | --- | --- |
-| `references/expo-docs-style-guide.md` | Expo writing style rules. Source of truth for `expo-writing-style` and `expo-docs-review`. |
+| `skills/authoring/docs-writing-style/references/style-guide.md` | Expo writing style rules. Source of truth for `docs-writing-style` and `expo-docs-review`. |
 | `skills/authoring/docs-components/references/components.md` | MDX component catalog and conventions. |
 | `references/expo-docs-review-output.md` | Report output format for the review skills. |
 | `references/expo-docs-review-comments.md` | Comment body format for staged review comments. |
@@ -76,7 +76,7 @@ expo-docs-skills/
 ├── cli/            # Bun + Ink TUI for staging symlinks (bun start)
 ├── references/     # shared reference docs (see above)
 ├── skills/
-│   ├── authoring/  # expo-writing-style, docs-pr, docs-ja-translator
+│   ├── authoring/  # docs-writing-style, docs-pr, docs-ja-translator
 │   └── review/  # expo-docs-review, expo-docs-boxlink-audit, screenshot-audit
 │                   # + scripts/post-review.ts (stages pending GitHub reviews)
 ├── deprecated/     # retired skills; CLI skips this folder
