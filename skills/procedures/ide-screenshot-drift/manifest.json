@@ -1,0 +1,124 @@
+{
+  "pages": [
+    "get-started/set-up-your-environment",
+    "workflow/android-studio-emulator",
+    "workflow/ios-simulator"
+  ],
+  "pages_note": "The audited partials are shared. get-started renders them via the wrapper partials in the same instructions dir; the workflow pages import them directly. extract_doc_targets.sh prints the live consumer list (CONSUMER lines); diff it against this array.",
+  "partials_dir": "scenes/get-started/set-up-your-environment/instructions",
+  "targets": [
+    {
+      "id": "as-install-type",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/install-type.webp",
+      "source_partial": "_androidStudioInstructions.mdx",
+      "reachability": "first-launch-wizard",
+      "claims": [
+        "Opening Android Studio for the first time shows the Android Studio Setup Wizard, starting with a Welcome screen",
+        "The Install Type step offers Standard (preselected) and Custom; the docs tell users to select Standard and click Next",
+        "After verifying settings and accepting the license agreement, the wizard downloads and installs the Android SDK and its tools"
+      ],
+      "recipe": "Only capturable while the Setup Wizard runs: the first launch after the clean updater, or after re-triggering it (quit Android Studio, trash ~/Library/Application Support/Google/AndroidStudio<version>/options/androidStudioFirstRun.xml, relaunch; the wizard shows a Welcome-back variant but Install Type renders identically). Click Next past Welcome, capture the Install Type screen with Standard selected BEFORE advancing, then complete the wizard on the Standard path so later targets reflect a post-setup machine. On a configured machine, skip and report unless the user asked for a wizard re-trigger."
+    },
+    {
+      "id": "as-sdk-platforms",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/sdk-platforms.webp",
+      "source_partial": "_androidStudioInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "Settings > Languages & Frameworks > Android SDK exists as a navigation path",
+        "An SDK Platforms tab lists Android versions, including Android 16 (Baklava) with Android SDK Platform 36 and Sources for Android 36",
+        "The docs say Android 16 SDK is required to compile a React Native app"
+      ],
+      "recipe": "Open Android Studio. From the welcome screen or an open project, open Settings (cmd+, or the Android Studio menu). Navigate to Languages & Frameworks > Android SDK. Stay on the SDK Platforms tab, enable Show Package Details, and scroll until the Android 16.0 (Baklava) group that contains Android SDK Platform 36 and Sources for Android 36 (API Level 36.0) is visible; note the list has several Baklava groups (a 36.1 group installed by the wizard, plus 36-ext groups), so match on the row names, not just the header. Checking those two rows to match the docs image is fine; Cancel discards. Capture the settings window. Exit with Cancel, never Apply or OK."
+    },
+    {
+      "id": "as-build-tools",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/build-tools.webp",
+      "source_partial": "_androidStudioInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "The Android SDK settings pane has an SDK Tools tab",
+        "The SDK Tools tab lists Android SDK Build-Tools and Android Emulator as installable components"
+      ],
+      "recipe": "From the same Android SDK settings pane as as-sdk-platforms, click the SDK Tools tab. Capture the settings window. Exit with Cancel."
+    },
+    {
+      "id": "as-sdk-location",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/sdk-location.webp",
+      "source_partial": "_androidStudioInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "The Android SDK settings pane shows a box labeled Android SDK Location with a copyable path"
+      ],
+      "recipe": "Same Android SDK settings pane. The Android SDK Location field is at the top. Capture the settings window. Exit with Cancel."
+    },
+    {
+      "id": "as-virtual-device",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/virtual-device.webp",
+      "source_partial": "_androidEmulatorInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "The Android Studio main screen has a More Actions control",
+        "More Actions opens a dropdown containing Virtual Device Manager"
+      ],
+      "recipe": "Open Android Studio without opening a project (welcome screen; close any project window via File > Close Project first). Locate More Actions and open its dropdown. Capture the welcome window with the dropdown open. If More Actions does not exist on the current welcome screen, that is itself a finding: record what the welcome screen offers instead."
+    },
+    {
+      "id": "as-create-device",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/create-device.webp",
+      "source_partial": "_androidEmulatorInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "The Virtual Device Manager (window titled Device Manager) has a Create virtual device control: an empty-state link when no devices exist, plus a + toolbar icon"
+      ],
+      "recipe": "From the welcome screen, open Virtual Device Manager (per as-virtual-device). Capture the Device Manager window showing the create control. Do not create a device."
+    },
+    {
+      "id": "as-select-hardware",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/select-hardware.webp",
+      "source_partial": "_androidEmulatorInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "Clicking Create virtual device shows an Add Device screen for choosing hardware to emulate",
+        "Pixel-line devices are listed as hardware profiles"
+      ],
+      "recipe": "In Device Manager, click the create/add device control to open the hardware selection. Capture it. Then Cancel. Never click Finish."
+    },
+    {
+      "id": "as-select-os",
+      "platform": "android-studio",
+      "doc_image": "public/static/images/android-studio/select-os.webp",
+      "source_partial": "_androidEmulatorInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "After hardware selection there is an OS / system image selection step",
+        "System images can be downloaded from this screen if not present"
+      ],
+      "recipe": "From the hardware selection, advance one step to the system image selection (Next or equivalent). Capture it. Then Cancel out of the whole dialog. Never download an image, never click Finish."
+    },
+    {
+      "id": "xcode-command-line",
+      "platform": "xcode",
+      "doc_image": "public/static/images/ios-simulator/xcode-command-line.webp",
+      "source_partial": "_xcodeInstructions.mdx",
+      "reachability": "reachable",
+      "claims": [
+        "Xcode menu has Settings... (cmd+,)",
+        "Settings has a Locations tab",
+        "Locations contains a Command Line Tools dropdown listing installed versions"
+      ],
+      "recipe": "Open Xcode (no project needed). Press cmd+, to open Settings. Click the Locations tab. Capture the settings window. Close with cmd+w. Do not change the dropdown selection."
+    }
+  ],
+  "out_of_scope": {
+    "windows_images": "All public/static/images/android-studio/windows-* targets are skipped: this skill is macOS-only.",
+    "non_spotlight": "Images outside the four env-setup instruction partials are not covered. See the screenshot-audit skill for expo.dev dashboard surfaces."
+  }
+}
