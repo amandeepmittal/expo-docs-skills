@@ -1,11 +1,12 @@
 ---
-name: expo-docs-pr
-description: This skill should be used when the user asks to "write a PR description", "create a PR", mentions "PR description", "pull request", or discusses writing PR descriptions for the Expo docs repository.
-metadata:
-  - version: "1.5.1"
+name: docs-pr
+version: 2.0.0
+description: Write PR titles and descriptions for Expo docs repository pull requests, terse by default. Use when the user asks to "write a PR description" or "create a PR" for expo/docs; supports a --short mode that outputs only the How section.
+argument-hint: "[--short]"
+allowed-tools: Read, Grep, Glob, Bash(git diff:*), Bash(git log:*), Bash(git status:*)
 ---
 
-# Expo Docs PR Description
+# docs-pr
 
 ## Default length: terse
 
