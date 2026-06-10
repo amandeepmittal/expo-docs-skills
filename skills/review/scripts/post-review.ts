@@ -7,7 +7,7 @@
  * GitHub pull request. The pending review is private to the authenticated
  * user until they submit it manually on github.com.
  *
- * Lives at `skills/reviewing/scripts/post-review.ts` (shared by the
+ * Lives at `skills/review/scripts/post-review.ts` (shared by the
  * reviewing-category skills, not inside any single skill folder).
  *
  * SAFETY CONTRACT:

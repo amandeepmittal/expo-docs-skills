@@ -21,7 +21,7 @@ Agent skills (slash commands and behaviors) for writing and auditing Expo docume
    "Read(/Users/<your-username>/<your-path>/expo-docs-skills/**)"
    ```
 
-4. **For `expo-docs-review` (optional):** `gh` CLI authenticated with `pull-requests: write` on the target repo. See `skills/reviewing/expo-docs-review/SKILL.md`.
+4. **For `expo-docs-review` (optional):** `gh` CLI authenticated with `pull-requests: write` on the target repo. See `skills/review/expo-docs-review/SKILL.md`.
 
 ## Usage
 
@@ -44,8 +44,8 @@ Skills live in `skills/<category>/<name>/SKILL.md`.
 | Skill | What it does |
 | --- | --- |
 | `expo-writing-style` | Apply Expo's docs writing style and MDX component conventions. Use when writing or editing `.mdx` under `expo/docs/pages/`. |
-| `expo-docs-pr` | Generate a PR description (Why, How, Test Plan, Checklist). `--short` outputs only the How section. Text only. |
-| `expo-docs-ja-translator` | Translate an MDX docs page to Japanese, mirrored to `pages/ja/<same-path>`. Preserves frontmatter, JSX, code, links, and imports. |
+| `docs-pr` | Generate a PR description (Why, How, Test Plan, Checklist). `--short` outputs only the How section. Text only. |
+| `docs-ja-translator` | Translate an MDX docs page to Japanese, mirrored to `pages/ja/<same-path>`. Preserves frontmatter, JSX, code, links, and imports. |
 
 ### Reviewing
 
@@ -53,9 +53,8 @@ Skills live in `skills/<category>/<name>/SKILL.md`.
 | --- | --- |
 | `expo-docs-review` | Review a docs PR against the style guide and MDX conventions; stage a pending GitHub review. Public PRs only. |
 | `expo-docs-boxlink-audit` | Audit `<BoxLink>` components for Icon-prop vs destination-URL mismatches; stage a pending review. |
-| `expo-docs-terminal-audit` | Audit local `.mdx` for `<Terminal>` blocks needing multi-PM variants. Edits only after approval. |
 
-The review skills share `skills/reviewing/scripts/post-review.ts`, which stages comments via `gh`.
+The review skills share `skills/review/scripts/post-review.ts`, which stages comments via `gh`.
 
 ## References
 
@@ -64,11 +63,11 @@ Shared reference docs at the repo root, read by the skills:
 | File | Purpose |
 | --- | --- |
 | `references/expo-docs-style-guide.md` | Expo writing style rules. Source of truth for `expo-writing-style` and `expo-docs-review`. |
-| `references/expo-docs-components.md` | MDX component catalog and conventions. |
+| `skills/authoring/docs-components/references/components.md` | MDX component catalog and conventions. |
 | `references/expo-docs-review-output.md` | Report output format for the review skills. |
 | `references/expo-docs-review-comments.md` | Comment body format for staged review comments. |
 
-`expo-docs-boxlink-audit` and `expo-docs-terminal-audit` also carry their own scoped references.
+`expo-docs-boxlink-audit` also carries its own scoped references.
 
 ## Layout
 
@@ -77,8 +76,8 @@ expo-docs-skills/
 ├── cli/            # Bun + Ink TUI for staging symlinks (bun start)
 ├── references/     # shared reference docs (see above)
 ├── skills/
-│   ├── authoring/  # expo-writing-style, expo-docs-pr, expo-docs-ja-translator
-│   └── reviewing/  # expo-docs-review, expo-docs-boxlink-audit, expo-docs-terminal-audit
+│   ├── authoring/  # expo-writing-style, docs-pr, docs-ja-translator
+│   └── review/  # expo-docs-review, expo-docs-boxlink-audit, screenshot-audit
 │                   # + scripts/post-review.ts (stages pending GitHub reviews)
 ├── deprecated/     # retired skills; CLI skips this folder
 └── package.json
