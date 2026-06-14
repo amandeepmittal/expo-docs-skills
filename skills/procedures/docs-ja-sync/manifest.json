@@ -1,0 +1,64 @@
+{
+  "note": "Sync state for docs-ja-sync. Per-page watermark: 'syncedFromCommit' is the English commit each translated page was last brought in line with. detect_drift.sh diffs syncedFromCommit..HEAD per page in the docs repo. After a sync run applies a page's changes, bump that page's syncedFromCommit to the run's HEAD full SHA and set syncedAt (YYYY-MM-DD). 'wiring_synced_commit' is the same idea for common/i18n.ts. Seed values are the commit that introduced the ja tutorial (ff787a509ba, #45270).",
+  "source_root": "pages/tutorial",
+  "ignore_new_en": [],
+  "ignore_new_en_note": "Path prefixes (relative to repo, e.g. 'pages/tutorial/eas/') for English sub-tracks intentionally NOT translated yet. NEW_EN lines under these prefixes are suppressed so the weekly report stays focused. Empty = report every untranslated English page. Add 'pages/tutorial/build-with-ai/' and/or 'pages/tutorial/eas/' here if those tracks are out of ja scope.",
+  "wiring_file": "common/i18n.ts",
+  "baseline_commit": "ff787a509ba8220c0193042c7570edbf919a869e",
+  "wiring_synced_commit": "ff787a509ba8220c0193042c7570edbf919a869e",
+  "locales": {
+    "ja": {
+      "target_root": "pages/ja/tutorial",
+      "pages": {
+        "pages/tutorial/overview.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/introduction.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/create-your-first-app.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/add-navigation.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/build-a-screen.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/image-picker.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/create-a-modal.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/gestures.mdx": {
+          "syncedFromCommit": "f0700472ff7dd007969df860b24116d24977c130",
+          "syncedAt": "2026-06-14"
+        },
+        "pages/tutorial/screenshot.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/platform-differences.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/configuration.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        },
+        "pages/tutorial/follow-up.mdx": {
+          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
+          "syncedAt": "2026-06-13"
+        }
+      }
+    }
+  }
+}

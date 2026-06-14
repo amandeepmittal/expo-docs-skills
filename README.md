@@ -53,8 +53,18 @@ Skills live in `skills/<category>/<name>/SKILL.md`.
 | --- | --- |
 | `expo-docs-review` | Review a docs PR against the style guide and MDX conventions; stage a pending GitHub review. Public PRs only. |
 | `docs-boxlink-audit` | Audit `<BoxLink>` components for Icon-prop vs destination-URL mismatches; stage a pending review. |
+| `docs-eas-env-drift` | Diff the docs' built-in EAS Build env var list against the definition sites in `expo/eas-cli`. Local report only. |
 
 The review skills share `skills/review/scripts/post-review.ts`, which stages comments via `gh`.
+
+### Procedures
+
+Recurring drift checks against a local `expo/docs` checkout. Each carries a `manifest.json` of tracked state and a deterministic detection script; edits are applied to the working tree and left for the user to commit.
+
+| Skill | What it does |
+| --- | --- |
+| `docs-ja-sync` | Detect and apply drift between the English tutorial (source of truth) and its Japanese mirror under `pages/ja/tutorial`, via a per-page git-SHA watermark. Run weekly. Edits the working tree; never commits. |
+| `ide-screenshot-drift` | Flag env-setup screenshots (Android Studio, Xcode) that no longer match the locally installed IDEs. macOS only. |
 
 ## References
 
@@ -77,8 +87,9 @@ expo-docs-skills/
 ├── references/     # shared reference docs (see above)
 ├── skills/
 │   ├── authoring/  # docs-writing-style, docs-pr, docs-ja-translator
-│   └── review/  # expo-docs-review, docs-boxlink-audit, screenshot-audit
-│                   # + scripts/post-review.ts (stages pending GitHub reviews)
+│   ├── review/  # expo-docs-review, docs-boxlink-audit, screenshot-audit, docs-eas-env-drift
+│   │                # + scripts/post-review.ts (stages pending GitHub reviews)
+│   └── procedures/ # docs-ja-sync, ide-screenshot-drift
 ├── deprecated/     # retired skills; CLI skips this folder
 └── package.json
 ```
