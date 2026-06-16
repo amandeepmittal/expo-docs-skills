@@ -1,0 +1,19 @@
+{
+  "locale": "ja",
+  "path_filter": "/ja/",
+  "ga4": {
+    "property_name": "docs.expo.dev - GA4",
+    "account": "<your GA account name>",
+    "login_email": "<your-ga-authorized-email>",
+    "property_url": "https://analytics.google.com/analytics/web/#/a<ACCOUNT_ID>p<PROPERTY_ID>/reports/reportinghub"
+  },
+  "sheet": {
+    "name": "<your Google Sheet name>",
+    "id": "<YOUR_SHEET_ID>",
+    "tab": "ja",
+    "snapshot_header": "page_path",
+    "weekly_header": "week_ending"
+  },
+  "snapshot_window": "last28Days",
+  "week_ending_day": "Sunday"
+}
