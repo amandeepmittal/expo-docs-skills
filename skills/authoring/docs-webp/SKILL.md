@@ -20,11 +20,11 @@ The work splits in two: the bundled script does the deterministic encoding (it o
 
 - Scope is outside `expo/docs/pages/`. This skill only understands docs pages and `/static/images/` assets.
 - Images are JPG (re-encoding already-lossy stacks a second pass) or SVG (keep it vector). PNG-only by design.
-- `cwebp` isn't installed — tell the user `brew install webp` and stop.
+- `cwebp` isn't installed. Tell the user `brew install webp` and stop.
 
 ## Requirements
 
-`cwebp` (`brew install webp`), `bun`, and `trash` (`brew install trash` — never `rm`).
+`cwebp` (`brew install webp`), `bun`, and `trash` (`brew install trash`, never `rm`).
 
 ## Step 1: Convert
 
@@ -45,7 +45,7 @@ Override the encoder with `--quality=N` only if the user asks (default 80).
 
 ## Step 2: Rewrite references
 
-For each `CONVERTED` (and any still-`.png` `EXISTS`) image, exact-string replace `<ref>` with its `.webp` form in the scoped `.mdx` files. Each `/static/images/...` ref is unique, so this is safe and precise. Don't touch `SKIPPED` images, and don't touch `require('@/assets/...png')` paths in code fences — those are sample code, not display images, and the script never reports them.
+For each `CONVERTED` (and any still-`.png` `EXISTS`) image, exact-string replace `<ref>` with its `.webp` form in the scoped `.mdx` files. Each `/static/images/...` ref is unique, so this is safe and precise. Don't touch `SKIPPED` images, and don't touch `require('@/assets/...png')` paths in code fences (those are sample code, not display images, and the script never reports them).
 
 ## Step 3: Verify
 
@@ -57,7 +57,7 @@ Summarize the savings, for example:
 
 > Converted 12/14 PNGs in pages/eas: 4.1 MB to 1.2 MB (71% saved). 2 skipped (WebP not smaller). Original PNGs still on disk.
 
-The original PNGs are still on disk, so reverting is just undoing the reference edits. q80 is visually near-identical, but text-heavy screenshots (diagrams, status bars, fine UI labels) are where a lossy artifact could show — offer the user a local look before you delete anything.
+The original PNGs are still on disk, so reverting is just undoing the reference edits. q80 is visually near-identical, but text-heavy screenshots (diagrams, status bars, fine UI labels) are where a lossy artifact could show. Offer the user a local look before you delete anything.
 
 ## Step 5: Cleanup
 
@@ -68,4 +68,4 @@ grep -rl "static/images/<path>/<name>.png" <docs-root>/pages   # nothing? safe t
 trash <docs-root>/public/static/images/<path>/<name>.png
 ```
 
-If a page outside the scope still references the `.png`, keep it and say so — the image carries both formats until that page is converted too, which is fine. PNGs also remain in git history until commit, so this step is recoverable.
+If a page outside the scope still references the `.png`, keep it and say so. The image carries both formats until that page is converted too, which is fine. PNGs also remain in git history until commit, so this step is recoverable.
