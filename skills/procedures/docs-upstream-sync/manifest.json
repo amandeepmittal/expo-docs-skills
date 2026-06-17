@@ -1,14 +1,14 @@
 {
-  "branchPrefix": "aman/docs-sync",
+  "branchPrefix": "aman/docs-upstream-sync",
   "lint": "lint",
   "ignoreDiffPattern": "fetchedAt",
   "_note": "Several generators stamp `fetchedAt` into their data JSON on every run. run_syncs.sh treats a diff as real only if it has lines beyond `ignoreDiffPattern`, and reverts timestamp-only output so it is never committed.",
   "syncs": [
+    { "label": "ui-component-tables", "script": "generate-ui-component-tables", "title": "@expo/ui component tables", "note": "Idempotent, marker-fenced, no timestamp. Runs `pnpm format` over the repo at the end, so it is listed first to run on a clean tree." },
     { "label": "app-config-schema", "script": "schema-sync", "title": "App config schema" },
     { "label": "expo-skills", "script": "expo-skills-sync", "title": "Expo Skills", "timestampOnlyNoise": true },
-    { "label": "expo-mcp", "script": "expo-mcp-sync", "title": "Expo MCP tools", "envFile": ".env", "timestampOnlyNoise": true },
+    { "label": "expo-mcp", "script": "expo-mcp-sync", "title": "Expo MCP tools", "authFile": "~/.expo-mcp-docs-sync/auth.json", "timestampOnlyNoise": true },
     { "label": "eas-cli", "script": "eas-cli-sync", "title": "EAS CLI reference", "timestampOnlyNoise": true },
-    { "label": "versions-schema", "script": "versions-schema-sync", "title": "Versions schema" },
     { "label": "android-permissions", "script": "permissions-sync-android", "title": "Android permissions" }
   ]
 }

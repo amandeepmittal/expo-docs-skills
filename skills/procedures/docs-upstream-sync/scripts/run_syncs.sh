@@ -17,7 +17,7 @@
 #   DIRTY <msg>                        working tree not clean / bad repo -> stop
 #   CHANGED <label> (<title>)          real change   (followed by "  FILE <path>" lines)
 #   NOSYNC  <label> (<reason>)         nothing new, or only the timestamp moved (reverted)
-#   SKIPPED <label> (<reason>)         could not run (e.g. MCP needs .env with EXPO_TOKEN)
+#   SKIPPED <label> (<reason>)         could not run (e.g. MCP not yet authorized via OAuth)
 #   FAILED  <label> (<title>; see <log>)   sync errored
 #   SUMMARY changed=<n> nosync=<n> skipped=<n> failed=<n>
 set -uo pipefail
@@ -36,11 +36,16 @@ DOCS_REPO="${DOCS_REPO/#\~/$HOME}"
 IGNORE="$(python3 -c 'import json,sys;print(json.load(open(sys.argv[1])).get("ignoreDiffPattern","fetchedAt"))' "$MANIFEST" 2>/dev/null)"
 [ -z "$IGNORE" ] && IGNORE="fetchedAt"
 
-if [ ! -d "$DOCS_REPO/.git" ]; then
+if [ ! -d "$DOCS_REPO" ] || ! git -C "$DOCS_REPO" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   echo "DIRTY  not a git checkout: $DOCS_REPO (set docs_repo in config.json or pass it as an argument)"
   exit 1
 fi
 cd "$DOCS_REPO"
+
+# Porcelain emits repo-root-relative paths, while git diff/checkout pathspecs resolve
+# from CWD. When DOCS_REPO is a subdirectory of the repo (e.g. a monorepo's docs/),
+# the two differ, so anchor path-consuming git calls to the repo root.
+REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 if [ -n "$(git status --porcelain)" ]; then
   echo "DIRTY  working tree at $DOCS_REPO is not clean; commit or stash first, then re-run"
@@ -61,20 +66,26 @@ changed=0; nosync=0; skipped=0; failed=0
 # pipeline report non-zero, which would misclassify a real change as timestamp-only.
 has_real_diff() {
   local body
-  body="$(git diff -- "$1" | grep -E '^[-+]' | grep -vE '^(\+\+\+|---)' | grep -vE "$IGNORE")"
+  body="$(git -C "$REPO_ROOT" diff -- "$1" | grep -E '^[-+]' | grep -vE '^(\+\+\+|---)' | grep -vE "$IGNORE")"
   [ -n "$body" ]
 }
 
-while IFS=$'\t' read -r label script title envfile; do
+while IFS=$'\t' read -r label script title authfile; do
   [ -z "$label" ] && continue
 
-  if [ -n "$envfile" ] && [ ! -f "$DOCS_REPO/$envfile" ]; then
-    echo "SKIPPED  $label  ($title needs $envfile with credentials; create it, then re-run)"
-    skipped=$((skipped + 1))
-    continue
+  # Some syncs need credentials cached outside the repo (e.g. the MCP OAuth token).
+  # Resolve a leading ~ and skip-with-instructions if the cache is absent, rather than
+  # letting the generator block on an interactive browser authorization mid-run.
+  if [ -n "$authfile" ]; then
+    resolved_auth="${authfile/#\~/$HOME}"
+    if [ ! -f "$resolved_auth" ]; then
+      echo "SKIPPED  $label  ($title not authorized; run \`pnpm $script\` once to authorize in a browser, then re-run)"
+      skipped=$((skipped + 1))
+      continue
+    fi
   fi
 
-  log="/tmp/docs-sync-$label.log"
+  log="/tmp/docs-upstream-sync-$label.log"
   if ! pnpm "$script" >"$log" 2>&1; then
     # Absorb any partial writes into the baseline so they are not misattributed
     # to the next sync. Leave them in the tree for the user to inspect.
@@ -118,7 +129,7 @@ while IFS=$'\t' read -r label script title envfile; do
   else
     # Only the timestamp moved: discard this generator's own no-op output.
     printf '%s' "$revertfiles" | sed '/^$/d' | while IFS= read -r rp; do
-      git checkout -- "$rp" 2>/dev/null || true
+      git -C "$REPO_ROOT" checkout -- "$rp" 2>/dev/null || true
     done
     echo "NOSYNC  $label  ($title — only $IGNORE bumped, reverted)"
     nosync=$((nosync + 1))
@@ -128,7 +139,7 @@ done < <(python3 -c '
 import json, sys
 m = json.load(open(sys.argv[1]))
 for s in m.get("syncs", []):
-    print("\t".join([s["label"], s["script"], s.get("title", s["label"]), s.get("envFile", "")]))
+    print("\t".join([s["label"], s["script"], s.get("title", s["label"]), s.get("authFile", "")]))
 ' "$MANIFEST")
 
 echo "SUMMARY  changed=$changed nosync=$nosync skipped=$skipped failed=$failed"
