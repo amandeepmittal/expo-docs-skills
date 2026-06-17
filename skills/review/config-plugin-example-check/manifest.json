@@ -1,0 +1,49 @@
+{
+  "name": "config-plugin-example-check",
+  "summary": "Deterministically validates config plugin examples in the Expo docs against the real plugin option types in the monorepo's packages/.",
+  "source_of_truth": {
+    "primary": "The TypeScript option type behind each plugin's exported ConfigPlugin<T> (or the option parameter of the plugin's default-export function), read with the TypeScript compiler.",
+    "entry": "The canonical entry that app.plugin.js loads (e.g. require('./plugin/build/withX') -> plugin/src/withX.ts), tried before plugin/src/index.ts so a stub index.ts cannot mask the real options. Import aliases on the traced plugin identifier are resolved across files.",
+    "why_not_typedoc": "The generated docs TypeDoc JSON only emits plugin option types for plugins that re-export them from their plugin entrypoint, so its coverage is near-empty. Reading source directly covers every first-party plugin.",
+    "schema_utils": "Where a plugin ships an @expo/schema-utils schema it is declared as JSONSchema<OptionType>, so it cannot diverge from the TS type; the type is sufficient and authoritative."
+  },
+  "scope": {
+    "versions": "unversioned + the latest detected vNN.0.0 dir. Override with --versions.",
+    "old_versions_excluded": "packages/ reflects the current SDK only; validating frozen v50-v55 against current types would manufacture false drift.",
+    "discovery": "<ConfigPluginExample> blocks plus any ```json/```json5 block containing a plugins array, within the scoped version dirs."
+  },
+  "verdicts": [
+    "validated-type  - checked against the extracted TS option type",
+    "heuristic-only  - third-party plugin (no monorepo source); quoted-boolean smell check only",
+    "no-options      - plugin used with no options object, or plugin that accepts no options",
+    "unparseable     - block is not valid JSON5 after normalizing {{ }} template variables (often an intentional type sketch)",
+    "unresolved      - first-party plugin whose option type could not be extracted (reason printed; NOT fact-checked)"
+  ],
+  "severities": {
+    "error": "type-mismatch, invalid-enum. Sets exit code 1.",
+    "warning": "unknown-prop (incl. options passed to a no-option plugin), heuristic-quoted-boolean, malformed-json (a <ConfigPluginExample> block that is not valid JSON and is not a type sketch or intentional partial).",
+    "info": "unparseable (type sketches / partial raw blocks), unresolved."
+  },
+  "plugin_aliases": {
+    "expo-dev-client": "expo-dev-launcher"
+  },
+  "resolution_strategies": [
+    "entry = app.plugin.js require target (build->src), tried before plugin/src/index.ts; first entry that yields options wins",
+    "export default createRunOncePlugin<T>(...) -> T",
+    "export default <ident> / createRunOncePlugin(<ident>, ...) -> trace ident's declaration, resolving import aliases across files",
+    "ConfigPlugin<T> annotation on the traced variable -> T",
+    "last function parameter not named 'config' (covers the (config, props) ConfigPlugin shape and the docs-facing (props) wrapper shape)",
+    "fallback: first ConfigPlugin<...> annotation in the entry file"
+  ],
+  "known_limitations": [
+    "Third-party plugins get a heuristic quoted-boolean check only.",
+    "Type-sketch examples (bare type names as values) are reported as unparseable, not validated.",
+    "A first-party plugin with a new export shape may report unresolved until findOptionTypeNode/propsTypeFromDecl in scripts/check.ts is taught the shape.",
+    "A plugin that genuinely forwards an option only via a nested level the docs use at top level (or vice versa) is judged at the level the type declares it."
+  ],
+  "exit_codes": {
+    "0": "no error-severity findings",
+    "1": "at least one type-mismatch or invalid-enum",
+    "2": "fatal setup error (docs/packages path or typescript not found)"
+  }
+}
