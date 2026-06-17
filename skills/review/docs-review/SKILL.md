@@ -5,7 +5,7 @@ license: MIT
 version: "1.8.26"
 ---
 
-# Expo Docs Review
+# Docs Review
 
 **Context before critique. Read the PR description and the changed file in full before flagging individual lines.**
 
@@ -27,8 +27,8 @@ A public GitHub PR URL. Accepted forms:
 
 - **`../../authoring/docs-writing-style/references/style-guide.md`** — prose: voice, tone, punctuation, formatting, glossary, anti-patterns.
 - **`../../authoring/docs-components/references/components.md`** — MDX components: catalog, mandatory-usage rules, prop tables, gotchas.
-- **`../../../references/expo-docs-review-comments.md`** — comment body format: severity tag, `suggestion` blocks, single vs. multi-line.
-- **`../../../references/expo-docs-review-output.md`** — output: JSON schema, GitHub-API fields, verdict mapping.
+- **`../../../references/docs-review-comments.md`** — comment body format: severity tag, `suggestion` blocks, single vs. multi-line.
+- **`../../../references/docs-review-output.md`** — output: JSON schema, GitHub-API fields, verdict mapping.
 
 ## Four-phase workflow
 
@@ -85,20 +85,20 @@ Every finding needs:
 
 Write two files per changed `.mdx`:
 
-- `/tmp/expo-docs-review-pr-{number}-{file-slug}.json` (source of truth)
-- `/tmp/expo-docs-review-pr-{number}-{file-slug}.md` (human-readable)
+- `/tmp/docs-review-pr-{number}-{file-slug}.json` (source of truth)
+- `/tmp/docs-review-pr-{number}-{file-slug}.md` (human-readable)
 
 `{file-slug}` is the file path with slashes replaced by dashes, no extension. Example: `docs/pages/guides/errors.mdx` becomes `docs-pages-guides-errors`.
 
 Print a one-line summary per file to stdout with the verdict and path to the Markdown report.
 
-Schema in `expo-docs-review-output.md`.
+Schema in `docs-review-output.md`.
 
 ## Iteration
 
 When the user asks to re-review (`--iteration 2`, "review again", "iteration 2"):
 
-1. Read the prior JSON at `/tmp/expo-docs-review-pr-{number}-*.json` (one per file).
+1. Read the prior JSON at `/tmp/docs-review-pr-{number}-*.json` (one per file).
 2. Re-fetch the PR metadata. If `head.sha` matches the prior `head_sha`, tell the user there are no new commits and ask whether to re-review anyway.
 3. If `head.sha` is new, re-fetch the diff and head-version files.
 4. For each prior comment in each file:
@@ -119,7 +119,7 @@ After writing the reports, invoke `post-review.ts` to stage the findings as a **
 Invocation:
 
 ```sh
-bun skills/review/scripts/post-review.ts /tmp/expo-docs-review-pr-{N}-foo.json /tmp/expo-docs-review-pr-{N}-bar.json
+bun skills/review/scripts/post-review.ts /tmp/docs-review-pr-{N}-foo.json /tmp/docs-review-pr-{N}-bar.json
 ```
 
 Use `--replace` on iteration 2+ to clear prior pending reviews. Use `--dry-run` to skip the API call.

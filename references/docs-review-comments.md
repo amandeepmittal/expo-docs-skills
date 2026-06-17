@@ -1,4 +1,4 @@
-# Expo Docs Review — Comment Body Format
+# Docs Review — Comment Body Format
 
 How to write the `body` field of each finding so the severity is scannable and the fix is one-click-applicable when possible. The body renders on GitHub's Files Changed tab.
 

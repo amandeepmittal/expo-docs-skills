@@ -8,7 +8,7 @@ allowed-tools: Read, Grep, Glob, Write, Bash(gh:*), Bash(bun:*)
 
 # docs-boxlink-audit
 
-**Single concern: icon mismatches only.** This skill does not check BoxLink title length, description presence, href format, or any other style rule. Those are handled by the broader `expo-docs-review` skill.
+**Single concern: icon mismatches only.** This skill does not check BoxLink title length, description presence, href format, or any other style rule. Those are handled by the broader `docs-review` skill.
 
 ## Inputs
 
@@ -86,7 +86,7 @@ If a changed `.mdx` has zero findings, skip it: do not write empty reports.
 
 #### JSON schema
 
-Schema mirrors `expo-docs-review`; the full top-level fields (`pr_url`, `pr_title`, `pr_author`, `owner`, `repo`, `pull_number`, `base_sha`, `summary`) are in `expo-docs-review-output.md`. Boxlink-specific shape:
+Schema mirrors `docs-review`; the full top-level fields (`pr_url`, `pr_title`, `pr_author`, `owner`, `repo`, `pull_number`, `base_sha`, `summary`) are in `docs-review-output.md`. Boxlink-specific shape:
 
 ````json
 {

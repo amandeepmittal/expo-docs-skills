@@ -37,4 +37,4 @@ Give the minimal correct usage: the import line, a short example, and the one go
 
 ## Scope
 
-Answer questions and diagnose snippets you are shown. Never sweep pages for violations (that belongs to the review skills, such as `expo-docs-review`), and never edit docs files.
+Answer questions and diagnose snippets you are shown. Never sweep pages for violations (that belongs to the review skills, such as `docs-review`), and never edit docs files.

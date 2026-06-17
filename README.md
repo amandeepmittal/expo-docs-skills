@@ -28,10 +28,10 @@ Agent skills (slash commands and behaviors) for writing and auditing [Expo docum
 Once a skill is linked, invoke it with a focused prompt or its slash command:
 
 ```
-/expo-docs-review https://github.com/expo/expo/pull/XXXXX
+/docs-review https://github.com/expo/expo/pull/XXXXX
 ```
 
-`expo-docs-review` and `docs-boxlink-audit` stage their findings as a **pending** GitHub review (private to your account, never auto-submitted). Open the review URL to edit, then submit or cancel.
+`docs-review` and `docs-boxlink-audit` stage their findings as a **pending** GitHub review (private to your account, never auto-submitted). Open the review URL to edit, then submit or cancel.
 
 ## Skills
 
@@ -53,7 +53,7 @@ Each stages a pending GitHub review or a local report. Never edits docs, never s
 
 | Skill | What it does |
 | --- | --- |
-| `expo-docs-review` | Review a docs PR against the style guide and MDX conventions. Public PRs only. |
+| `docs-review` | Review a docs PR against the style guide and MDX conventions. Public PRs only. |
 | `docs-boxlink-audit` | Flag `<BoxLink>` icon vs destination-URL mismatches in a PR. |
 | `docs-eas-env-drift` | Diff the docs' built-in EAS env var list against `expo/eas-cli`. Report only. |
 | `screenshot-audit` | Compare docs dashboard screenshots against the live Expo dashboard. Advisory only. |
@@ -82,7 +82,7 @@ Skills that operate on this repo itself.
 ```
 skills/
 ├── authoring/   docs-writing-style, docs-components, docs-pr, docs-ja-translator, docs-webp
-├── review/      expo-docs-review, docs-boxlink-audit, docs-eas-env-drift, screenshot-audit
+├── review/      docs-review, docs-boxlink-audit, docs-eas-env-drift, screenshot-audit
 │                + scripts/post-review.ts   (shared: stages pending GitHub reviews)
 ├── procedures/  docs-upstream-sync, docs-ja-sync, ide-screenshot-drift, docs-ja-metrics
 └── meta/        skill-quality   (reviews the skills in this repo)

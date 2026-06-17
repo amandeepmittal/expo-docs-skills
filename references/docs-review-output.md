@@ -1,4 +1,4 @@
-# Expo Docs Review — Output Format
+# Docs Review — Output Format
 
 JSON + Markdown reports written by the skill. The JSON is the source of truth; `post-review.ts` consumes the JSON, never the Markdown.
 

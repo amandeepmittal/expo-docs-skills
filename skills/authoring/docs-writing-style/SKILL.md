@@ -37,4 +37,4 @@ The highest-leverage rules; the reference has the complete list.
 
 ## Scope
 
-Shape the prose you are writing or reviewing in the current task. Never sweep pages for violations (that belongs to the review skills, such as `expo-docs-review`). The component catalog is owned by `docs-components`; defer component questions there.
+Shape the prose you are writing or reviewing in the current task. Never sweep pages for violations (that belongs to the review skills, such as `docs-review`). The component catalog is owned by `docs-components`; defer component questions there.

@@ -144,7 +144,7 @@ function flattenComments(reports: ReviewReport[]): ReviewComment[] {
 function buildReviewBody(reports: ReviewReport[]): string {
   const lines: string[] = [];
   lines.push(
-    "_Pending review staged by the `expo-docs-review` skill. Each comment is editable on the Files Changed tab. Submit, edit, or discard before publishing._",
+    "_Pending review staged by the `docs-review` skill. Each comment is editable on the Files Changed tab. Submit, edit, or discard before publishing._",
   );
   lines.push("");
   for (const r of reports) {
@@ -171,7 +171,7 @@ async function githubRequest<T>(
     Accept: "application/vnd.github+json",
     Authorization: `Bearer ${token}`,
     "X-GitHub-Api-Version": "2022-11-28",
-    "User-Agent": "expo-docs-review-post-review",
+    "User-Agent": "docs-review-post-review",
   };
   if (body) {
     headers["Content-Type"] = "application/json";
