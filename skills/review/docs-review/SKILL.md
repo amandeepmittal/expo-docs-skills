@@ -1,6 +1,6 @@
 ---
-name: expo-docs-review
-description: Review an Expo docs pull request against the Expo writing style guide and MDX component conventions, and stage the findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "review this pr", "review this docs pr", "audit this pr", "check this pr against the style guide", or "/expo-docs-review". Public PRs only.
+name: docs-review
+description: Review an Expo docs pull request against the Expo writing style guide and MDX component conventions, and stage the findings as a private pending GitHub review (never auto-submitted). MUST USE when the user provides a GitHub PR URL and says "review this pr", "review this docs pr", "audit this pr", "check this pr against the style guide", or "/docs-review". Public PRs only.
 license: MIT
 version: "1.8.26"
 ---
