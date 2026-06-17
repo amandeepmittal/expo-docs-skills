@@ -64,6 +64,7 @@ Recurring operational checks. Most diff a local `expo/docs` checkout and edit th
 
 | Skill | What it does |
 | --- | --- |
+| `docs-upstream-sync` | Run the upstream sync generators (app config schema, Expo Skills, Expo MCP, EAS CLI, and more), gather what changed onto one dated branch, run `pnpm lint`, and hand off to a PR. Never commits. |
 | `docs-ja-sync` | Sync the Japanese tutorial mirror to the English source via a per-page git-SHA watermark. |
 | `ide-screenshot-drift` | Flag env-setup screenshots (Android Studio, Xcode) that no longer match the installed IDEs. macOS only. |
 | `docs-ja-metrics` | Pull `/ja/` docs traffic, referrals, and votes from the docs.expo.dev GA4 property into an i18n metrics Sheet. Targets are config-driven; browser-driven and interactive only. |
@@ -83,7 +84,7 @@ skills/
 ├── authoring/   docs-writing-style, docs-components, docs-pr, docs-ja-translator, docs-webp
 ├── review/      expo-docs-review, docs-boxlink-audit, docs-eas-env-drift, screenshot-audit
 │                + scripts/post-review.ts   (shared: stages pending GitHub reviews)
-├── procedures/  docs-ja-sync, ide-screenshot-drift, docs-ja-metrics
+├── procedures/  docs-upstream-sync, docs-ja-sync, ide-screenshot-drift, docs-ja-metrics
 └── meta/        skill-quality   (reviews the skills in this repo)
 references/      shared review output + comment formats
 cli/             Bun + Ink TUI for staging symlinks (bun start)
