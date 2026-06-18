@@ -60,7 +60,7 @@ Each stages a pending GitHub review or a local report. Never edits docs, never s
 
 ### Procedures
 
-Recurring operational checks. Most diff a local `expo/docs` checkout and edit the working tree; `docs-ja-metrics` instead pulls analytics into a Google Sheet. Each leaves edits and commits to you.
+Recurring operational checks. Most diff a local `expo/docs` checkout and edit the working tree; the `docs-ja-metrics` and `docs-build-with-ai-metrics` skills instead pull analytics into a Google Sheet. Each leaves edits and commits to you.
 
 | Skill | What it does |
 | --- | --- |
@@ -68,6 +68,7 @@ Recurring operational checks. Most diff a local `expo/docs` checkout and edit th
 | `docs-ja-sync` | Sync the Japanese tutorial mirror to the English source via a per-page git-SHA watermark. |
 | `ide-screenshot-drift` | Flag env-setup screenshots (Android Studio, Xcode) that no longer match the installed IDEs. macOS only. |
 | `docs-ja-metrics` | Pull `/ja/` docs traffic, referrals, and votes from the docs.expo.dev GA4 property into an i18n metrics Sheet. Targets are config-driven; browser-driven and interactive only. |
+| `docs-build-with-ai-metrics` | Pull `/tutorial/build-with-ai/` traffic and votes from the docs.expo.dev GA4 property into the `expo-tutorial-ai` tab of the same Sheet. Sibling of `docs-ja-metrics`; browser-driven and interactive only. |
 
 ### Meta
 
@@ -84,7 +85,7 @@ skills/
 ├── authoring/   docs-writing-style, docs-components, docs-pr, docs-ja-translator, docs-webp
 ├── review/      docs-review, docs-boxlink-audit, docs-eas-env-drift, screenshot-audit
 │                + scripts/post-review.ts   (shared: stages pending GitHub reviews)
-├── procedures/  docs-upstream-sync, docs-ja-sync, ide-screenshot-drift, docs-ja-metrics
+├── procedures/  docs-upstream-sync, docs-ja-sync, ide-screenshot-drift, docs-ja-metrics, docs-build-with-ai-metrics
 └── meta/        skill-quality   (reviews the skills in this repo)
 references/      shared review output + comment formats
 cli/             Bun + Ink TUI for staging symlinks (bun start)
