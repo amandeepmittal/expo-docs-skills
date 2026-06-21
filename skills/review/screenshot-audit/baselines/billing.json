@@ -1,0 +1,525 @@
+{
+  "section": "billing",
+  "base_url": "https://expo.dev",
+  "theme": "light",
+  "generated_from": "expo/docs/pages/billing @ 2026-06-05; hardened 2026-06-07 (routes confirmed from universe next.config.ts + SidebarLinks.tsx; themes confirmed from the doc images; account is on a paid plan)",
+  "screenshots": [
+    {
+      "id": "plan-01",
+      "source": "pages/billing/plans.mdx:21-25",
+      "doc_image": "public/static/images/billing/plan-01.png",
+      "depicts": "Current plan card at the top of the Billing page (Subscriptions)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "scroll_to": "text=Current plan",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Current plan card at the top of the Billing page; reachable read-only. scroll_to centers the card. The plan name and limits (Production/Free/etc.) are sample data the compare ignores."
+    },
+    {
+      "id": "usage-01",
+      "source": "pages/billing/usage-based-pricing.mdx:110-114",
+      "doc_image": "public/static/images/billing/usage-01.png",
+      "depicts": "Usage summary for Builds, Updates, and Workflows on the Billing page (Monitor usage)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "scroll_to": "text=View Usage",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "The Usage summary section lives on the Billing page (it has a 'View Usage' button that links to the full Usage page), so test_url is the Billing page, not /settings/usage. scroll_to the 'View Usage' button centers the summary. Credit/usage amounts are sample data."
+    },
+    {
+      "id": "usage-02",
+      "source": "pages/billing/usage-based-pricing.mdx:123-127",
+      "doc_image": "public/static/images/billing/usage-02.png",
+      "depicts": "Detailed EAS Build usage by platform and resource class with an Export button (EAS Build usage history)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/usage",
+      "selector": null,
+      "scroll_to": "text=EAS Build",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "EAS Build section on the dedicated Usage page (/settings/usage, confirmed route). scroll_to the EAS Build heading. The chart values and date range are sample data."
+    },
+    {
+      "id": "usage-03",
+      "source": "pages/billing/usage-based-pricing.mdx:136-140",
+      "doc_image": "public/static/images/billing/usage-03.png",
+      "depicts": "Detailed EAS Update usage: monthly active users and global edge bandwidth (EAS Update usage history)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/usage",
+      "selector": null,
+      "scroll_to": "text=EAS Update",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "EAS Update section on the Usage page. scroll_to the EAS Update heading. Chart values are sample data."
+    },
+    {
+      "id": "usage-04",
+      "source": "pages/billing/usage-based-pricing.mdx:148-152",
+      "doc_image": "public/static/images/billing/usage-04.png",
+      "depicts": "Email notification preferences page (Usage notifications)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/email-notifications",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "The Email notifications page is its own route (/settings/email-notifications, confirmed). The docs link this image to /settings/billing, which is wrong. Full-page capture. Read-only: never toggle a preference."
+    },
+    {
+      "id": "receipts-01",
+      "source": "pages/billing/invoices-and-receipts.mdx:19-22",
+      "doc_image": "public/static/images/billing/receipts-01.png",
+      "depicts": "Receipts page showing payment history (Receipts)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/receipts",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Receipts page (/settings/receipts, confirmed). The account has at least one receipt, so the Date/Status/Amount table renders; rows are sample data the compare ignores."
+    },
+    {
+      "id": "receipts-02",
+      "source": "pages/billing/invoices-and-receipts.mdx:30-34",
+      "doc_image": "public/static/images/billing/receipts-02.png",
+      "depicts": "Invoice/receipt page hosted by Stripe (Download and view an invoice)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/receipts",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "External Stripe-hosted page, not an Expo dashboard surface; also needs an existing paid invoice. screenshot-audit only compares Expo dashboard screens."
+    },
+    {
+      "id": "receipts-04",
+      "source": "pages/billing/invoices-and-receipts.mdx:60-63",
+      "doc_image": "public/static/images/billing/receipts-04.png",
+      "depicts": "Receipt row three-dot (kebab) menu opened to reveal Request refund (Request a refund)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/receipts",
+      "selector": null,
+      "reach": [
+        "On the Receipts page, click the three-dot (kebab) menu at the end of a receipt row to open the menu showing Request refund"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Reachable read-only (the account has a receipt). Opening the kebab menu reveals 'Request refund' to VIEW only, never click it. No testid on the kebab button yet, so this surfaces as NEEDS_REACH; add a clicks selector from the live DOM in the attended pass (do NOT target the Date cell, which is an external Stripe link)."
+    },
+    {
+      "id": "receipts-05",
+      "source": "pages/billing/invoices-and-receipts.mdx:67-71",
+      "doc_image": "public/static/images/billing/receipts-05.png",
+      "depicts": "Request a refund form (Request a refund)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/receipts",
+      "selector": null,
+      "reach": [
+        "Open the receipt kebab menu, then click Request refund to open the form"
+      ],
+      "requires": [
+        "auth",
+        "mutation"
+      ],
+      "in_scope": false,
+      "scope_note": "The refund form sits two clicks deep (kebab > Request refund) and is the entry to the refund flow. Could be opened read-only, but reaching it reliably plus the mutation-flow context make it a manual eyeball. Out of scope."
+    },
+    {
+      "id": "billing-02",
+      "source": "pages/billing/manage.mdx:22-25",
+      "doc_image": "public/static/images/billing/management/billing-02.png",
+      "depicts": "Current plan card on the Billing page, with Upcoming bill and Add-ons (View the current plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "scroll_to": "text=Current plan",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same Current plan region as plan-01, from manage.mdx. The doc image shows a Free plan plus the Upcoming bill / Add-ons / right-column links; the plan value and which add-on rows appear are plan-dependent sample data the compare ignores. scroll_to centers the card."
+    },
+    {
+      "id": "billing-03",
+      "source": "pages/billing/manage.mdx:35-39",
+      "doc_image": "public/static/images/billing/management/billing-03.png",
+      "depicts": "Upgrade plan popup listing Starter, Production, and Enterprise plans (Upgrade to a new plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "clicks": [
+        "text=Change plan"
+      ],
+      "reach": [
+        "Under Current plan, click Change plan (paid) or See plans (Free) to open the Upgrade plan popup"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Opens the Upgrade plan popup to VIEW the plan list. NEVER click an Upgrade button or select a plan (that enters Checkout). The account is on a paid plan, so the trigger is 'Change plan'; on a Free account it is 'See plans' then 'Select your account', so refine the clicks selector in the attended pass if the popup does not open. Read-only view of the plan list only."
+    },
+    {
+      "id": "billing-05",
+      "source": "pages/billing/manage.mdx:53-57",
+      "doc_image": "public/static/images/billing/management/billing-05.png",
+      "depicts": "Change plan button under Current plan on the Billing page (Downgrade a plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "scroll_to": "text=Change plan",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "The Change plan button under Current plan (paid plans show 'Change plan'; Free shows 'See plans'). scroll_to centers it; do NOT click. Visible read-only on the account's paid plan. The doc image's dimmed-background highlight box is an annotation the compare ignores."
+    },
+    {
+      "id": "billing-06",
+      "source": "pages/billing/manage.mdx:63-67",
+      "doc_image": "public/static/images/billing/management/billing-06.png",
+      "depicts": "Upgrade plan popup with the Starter plan Change button during a downgrade (Downgrade a plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [
+        "Click Change Plan, select the account, then locate Change under the Starter plan"
+      ],
+      "requires": [
+        "auth",
+        "mutation"
+      ],
+      "in_scope": false,
+      "scope_note": "Mid-downgrade state inside the Upgrade plan popup (after selecting an account, the Starter 'Change' button). Reaching it means navigating the downgrade flow. Out of scope."
+    },
+    {
+      "id": "billing-08",
+      "source": "pages/billing/manage.mdx:71-75",
+      "doc_image": "public/static/images/billing/management/billing-08.png",
+      "depicts": "Confirmation dialog to downgrade a plan (Downgrade a plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth",
+        "mutation"
+      ],
+      "in_scope": false,
+      "scope_note": "Downgrade confirmation dialog; part of the mutation flow. Out of scope."
+    },
+    {
+      "id": "billing-09",
+      "source": "pages/billing/manage.mdx:79-83",
+      "doc_image": "public/static/images/billing/management/billing-09.png",
+      "depicts": "Upcoming Plan section reflecting a scheduled downgrade to Starter (Downgrade a plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth",
+        "mutation"
+      ],
+      "in_scope": false,
+      "scope_note": "The Upcoming Plan section only appears after a downgrade has actually been scheduled; the state requires a performed mutation. Out of scope."
+    },
+    {
+      "id": "billing-12",
+      "source": "pages/billing/manage.mdx:95-99",
+      "doc_image": "public/static/images/billing/management/billing-12.png",
+      "depicts": "Cancel all subscriptions section with Cancel / Continue to Stripe (Cancel a plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "scroll_to": "text=Cancel all subscriptions",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "The Cancel all subscriptions section near the bottom of the Billing page (paid plans only; the account is on a paid plan). scroll_to centers the section; NEVER click Cancel / Continue to Stripe. The doc image also shows an Upcoming plan block (a scheduled-downgrade state) the live page will not have, which is state, not drift."
+    },
+    {
+      "id": "billing-11",
+      "source": "pages/billing/manage.mdx:109-113",
+      "doc_image": "public/static/images/billing/management/billing-11.png",
+      "depicts": "Cancel all subscriptions prompt for the Starter to Free downgrade (Cancel a plan)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "This exact prompt requires being on the Starter plan; the account is on a higher paid plan, so the Starter-specific cancel state is not reproducible. billing-12 covers the paid-plan cancel section. Out of scope."
+    },
+    {
+      "id": "billing-13",
+      "source": "pages/billing/manage.mdx:131-135",
+      "doc_image": "public/static/images/billing/management/billing-13.png",
+      "depicts": "Stripe portal Billing information panel with an Update information button (Update Billing name, email, or address)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "The image is Stripe's hosted customer portal (Billing information: Name / Email / Billing address + Update information), NOT the Expo dashboard, despite the doc alt text. Out of scope. The Expo-side 'Manage billing information' section is part of the Billing page but is not separately screenshotted in scope."
+    },
+    {
+      "id": "billing-14",
+      "source": "pages/billing/manage.mdx:139-143",
+      "doc_image": "public/static/images/billing/management/billing-14.png",
+      "depicts": "Stripe Billing information form to update name, email, or address (Update Billing name, email, or address)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "External Stripe-hosted billing-information form, not an Expo dashboard surface. Out of scope."
+    },
+    {
+      "id": "billing-15",
+      "source": "pages/billing/manage.mdx:159-163",
+      "doc_image": "public/static/images/billing/management/billing-15.png",
+      "depicts": "Stripe Billing information form to enter a Tax ID (Tax ID)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "External Stripe-hosted Tax ID form, not an Expo dashboard surface. Out of scope."
+    },
+    {
+      "id": "payment-01",
+      "source": "pages/billing/manage.mdx:172-176",
+      "doc_image": "public/static/images/billing/management/payment-01.png",
+      "depicts": "Stripe portal Payment method section with Add payment method (Payment method)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "External Stripe-hosted Payment method view, not an Expo dashboard surface. Out of scope."
+    },
+    {
+      "id": "payment-02",
+      "source": "pages/billing/manage.mdx:180-184",
+      "doc_image": "public/static/images/billing/management/payment-02.png",
+      "depicts": "Stripe Add a new payment method form (Payment method)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "External Stripe-hosted Add payment method form, not an Expo dashboard surface. Out of scope."
+    }
+  ],
+  "settings": [
+    {
+      "id": "current-plan",
+      "source": "pages/billing/plans.mdx:19-19",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Current plan"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Current plan section on the Billing page. /settings/billing redirects to the account-scoped path (confirmed in next.config.ts)."
+    },
+    {
+      "id": "usage-based-billing-estimate",
+      "source": "pages/billing/plans.mdx:80-80",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Upcoming bill",
+        "Estimate"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Usage estimate appears in the Upcoming bill card on the Billing page (the doc image shows 'Estimate')."
+    },
+    {
+      "id": "monitor-usage",
+      "source": "pages/billing/usage-based-pricing.mdx:108-108",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/usage",
+      "assert_present": [
+        "EAS Build",
+        "EAS Update"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "The detailed usage breakdown lives on the dedicated Usage page (/settings/usage, confirmed route)."
+    },
+    {
+      "id": "email-notifications-preferences",
+      "source": "pages/billing/usage-based-pricing.mdx:146-146",
+      "doc_url": "https://expo.dev/settings/email-notifications",
+      "test_url": "https://expo.dev/accounts/[account]/settings/email-notifications",
+      "assert_present": [
+        "Email notifications"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Email notifications page is its own route (/settings/email-notifications, confirmed). Corrected from the docs' /settings/billing link."
+    },
+    {
+      "id": "receipts",
+      "source": "pages/billing/invoices-and-receipts.mdx:15-15",
+      "doc_url": "https://expo.dev/settings/receipts",
+      "test_url": "https://expo.dev/accounts/[account]/settings/receipts",
+      "assert_present": [
+        "Receipts"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Receipts page under Subscription; /settings/receipts redirects to the account-scoped path (confirmed)."
+    },
+    {
+      "id": "request-refund",
+      "source": "pages/billing/invoices-and-receipts.mdx:54-58",
+      "doc_url": "https://expo.dev/settings/receipts",
+      "test_url": "https://expo.dev/accounts/[account]/settings/receipts",
+      "assert_present": [
+        "Request refund"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Request refund sits behind a per-receipt kebab menu and needs an existing receipt (the account has one). Asserting the label is read-only; never submit a refund."
+    },
+    {
+      "id": "change-plan",
+      "source": "pages/billing/manage.mdx:32-33",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Change plan"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Under Current plan, the button reads 'Change plan' on a paid plan or 'See plans' on Free. The account is paid, so assert 'Change plan'."
+    },
+    {
+      "id": "downgrade-change-plan",
+      "source": "pages/billing/manage.mdx:49-51",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Change plan"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same Change plan control, documented for the downgrade path; visible read-only on the paid plan."
+    },
+    {
+      "id": "upcoming-plan",
+      "source": "pages/billing/manage.mdx:77-77",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Upcoming plan"
+      ],
+      "testid": null,
+      "requires": [
+        "auth",
+        "mutation"
+      ],
+      "in_scope": false,
+      "scope_note": "Upcoming plan only appears after a downgrade has been scheduled (mutation). Out of scope."
+    },
+    {
+      "id": "cancel-all-subscriptions",
+      "source": "pages/billing/manage.mdx:93-93",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Cancel all subscriptions"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Cancel all subscriptions section appears on a paid plan (the account is paid); asserting the label is read-only. Never click through to cancel."
+    },
+    {
+      "id": "manage-billing-information",
+      "source": "pages/billing/manage.mdx:129-129",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Manage billing information",
+        "Manage billing"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Manage billing information section and the Manage billing link are visible read-only on the Billing page before redirecting to Stripe."
+    },
+    {
+      "id": "add-ons-concurrencies",
+      "source": "pages/billing/faq.mdx:131-131",
+      "doc_url": "https://expo.dev/settings/billing",
+      "test_url": "https://expo.dev/accounts/[account]/settings/billing",
+      "assert_present": [
+        "Add-ons",
+        "Concurrencies"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "The Add-ons section (Concurrencies) is present on the Billing page (it shows on the Free plan image too, with included concurrencies). Asserting the label is read-only; never click Add."
+    }
+  ]
+}

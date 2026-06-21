@@ -1,0 +1,115 @@
+{
+  "section": "env-vars",
+  "base_url": "https://expo.dev",
+  "theme": "light",
+  "generated_from": "expo/docs/pages/eas/environment-variables/manage.mdx @ 2026-06-07; HARDENED (all 5 themes confirmed light by eye). Routes confirmed from universe (SidebarLinks.tsx:359-377, helpers.ts:202-203): project-scoped list at /accounts/[account]/projects/[project]/environment-variables and the create form at .../environment-variables/new (a real route, not just a modal). There is ALSO an account-level page at /accounts/[account]/settings/environment-variables (SidebarLinks.tsx:458-466) but the docs only show the project-level one. 5 in-scope auto-capture entries across 2 URLs: 3 are the create form (creation-form, add, custom-environment), 2 are the list (list, export). All reachable read-only; viewing the create form has no side effects (do NOT click Add Variables). Compare ignores the sample variable rows and the doc annotations. Any project works.",
+  "screenshots": [
+    {
+      "id": "creation-form",
+      "source": "pages/eas/environment-variables/manage.mdx:23-27",
+      "doc_image": "public/static/images/env-vars/creation-form.png",
+      "theme": "light",
+      "depicts": "Add project environment variables form: Name/Value/Visibility row, Add One More Variable, Environments (production/preview/development), Upload .env, Add Variables button",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables/new",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Create-variable form page (/environment-variables/new), reachable read-only. THEME confirmed light by eye. View only; do NOT submit."
+    },
+    {
+      "id": "add",
+      "source": "pages/eas/environment-variables/manage.mdx:31-35",
+      "doc_image": "public/static/images/env-vars/add.png",
+      "theme": "light",
+      "depicts": "The same create-variable form, used to set name, value, environment(s), visibility, and optional description",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables/new",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same form page as creation-form, different framing in the doc. THEME confirmed light by eye. Compare ignores cropping/annotation differences."
+    },
+    {
+      "id": "list",
+      "source": "pages/eas/environment-variables/manage.mdx:39-43",
+      "doc_image": "public/static/images/env-vars/list.png",
+      "theme": "light",
+      "depicts": "Environment variables list with created variables showing scope (Global), environments, value, and visibility columns",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Env vars list page. Live shows the project's real variables; the doc example has a single API_KEY row. THEME confirmed light by eye. Compare ignores the sample rows."
+    },
+    {
+      "id": "export",
+      "source": "pages/eas/environment-variables/manage.mdx:208-212",
+      "doc_image": "public/static/images/env-vars/export.png",
+      "theme": "light",
+      "depicts": "Environment variables list with the Export control (download as .env) highlighted top-right",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same list page as `list`; the doc highlights the Export button. THEME confirmed light by eye. Do NOT click Export (it downloads a file). Compare ignores the highlight + sample rows."
+    },
+    {
+      "id": "custom-environment",
+      "source": "pages/eas/environment-variables/manage.mdx:227-231",
+      "doc_image": "public/static/images/env-vars/custom-environment.png",
+      "theme": "light",
+      "depicts": "The create-variable form with the Environments section emphasized, showing the plus (+) icon used to add a custom environment",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables/new",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same create form (/environment-variables/new); the doc spotlights the Environments picker + custom-environment plus icon. THEME confirmed light by eye. Do NOT add a custom environment; view only."
+    }
+  ],
+  "settings": [
+    {
+      "id": "environment-variables-page",
+      "source": "pages/eas/environment-variables/manage.mdx:23-23",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables",
+      "assert_present": [
+        "Environment variables"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Environment variables list page (confirmed route)."
+    },
+    {
+      "id": "environment-variables-new",
+      "source": "pages/eas/environment-variables/manage.mdx:23-23",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables/new",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/environment-variables/new",
+      "assert_present": [
+        "Add project environment variables"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Create-variable form page (confirmed /environment-variables/new route)."
+    }
+  ]
+}

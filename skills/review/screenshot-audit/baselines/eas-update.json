@@ -1,0 +1,335 @@
+{
+  "section": "eas-update",
+  "base_url": "https://expo.dev",
+  "theme": "dark",
+  "generated_from": "expo/docs/pages/eas-update @ 2026-06-07; VISUALLY HARDENED 2026-06-07 (all in-scope themes confirmed by eye, not luminance). Scoped to Expo dashboard screens per the playbook. 4 dashboard screens are in scope: 2 auto-capture (deployments-website-tab [light], channels-linked-branches [dark]) + 2 NEEDS_REACH (branch-update-list [light], asset-list [dark] - both still need a clicks selector added from live DOM since capture.ts has no [branch]/[updateGroupId] token). Routes confirmed from universe (SidebarNavigation/helpers.ts + next.config.ts): channels /channels, branches /branches, updates /updates/[updateGroupId], deployments /deployments (redirects to /channels?source=deployments). RECLASSIFIED during the visual pass: channel-branch-link and channel-branch-link-2 are CONCEPTUAL DIAGRAMS (white cards + connector line, emoji icons), NOT live Channels-page captures, so they are now OUT with the other illustrations. ~10 other pure diagrams (how-it-works layers/builds/branch/default-link/custom-link-1..3/process, optimize-assets process, bundle-diffing, runtime-versions layers, debug debug-map) are EXCLUDED entirely. PROJECT: needs a project with published EAS updates (channels/branches/updates); if the default project has none, pass --project=<slug>, else pages render empty and compare as unsure.",
+  "screenshots": [
+    {
+      "id": "deployments-website-tab",
+      "source": "pages/eas-update/debug.mdx:28-31",
+      "doc_image": "public/static/images/eas-update/deployments-website-tab.png",
+      "theme": "light",
+      "depicts": "The Deployments page for a project (Deployments tab / Go to the Deployments page)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/deployments",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Deployments page; /deployments redirects to /channels?source=deployments. Reachable read-only on a project with published updates. THEME CONFIRMED light by eye (white sidebar crop: Project picker 'sticker-smash', Back to Dashboard, Overview/Deployments/Submissions nav with Deployments highlighted)."
+    },
+    {
+      "id": "channels-linked-branches",
+      "source": "pages/eas-update/debug.mdx:283-286",
+      "doc_image": "public/static/images/eas-update/channels-linked-branches.png",
+      "theme": "dark",
+      "depicts": "Channels page showing channels and their linked branches (Verify the channel/branch mapping)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/channels",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Channels page. Reachable read-only on a project that has channels with linked branches. THEME CONFIRMED dark by eye (dark Channels page: 'production' channel card, ID + 'Linked branches' columns)."
+    },
+    {
+      "id": "channel-branch-link",
+      "source": "pages/eas-update/eas-cli.mdx:12-16",
+      "doc_image": "public/static/images/eas-update/channel-branch-link.png",
+      "depicts": "Conceptual diagram: a 'Channel: production' card connected by a line to a 'Branch: version-1.0' card (eas-cli channel/branch linking)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "CONCEPTUAL DIAGRAM (white rounded cards + blue connector line + emoji icons), not a capture of the live Channels page. The real Channels page is covered by channels-linked-branches. Out of scope."
+    },
+    {
+      "id": "channel-branch-link-2",
+      "source": "pages/eas-update/eas-cli.mdx:19-23",
+      "doc_image": "public/static/images/eas-update/channel-branch-link-2.png",
+      "depicts": "Conceptual diagram: the channel re-pointed from 'Branch: version-1.0' to 'Branch: version-2.0' (second step)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "CONCEPTUAL DIAGRAM (same card-and-connector illustration as channel-branch-link), not a live dashboard capture. Out of scope."
+    },
+    {
+      "id": "branch-update-list",
+      "source": "pages/eas-update/debug.mdx:308-311",
+      "doc_image": "public/static/images/eas-update/branch-update-list.png",
+      "theme": "light",
+      "depicts": "Branch Detail page showing the list of updates in a branch (Verify the update)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/branches",
+      "selector": null,
+      "reach": [
+        "open a branch from the Branches list to view its update list on the Branch Detail page"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Branch Detail update list. The detail URL needs a specific branch name (no [branch] token in capture.ts), so test_url is the Branches list and this surfaces as NEEDS_REACH; add a clicks selector for a branch row from live DOM, or hardcode /branches/<branch>. THEME CONFIRMED light by eye (white Branch detail: 'Branch: production' card, 'Updates list' with Runtime version + Platforms columns annotated)."
+    },
+    {
+      "id": "asset-list",
+      "source": "pages/eas-update/debug.mdx:455-458",
+      "doc_image": "public/static/images/eas-update/asset-list.png",
+      "theme": "dark",
+      "depicts": "Asset list for a single update (all assets included in an update) on the update detail page (Viewing all assets included in an update)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/updates",
+      "selector": null,
+      "reach": [
+        "open an update group from the Updates list, then view its asset list on the update group detail page"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Asset list on an update group detail page (/updates/[updateGroupId]). The detail URL needs an [updateGroupId] (no token), so test_url is the Updates list and this surfaces as NEEDS_REACH; add a clicks selector for an update row from live DOM. THEME CONFIRMED dark by eye (dark update-group detail: 'Update groups' back nav, Overview/Android/iOS sub-nav, 'Assets' table with Name/Downloads/Compressed size/Raw size)."
+    },
+    {
+      "id": "deployments-wrong-channel",
+      "source": "pages/eas-update/debug.mdx:42-45",
+      "doc_image": "public/static/images/eas-update/deployments-wrong-channel.png",
+      "theme": "dark",
+      "depicts": "Deployments page cropped to a deployment with an unexpected channel (Unexpected channel)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Cropped to a single deployment in a contrived misconfigured state; not reproducible read-only on a healthy project. The underlying Deployments page is covered by deployments-website-tab. Out of scope."
+    },
+    {
+      "id": "deployments-wrong-runtime",
+      "source": "pages/eas-update/debug.mdx:52-55",
+      "doc_image": "public/static/images/eas-update/deployments-wrong-runtime.png",
+      "theme": "dark",
+      "depicts": "Deployments page cropped to a deployment with an unexpected runtime version (Unexpected runtime version)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Contrived misconfigured-state crop; not reproducible read-only. Covered structurally by deployments-website-tab. Out of scope."
+    },
+    {
+      "id": "deployments-wrong-branch",
+      "source": "pages/eas-update/debug.mdx:62-65",
+      "doc_image": "public/static/images/eas-update/deployments-wrong-branch.png",
+      "theme": "dark",
+      "depicts": "Deployments page cropped to a deployment with an unexpected branch (Unexpected branch)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Contrived misconfigured-state crop; not reproducible read-only. Out of scope."
+    },
+    {
+      "id": "deployments-no-updates",
+      "source": "pages/eas-update/debug.mdx:72-75",
+      "doc_image": "public/static/images/eas-update/deployments-no-updates.png",
+      "theme": "dark",
+      "depicts": "Deployments page cropped to a deployment with no updates (Missing updates)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Contrived empty/error-state crop; not reproducible read-only. Out of scope."
+    },
+    {
+      "id": "deployments-no-branch",
+      "source": "pages/eas-update/debug.mdx:82-85",
+      "doc_image": "public/static/images/eas-update/deployments-no-branch.png",
+      "theme": "dark",
+      "depicts": "Deployments page cropped to a deployment with no branch (Missing branch)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Contrived empty/error-state crop; not reproducible read-only. Out of scope."
+    },
+    {
+      "id": "extensions-01",
+      "source": "pages/eas-update/expo-dev-client.mdx:38-41",
+      "doc_image": "public/static/images/eas-update/extensions-01.png",
+      "depicts": "The Extensions tab inside a development build (What is an Extensions tab)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "The Extensions tab in the development build app UI (on device/simulator), not the Expo dashboard website. Out of scope."
+    },
+    {
+      "id": "extensions-02",
+      "source": "pages/eas-update/expo-dev-client.mdx:68-71",
+      "doc_image": "public/static/images/eas-update/extensions-02.png",
+      "depicts": "Previewing an update using the Extensions tab in a development build (Preview an update using the Extensions tab)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Development build app UI, not the Expo dashboard. Out of scope."
+    },
+    {
+      "id": "network-request",
+      "source": "pages/eas-update/debug.mdx:379-382",
+      "doc_image": "public/static/images/eas-update/network-request.png",
+      "depicts": "A successful manifest request in the browser developer tools network panel (Viewing network requests)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Browser developer tools network panel, not the Expo dashboard. Out of scope."
+    },
+    {
+      "id": "dist",
+      "source": "pages/eas-update/debug.mdx:449-452",
+      "doc_image": "public/static/images/eas-update/dist.png",
+      "depicts": "The local dist directory contents (Inspecting the latest update locally)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Local filesystem / build output listing, not the Expo dashboard. Out of scope."
+    },
+    {
+      "id": "frontpage-critical-update",
+      "source": "pages/eas-update/introduction.mdx:50-53",
+      "doc_image": "public/static/images/eas-update/frontpage/critical-update.png",
+      "depicts": "An Updates JavaScript API code example graphic (JS API for update management)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "A code-example marketing graphic on the introduction page, not a dashboard screenshot. Out of scope."
+    },
+    {
+      "id": "frontpage-insights",
+      "source": "pages/eas-update/introduction.mdx:62-65",
+      "doc_image": "public/static/images/eas-update/frontpage/insights.png",
+      "depicts": "Website dashboard deployment insights (Insight tracking)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "A curated frontpage/marketing hero of deployment insights, not a faithful single dashboard screen. Out of scope (revisit if it turns out to be a plain capture of a real insights page)."
+    },
+    {
+      "id": "frontpage-republish",
+      "source": "pages/eas-update/introduction.mdx:72-75",
+      "doc_image": "public/static/images/eas-update/frontpage/republish.png",
+      "depicts": "The Republish button on an update (Republish for reverting mistakes)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "A frontpage/marketing hero, not a faithful single dashboard screen. Out of scope (revisit if it is a plain capture of the update detail page)."
+    }
+  ],
+  "settings": [
+    {
+      "id": "channels-page",
+      "source": "pages/eas-update/debug.mdx:283-283",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/channels",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/channels",
+      "assert_present": [
+        "Channels"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Channels page (confirmed route). Lists channels and linked branches."
+    },
+    {
+      "id": "branches-page",
+      "source": "pages/eas-update/debug.mdx:308-308",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/branches",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/branches",
+      "assert_present": [
+        "Branches"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Branches page (confirmed route). Branch detail is /branches/<branch>."
+    },
+    {
+      "id": "updates-page",
+      "source": "pages/eas-update/debug.mdx:455-455",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/updates",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/updates",
+      "assert_present": [
+        "Updates"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Updates (update groups) page (confirmed route). Update detail is /updates/<updateGroupId>, which holds the asset list."
+    },
+    {
+      "id": "deployments-page",
+      "source": "pages/eas-update/debug.mdx:28-28",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/deployments",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/deployments",
+      "assert_present": [
+        "Deployments"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Deployments page; /deployments redirects to /channels?source=deployments (confirmed redirect)."
+    }
+  ]
+}

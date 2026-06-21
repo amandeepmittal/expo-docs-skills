@@ -1,0 +1,108 @@
+{
+  "section": "build-dashboard",
+  "base_url": "https://expo.dev",
+  "theme": "dark",
+  "generated_from": "Build DASHBOARD pages that build.json (the GitHub-integration FLOW) does NOT cover, gathered from scattered build-reference/archive pages @ 2026-06-07. WEAK BASELINE: all 4 shots are NEEDS_REACH and most are contrived single-build states; the stable builds LIST page and a plain build DETAIL page are NOT screenshotted anywhere in the docs (see settings[] for those routes). Routes confirmed from universe: builds list /accounts/[account]/projects/[project]/builds, build detail /builds/[buildId], compare /builds/compare and /builds/compare/[buildIdA]/[buildIdB]. THEME WARNING: compare-builds-modal is light (luminance 250, a form over the builds page); the other three read dark by luminance (compare-builds-view 101 borderline, 03-logs 16, 04-artifacts 27) BUT build LOG/terminal panels render dark even when the dashboard is in LIGHT mode, so these may actually be light-mode pages dominated by a dark log panel. Confirm each by eye on the first run and flip theme to match the page CHROME, not the log panel. PROJECT needs real builds; the Maestro shots (03-logs, 04-artifacts) came from an e2e tutorial build but any build's Logs/Artifacts will do (compare ignores content).",
+  "screenshots": [
+    {
+      "id": "compare-builds-modal",
+      "source": "pages/build-reference/troubleshooting.mdx:119-123",
+      "doc_image": "public/static/images/eas-build/troubleshooting/compare-builds-modal.png",
+      "theme": "light",
+      "depicts": "Compare builds modal: an input to enter the build ID or build URL of a previously successful build to compare against",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "selector": null,
+      "reach": [
+        "open a build's detail page from the Builds list, then click the Compare button to open the compare modal"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Modal opens from a build detail page (/builds/[buildId] -> Compare). No buildId token, so NEEDS_REACH: add clicks for a build row + the Compare button from live DOM. View only; do NOT submit a comparison. Light by luminance (250)."
+    },
+    {
+      "id": "compare-builds-view",
+      "source": "pages/build-reference/troubleshooting.mdx:133-137",
+      "doc_image": "public/static/images/eas-build/troubleshooting/compare-builds-view.png",
+      "theme": "dark",
+      "depicts": "Compare builds view: two builds side by side with metadata (status, environment, SDK version) on top and a phase-by-phase log diff below",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds/compare",
+      "selector": null,
+      "reach": [
+        "compare two builds from the compare modal, or navigate to /builds/compare/[buildIdA]/[buildIdB]"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Comparison result needs TWO specific build IDs (/builds/compare/[A]/[B]) - contrived and hard to reach generically; NEEDS_REACH and likely a manual capture. THEME borderline (luminance 101): page chrome may be LIGHT with dark log panels - confirm by eye and set theme to the chrome."
+    },
+    {
+      "id": "build-logs",
+      "source": "pages/archive/e2e-tests.mdx:175-179",
+      "doc_image": "public/static/images/eas-build/tests/03-logs.png",
+      "theme": "dark",
+      "depicts": "A build detail Logs view showing successful test (Maestro) log output",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "selector": null,
+      "reach": [
+        "open a build from the Builds list to view its Logs"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Any build's Logs (/builds/[buildId]); the doc shows a Maestro e2e build but compare ignores sample log content. NEEDS_REACH: add clicks for a build row. THEME luminance dark (16) BUT build-log panels render dark even in light mode - confirm whether the chrome is light and set theme to the chrome. Sourced from an ARCHIVED page (pages/archive/e2e-tests.mdx)."
+    },
+    {
+      "id": "build-artifacts",
+      "source": "pages/archive/e2e-tests.mdx:183-187",
+      "doc_image": "public/static/images/eas-build/tests/04-artifacts.png",
+      "theme": "dark",
+      "depicts": "A build detail view showing uploaded build artifacts (e.g. Maestro screenshots) available for download",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "selector": null,
+      "reach": [
+        "open a build from the Builds list to view its artifacts"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Any build's artifacts section (/builds/[buildId]); contrived to a failed Maestro build but compare ignores content. NEEDS_REACH: add clicks for a build row. THEME luminance dark (27) - same light-mode-dark-panel caveat as build-logs; confirm by eye. Sourced from an ARCHIVED page."
+    }
+  ],
+  "settings": [
+    {
+      "id": "builds-list-page",
+      "source": "pages/build-reference/troubleshooting.mdx:119-119",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "assert_present": [
+        "Builds"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Builds list page (confirmed route). Not screenshotted in the docs but the stable anchor for this section; build detail is /builds/<buildId>."
+    },
+    {
+      "id": "builds-compare-page",
+      "source": "pages/build-reference/troubleshooting.mdx:133-133",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/builds/compare",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds/compare",
+      "assert_present": [
+        "Compare"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Compare builds entry route (confirmed); full comparison is /builds/compare/<buildIdA>/<buildIdB>."
+    }
+  ]
+}

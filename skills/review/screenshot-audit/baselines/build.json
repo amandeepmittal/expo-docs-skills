@@ -1,0 +1,405 @@
+{
+  "section": "build",
+  "base_url": "https://expo.dev",
+  "theme": "dark",
+  "generated_from": "expo/docs/pages/build @ 2026-06-06; hardened 2026-06-07 (routes /github + /builds confirmed from universe SidebarNavigation + next.config.ts; themes confirmed dark from the doc images; Build triggers confirmed being sunset per a universe TODO). All 19 build-section screenshots live in building-from-github.mdx; the other 9 build pages have none (orbit.mdx is an .mp4).",
+  "state_warning": "These are setup-FLOW shots and each needs a DIFFERENT project state (no-GitHub-link -> linked-no-repo -> repo-connected -> triggers-configured), so NO single project renders all of them at once. Set `project` (or pass --project=<slug>) to a project with the EAS GitHub app installed and a repo connected. Even then expect a subset to ERROR/unsure because their state does not match. A fresh non-connected project only renders project-github-page (the empty 'Link your GitHub user' state). Build triggers shots additionally require the (deprecated, being-sunset) triggers feature, which may be absent on projects created after the cutoff.",
+  "screenshots": [
+    {
+      "id": "project-github-page",
+      "source": "pages/build/building-from-github.mdx:49-52",
+      "doc_image": "public/static/images/eas-build/build-from-github/project-github-page.png",
+      "theme": "dark",
+      "depicts": "The project GitHub settings page with the empty 'Link your GitHub user to Expo to continue' state (Link your GitHub repository to your Expo project)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Configuration > GitHub settings page on the EAS dashboard. [account]/[project] resolved by the runner. The depicted empty state only appears before a GitHub user is linked; on a linked project this page shows the connected-repository UI instead."
+    },
+    {
+      "id": "install-github-app",
+      "source": "pages/build/building-from-github.mdx:58-62",
+      "doc_image": "public/static/images/eas-build/build-from-github/install-github-app.png",
+      "theme": "dark",
+      "depicts": "The GitHub 'Install & Authorize Expo' permissions screen (Install the Expo GitHub App)",
+      "test_url": "https://github.com/apps/expo/installations/new",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Out of scope: this is a github.com app-installation page (browser window on github.com/apps/expo), not an Expo/EAS dashboard surface. Not a stable dashboard screen the screenshot lane can compare against."
+    },
+    {
+      "id": "connect-a-repository",
+      "source": "pages/build/building-from-github.mdx:68-72",
+      "doc_image": "public/static/images/eas-build/build-from-github/connect-a-repository.png",
+      "theme": "dark",
+      "depicts": "The 'Connect a GitHub repository' panel with the repository list and Connect buttons on the project GitHub settings page (Link the GitHub repository to your Expo project)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Connect-a-repository panel on the project GitHub settings page (dashboard). Only shown once the GitHub user is linked and before a repo is connected; capture is read-only, NEVER click Connect."
+    },
+    {
+      "id": "add-new-account",
+      "source": "pages/build/building-from-github.mdx:76-80",
+      "doc_image": "public/static/images/eas-build/build-from-github/add-new-account.png",
+      "theme": "dark",
+      "depicts": "The GitHub account selector dropdown showing the 'Add new account' option on the project GitHub settings page (Add a repository from a different GitHub account)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "reach": [
+        "on the Connect a GitHub repository panel, open the GitHub account selector dropdown to reveal the Add new account option"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Cropped view of the account-selector dropdown on the project GitHub settings page (dashboard). Opening the dropdown is read-only; do not select Add new account. Requires the connect-a-repository panel to be present (linked GitHub user, repo not yet connected)."
+    },
+    {
+      "id": "specify-base-directory",
+      "source": "pages/build/building-from-github.mdx:90-93",
+      "doc_image": "public/static/images/eas-build/build-from-github/specify-base-directory.png",
+      "theme": "dark",
+      "depicts": "The Base directory input with a Save button on the project GitHub settings page (Configure your repository settings)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "scroll_to": "text=Base directory",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Base directory card on the project GitHub settings page (dashboard). Only present once a repository is connected. Capture read-only, NEVER click Save; scroll_to brings the card into view."
+    },
+    {
+      "id": "github-build-ui",
+      "source": "pages/build/building-from-github.mdx:109-113",
+      "doc_image": "public/static/images/eas-build/build-from-github/github-build-ui.png",
+      "theme": "dark",
+      "depicts": "The 'Start a build from GitHub' modal with repository, base directory, platform, git ref, and build profile fields (Build using the Expo website)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "selector": null,
+      "clicks": [
+        "text=Build from GitHub"
+      ],
+      "reach": [
+        "on the project builds list page, click the 'Build from GitHub' button to open the Start a build from GitHub modal"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Modal reached from the project builds list page (dashboard). Opening the modal is read-only; NEVER click Confirm, which would start a build. Requires a connected GitHub repository for the button to appear."
+    },
+    {
+      "id": "eas-build-label",
+      "source": "pages/build/building-from-github.mdx:126-129",
+      "doc_image": "public/static/images/eas-build/build-from-github/eas-build-label.png",
+      "theme": "dark",
+      "depicts": "A GitHub PR with the eas-build label applied and live EAS Build status checks (Build using GitHub PR labels)",
+      "test_url": "https://github.com",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Out of scope: this is the GitHub.com pull request checks UI, not the Expo/EAS dashboard. Not a stable dashboard surface."
+    },
+    {
+      "id": "gh-check-details",
+      "source": "pages/build/building-from-github.mdx:134-137",
+      "doc_image": "public/static/images/eas-build/build-from-github/gh-check-details.png",
+      "theme": "dark",
+      "depicts": "EAS Build check details under the Checks tab on a GitHub PR (Build using GitHub PR labels)",
+      "test_url": "https://github.com",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Out of scope: GitHub.com PR Checks tab, not the Expo/EAS dashboard."
+    },
+    {
+      "id": "empty-build-triggers-table",
+      "source": "pages/build/building-from-github.mdx:183-186",
+      "doc_image": "public/static/images/eas-build/build-from-github/empty-build-triggers-table.png",
+      "theme": "dark",
+      "depicts": "The Build triggers section in its empty 'no push to branch triggers' state with the New Build Trigger button on the project GitHub settings page (Set up build triggers)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "scroll_to": "text=Build triggers",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Build triggers section on the project GitHub settings page (dashboard). Build triggers are a deprecated feature disabled for new projects, so this section may not render on projects created after the cutoff. Empty state requires no existing triggers; scroll_to brings the section into view."
+    },
+    {
+      "id": "empty-build-trigger-form",
+      "source": "pages/build/building-from-github.mdx:192-196",
+      "doc_image": "public/static/images/eas-build/build-from-github/empty-build-trigger-form.png",
+      "theme": "dark",
+      "depicts": "The default state of the 'Add a new build trigger' modal (Push to branch) with execution behavior, branch pattern, and platform fields (Set up build triggers)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "clicks": [
+        "text=New Build Trigger"
+      ],
+      "reach": [
+        "scroll to the Build triggers section and click New Build Trigger to open the Add a new build trigger modal"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Modal on the project GitHub settings page (dashboard). Opening the modal is read-only; NEVER click Create trigger. Deprecated feature, may be unavailable on newer projects."
+    },
+    {
+      "id": "filled-build-trigger-form",
+      "source": "pages/build/building-from-github.mdx:201-205",
+      "doc_image": "public/static/images/eas-build/build-from-github/filled-build-trigger-form.png",
+      "theme": "dark",
+      "depicts": "A filled-out 'Add a new build trigger' modal with branch pattern 'main' and both platforms checked (Set up build triggers)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "clicks": [
+        "text=New Build Trigger"
+      ],
+      "reach": [
+        "open the Add a new build trigger modal from the Build triggers section; the doc shows it with fields filled in"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same trigger modal as empty-build-trigger-form but depicting a filled-in form. Capture the modal read-only; NEVER click Create trigger. Deprecated feature, may be unavailable on newer projects."
+    },
+    {
+      "id": "filled-build-triggers-table",
+      "source": "pages/build/building-from-github.mdx:207-210",
+      "doc_image": "public/static/images/eas-build/build-from-github/filled-build-triggers-table.png",
+      "theme": "dark",
+      "depicts": "The Build triggers table populated with two enabled 'main' push-to-branch triggers (iOS and Android) showing columns for Build Profile, Platform, Environment, Auto Submit, and Most Recent Result (Set up build triggers)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "scroll_to": "text=Build triggers",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Build triggers section on the project GitHub settings page (dashboard) with existing triggers. Requires at least one configured trigger to show the populated table; deprecated feature, may be unavailable on newer projects."
+    },
+    {
+      "id": "builds-executed-automatically-on-branch",
+      "source": "pages/build/building-from-github.mdx:214-217",
+      "doc_image": "public/static/images/eas-build/build-from-github/builds-executed-automatically-on-branch.png",
+      "theme": "dark",
+      "depicts": "The GitHub checks popover on a branch commit showing EAS Build Android and iOS checks (Set up build triggers)",
+      "test_url": "https://github.com",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Out of scope: GitHub.com repository/branch checks popover, not the Expo/EAS dashboard."
+    },
+    {
+      "id": "tag-triggered-build",
+      "source": "pages/build/building-from-github.mdx:220-223",
+      "doc_image": "public/static/images/eas-build/build-from-github/tag-triggered-build.png",
+      "theme": "dark",
+      "depicts": "A full-browser screenshot of a GitHub commit page for a tag with the EAS Build checks popover (Set up build triggers)",
+      "test_url": "https://github.com",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Out of scope: full-browser GitHub.com commit page, not the Expo/EAS dashboard."
+    },
+    {
+      "id": "pull-request-trigger-form",
+      "source": "pages/build/building-from-github.mdx:227-231",
+      "doc_image": "public/static/images/eas-build/build-from-github/pull-request-trigger-form.png",
+      "theme": "dark",
+      "depicts": "The 'Add a new build trigger' modal with the Pull request trigger type selected, showing source and target branch pattern fields (Set up build triggers)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "clicks": [
+        "text=New Build Trigger",
+        "text=Pull request"
+      ],
+      "reach": [
+        "open the Add a new build trigger modal, then select the Pull request trigger type tab"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Trigger modal on the project GitHub settings page (dashboard) with the Pull request tab active. Switching tabs and capturing is read-only; NEVER click Create trigger. Deprecated feature, may be unavailable on newer projects."
+    },
+    {
+      "id": "pull-request-triggered-build",
+      "source": "pages/build/building-from-github.mdx:236-239",
+      "doc_image": "public/static/images/eas-build/build-from-github/pull-request-triggered-build.png",
+      "theme": "dark",
+      "depicts": "The GitHub checks section on a pull request showing a queued EAS Build Android check (Set up build triggers)",
+      "test_url": "https://github.com",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Out of scope: GitHub.com pull request checks section, not the Expo/EAS dashboard."
+    },
+    {
+      "id": "edit-trigger-option",
+      "source": "pages/build/building-from-github.mdx:249-253",
+      "doc_image": "public/static/images/eas-build/build-from-github/edit-trigger-option.png",
+      "theme": "dark",
+      "depicts": "The options dropdown on a build trigger row showing Build now, Disable trigger, Edit trigger, and Delete trigger (Manage build triggers)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "reach": [
+        "scroll to the Build triggers table and click the options (three-dot) button at the right of a trigger row to open its menu"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Per-row options menu in the Build triggers table (dashboard). Opening the menu is read-only, but the menu contains destructive items (Disable, Delete) and a Build now action; capture only, do NOT click any item. Requires an existing trigger; deprecated feature."
+    },
+    {
+      "id": "eas-submit-form-fields",
+      "source": "pages/build/building-from-github.mdx:267-271",
+      "doc_image": "public/static/images/eas-build/build-from-github/eas-submit-form-fields.png",
+      "theme": "dark",
+      "depicts": "The EAS Submit fields on the trigger edit form: 'Automatically submit to stores after building successfully' checkbox and EAS Submit profile input (Automatic app stores submission with EAS Submit)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "reach": [
+        "from a trigger row options menu choose Edit trigger, then scroll to the EAS Submit section at the bottom of the edit form"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Bottom of the Edit trigger form (dashboard modal) showing the EAS Submit fields. Opening the edit form is read-only; NEVER click Update trigger. Requires an existing trigger; deprecated feature."
+    },
+    {
+      "id": "auto-submit-trigger-column",
+      "source": "pages/build/building-from-github.mdx:275-278",
+      "doc_image": "public/static/images/eas-build/build-from-github/auto-submit-trigger-column.png",
+      "theme": "dark",
+      "depicts": "The Auto Submit column of the Build triggers table showing 'Yes' with an EAS Submit profile tooltip, alongside the Most Recent Result column (Automatic app stores submission with EAS Submit)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "selector": null,
+      "scroll_to": "text=Auto Submit",
+      "reach": [
+        "scroll to the Build triggers table and hover the Auto Submit cell of a trigger with submission enabled to show the EAS Submit profile tooltip"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Cropped view of the Auto Submit column in the Build triggers table (dashboard). Requires an existing trigger with automatic submission enabled; deprecated feature. Read-only."
+    },
+    {
+      "id": "orbit-basic-features",
+      "source": "pages/build/orbit.mdx:12-12",
+      "doc_image": "public/static/videos/orbit/basic-features.mp4",
+      "theme": "dark",
+      "depicts": "Demo video of Expo Orbit's basic features (Expo Orbit)",
+      "test_url": null,
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": false,
+      "scope_note": "Out of scope: this is an .mp4 demo video of the Orbit desktop app, not a still screenshot of the Expo/EAS dashboard. Nothing for the screenshot lane to compare."
+    }
+  ],
+  "settings": [
+    {
+      "id": "project-github-settings",
+      "source": "pages/build/building-from-github.mdx:47-47",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "assert_present": [
+        "GitHub"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Configuration > GitHub settings page; the doc links here for linking a repo and configuring base directory. [account]/[project] resolved by the runner."
+    },
+    {
+      "id": "base-directory-setting",
+      "source": "pages/build/building-from-github.mdx:86-88",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "assert_present": [
+        "Base directory"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Base directory control documented on the project GitHub settings page. Only present once a repository is connected."
+    },
+    {
+      "id": "builds-list-build-from-github",
+      "source": "pages/build/building-from-github.mdx:101-104",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/builds",
+      "assert_present": [
+        "Builds"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project builds list page; the doc claims a 'Build from GitHub' button lives here. The button only appears once a GitHub repository is connected."
+    },
+    {
+      "id": "build-triggers-section",
+      "source": "pages/build/building-from-github.mdx:180-181",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/github",
+      "assert_present": [
+        "Build triggers",
+        "New Build Trigger"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Build triggers section on the project GitHub settings page. Deprecated and disabled for new projects, so this control may be absent on projects created after the cutoff."
+    }
+  ]
+}

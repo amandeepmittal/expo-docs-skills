@@ -1,0 +1,102 @@
+{
+  "section": "eas-hosting",
+  "base_url": "https://expo.dev",
+  "theme": "light",
+  "generated_from": "expo/docs/pages/eas/hosting/api-routes.mdx @ 2026-06-07; themes are LUMINANCE-DERIVED (all 3 read near-white ~248-250 => light; image-read API was saturated, but near-white is an unambiguous light-mode signal, low risk). Routes confirmed from universe (SidebarLinks.tsx:287-333, helpers.ts:139-174): Hosting is project-scoped at /accounts/[account]/projects/[project]/hosting. Crashes (/hosting/crashes) and project-level Requests (/hosting/requests) are direct routes (auto-capture). Logs are DEPLOYMENT-level (/hosting/deployments/[deploymentId]/logs, no URL token) so logs is NEEDS_REACH via the deployments list. BIG CAVEAT: all three need a project with EAS Hosting DEPLOYED and live traffic/crash data; the default project almost certainly has no hosting, so expect empty zero-states or ERROR. Pass --project=<slug> for a project that actually uses EAS Hosting, or this section is not meaningfully auditable.",
+  "screenshots": [
+    {
+      "id": "crashes",
+      "source": "pages/eas/hosting/api-routes.mdx:19-22",
+      "doc_image": "public/static/images/eas-hosting/crashes.png",
+      "theme": "light",
+      "depicts": "EAS Hosting Crashes page: a grouped list of uncaught errors thrown while handling requests",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/crashes",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project-level Hosting > Crashes (confirmed route /hosting/crashes). Light by luminance (248). Needs a hosting-deployed project WITH crash data, else empty/zero-state."
+    },
+    {
+      "id": "logs",
+      "source": "pages/eas/hosting/api-routes.mdx:28-31",
+      "doc_image": "public/static/images/eas-hosting/logs.png",
+      "theme": "light",
+      "depicts": "EAS Hosting deployment Logs page: recorded console output (log/info/error) from API routes and server functions",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/deployments",
+      "selector": null,
+      "reach": [
+        "open a deployment from Hosting > Deployments, then open its Logs tab"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Logs are deployment-scoped (/hosting/deployments/[deploymentId]/logs, no token), so test_url is the deployments list and this is NEEDS_REACH; add a clicks selector for a deployment row + the Logs tab from live DOM. Light by luminance (250). Needs a deployment with logged output."
+    },
+    {
+      "id": "requests",
+      "source": "pages/eas/hosting/api-routes.mdx:39-42",
+      "doc_image": "public/static/images/eas-hosting/requests.png",
+      "theme": "light",
+      "depicts": "EAS Hosting Requests page: list of requests against the service with status, browser, region, duration metadata",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/requests",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project-level Hosting > Requests (confirmed route /hosting/requests; there is also a deployment-level requests view). Light by luminance (248). Needs hosting traffic, else empty."
+    }
+  ],
+  "settings": [
+    {
+      "id": "hosting-crashes-page",
+      "source": "pages/eas/hosting/api-routes.mdx:19-19",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/crashes",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/crashes",
+      "assert_present": [
+        "Crashes"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Hosting Crashes page (confirmed route)."
+    },
+    {
+      "id": "hosting-requests-page",
+      "source": "pages/eas/hosting/api-routes.mdx:39-39",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/requests",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/requests",
+      "assert_present": [
+        "Requests"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project Hosting Requests page (confirmed route)."
+    },
+    {
+      "id": "hosting-deployments-page",
+      "source": "pages/eas/hosting/api-routes.mdx:28-28",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/deployments",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/hosting/deployments",
+      "assert_present": [
+        "Deployments"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Hosting Deployments list; deployment detail is /hosting/deployments/<deploymentId> with Logs + Requests sub-tabs."
+    }
+  ]
+}

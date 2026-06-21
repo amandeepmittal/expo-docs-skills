@@ -1,0 +1,40 @@
+{
+  "section": "push-notifications",
+  "base_url": "https://expo.dev",
+  "theme": "light",
+  "generated_from": "expo/docs/pages/push-notifications/push-notifications-setup.mdx @ 2026-06-07. Only ONE dashboard screenshot in the whole push-notifications section: the public Expo push notifications testing tool. Route confirmed from universe: the tool is the PUBLIC page at /notifications (app/(public)/notifications/page.tsx; legacy redirect /dashboard/notifications -> /notifications). It is NOT account/project-scoped. (There is a separate project-scoped /accounts/[account]/projects/[project]/push-notifications page in the dashboard, but the docs do not screenshot it.) Theme light by luminance (249, unambiguous near-white). Everything else in this section is device/simulator app screenshots, out of scope.",
+  "screenshots": [
+    {
+      "id": "push-notifications-tool-overview",
+      "source": "pages/push-notifications/push-notifications-setup.mdx:285-289",
+      "doc_image": "public/static/images/notifications/push-notifications-tool-overview.png",
+      "theme": "light",
+      "depicts": "The Expo push notifications tool: a form to compose and send a test push notification (recipient token, message body, and a Send a Notification button)",
+      "test_url": "https://expo.dev/notifications",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Public push notifications tool at /notifications (no account/project token). Reachable read-only; view the form, do NOT click Send a Notification. Light by luminance (249)."
+    }
+  ],
+  "settings": [
+    {
+      "id": "push-notifications-tool",
+      "source": "pages/push-notifications/push-notifications-setup.mdx:285-285",
+      "doc_url": "https://expo.dev/notifications",
+      "test_url": "https://expo.dev/notifications",
+      "assert_present": [
+        "notification"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Public Expo push notifications tool (confirmed route /notifications)."
+    }
+  ]
+}

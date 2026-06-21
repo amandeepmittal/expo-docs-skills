@@ -1,0 +1,175 @@
+{
+  "section": "expo-observe",
+  "base_url": "https://expo.dev",
+  "theme": "light",
+  "generated_from": "expo/docs/pages/eas/observe/* + monitoring/services.mdx @ 2026-06-07; HARDENED (light variants confirmed by eye; dark variants are the ContentSpotlight `darkSrc` twins of those same screens). Route confirmed from universe (SidebarLinks.tsx:214-221, helpers.ts:219): EAS Observe is project-scoped at /accounts/[account]/projects/[project]/observe with client-side tabs. The docs link the tabs via query params (?tab=events, ?tab=eas-update); universe also exposes /observe/events + /observe/metrics + /observe/sessions sub-routes, so if a ?tab= URL stops resolving, try the sub-route. 4 distinct screens, each shipped as a light+dark pair = 8 entries, all auto-capture (top-level page + tabs, no reach). observe-dashboard and observe (intro) are the SAME App-startup screen at different crops. PROJECT must have EAS Observe enabled with production session data + builds + published updates, else the tabs render empty/zero-state and compare as unsure; if the default project has no Observe data, pass --project=<slug>. Observe is feature-gated (useObserveFeatureGate) so the project's account must have the feature.",
+  "screenshots": [
+    {
+      "id": "observe-dashboard-light",
+      "source": "pages/eas/observe/dashboard.mdx:11-15",
+      "doc_image": "public/static/images/expo-observe/observe-dashboard-light.png",
+      "theme": "light",
+      "depicts": "EAS Observe dashboard, App startup view: cold/warm launch startup metrics with release markers and statistical breakdowns, full page with sidebar",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Observe landing (App startup tab is the default). Reachable read-only. THEME confirmed light by eye (white chrome, blue startup charts). Needs a project with Observe production session data, else the charts are empty."
+    },
+    {
+      "id": "observe-dashboard-dark",
+      "source": "pages/eas/observe/dashboard.mdx:11-15",
+      "doc_image": "public/static/images/expo-observe/observe-dashboard-dark.png",
+      "theme": "dark",
+      "depicts": "EAS Observe dashboard, App startup view (dark theme): cold/warm launch startup metrics with release markers",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Dark-theme twin of observe-dashboard-light (the ContentSpotlight darkSrc), same screen captured in dark mode. Needs Observe production session data."
+    },
+    {
+      "id": "observe-light",
+      "source": "pages/eas/observe/introduction.mdx:23-27",
+      "doc_image": "public/static/images/expo-observe/observe-light.png",
+      "theme": "light",
+      "depicts": "EAS Observe App startup metrics (cold + warm launch with release markers) cropped to the chart cards, on the introduction page",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same Observe App-startup screen as observe-dashboard, cropped to the cold/warm launch cards (intro page). THEME confirmed light by eye. Compare ignores cropping."
+    },
+    {
+      "id": "observe-dark",
+      "source": "pages/eas/observe/introduction.mdx:23-27",
+      "doc_image": "public/static/images/expo-observe/observe-dark.png",
+      "theme": "dark",
+      "depicts": "EAS Observe App startup metrics (dark theme), cropped to the cold/warm launch cards",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Dark-theme twin of observe-light (ContentSpotlight darkSrc), same App-startup screen in dark mode."
+    },
+    {
+      "id": "observe-events-light",
+      "source": "pages/eas/observe/events.mdx:80-84",
+      "doc_image": "public/static/images/expo-observe/observe-events-light.png",
+      "theme": "light",
+      "depicts": "Observe > Events tab: table of distinct event names (logEvent) with their counts in the selected time range",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=events",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Events tab. Doc links ?tab=events; universe also has /observe/events. THEME confirmed light by eye. Needs the app to emit logEvent data, else the table is empty."
+    },
+    {
+      "id": "observe-events-dark",
+      "source": "pages/eas/observe/events.mdx:80-84",
+      "doc_image": "public/static/images/expo-observe/observe-events-dark.png",
+      "theme": "dark",
+      "depicts": "Observe > Events tab (dark theme): distinct event names with counts",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=events",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Dark-theme twin of observe-events-light (ContentSpotlight darkSrc)."
+    },
+    {
+      "id": "observe-updates-light",
+      "source": "pages/eas/observe/eas-update.mdx:18-22",
+      "doc_image": "public/static/images/expo-observe/observe-updates-light.png",
+      "theme": "light",
+      "depicts": "Observe > EAS Update tab: aggregate update-download-time chart + a per-update Recent updates table",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=eas-update",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "EAS Update tab. Doc links ?tab=eas-update. THEME confirmed light by eye. Needs published updates that have been downloaded, else empty."
+    },
+    {
+      "id": "observe-updates-dark",
+      "source": "pages/eas/observe/eas-update.mdx:18-22",
+      "doc_image": "public/static/images/expo-observe/observe-updates-dark.png",
+      "theme": "dark",
+      "depicts": "Observe > EAS Update tab (dark theme): update download time chart + recent updates",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=eas-update",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Dark-theme twin of observe-updates-light (ContentSpotlight darkSrc)."
+    }
+  ],
+  "settings": [
+    {
+      "id": "observe-page",
+      "source": "pages/eas/observe/dashboard.mdx:11-11",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/observe",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe",
+      "assert_present": [
+        "Observe"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project EAS Observe page, App startup tab default (confirmed route). Feature-gated."
+    },
+    {
+      "id": "observe-events-tab",
+      "source": "pages/eas/observe/events.mdx:80-80",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=events",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=events",
+      "assert_present": [
+        "Events"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Observe Events tab (also /observe/events)."
+    },
+    {
+      "id": "observe-eas-update-tab",
+      "source": "pages/eas/observe/eas-update.mdx:18-18",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=eas-update",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/observe?tab=eas-update",
+      "assert_present": [
+        "EAS Update"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Observe EAS Update tab."
+    }
+  ]
+}

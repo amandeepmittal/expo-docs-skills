@@ -1,0 +1,8 @@
+{
+  "name": "screenshot-audit",
+  "private": true,
+  "description": "Playwright capture for the screenshot-audit skill",
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}

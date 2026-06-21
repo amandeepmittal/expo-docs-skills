@@ -1,0 +1,6 @@
+{
+  "account": "your-expo-username",
+  "project": "your-project-slug",
+  "org": "your-org-slug",
+  "docs_repo": "/absolute/path/to/expo/docs"
+}

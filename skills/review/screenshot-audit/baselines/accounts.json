@@ -1,0 +1,352 @@
+{
+  "section": "accounts",
+  "base_url": "https://expo.dev",
+  "theme": "light",
+  "generated_from": "expo/docs/pages/accounts @ 2026-06-05",
+  "screenshots": [
+    {
+      "id": "create-an-organization",
+      "source": "pages/accounts/account-types.mdx:41-45",
+      "doc_image": "public/static/images/accounts/create-an-organization.png",
+      "depicts": "Account navigation dropdown showing the Create Organization option (Create a new Organization)",
+      "test_url": "https://expo.dev/accounts/[account]",
+      "selector": null,
+      "clicks": [
+        "[data-testid=\"nav-bar-account-selector\"]"
+      ],
+      "reach": [
+        "select the account username in the navigation menu to open the account-switcher dropdown"
+      ],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Dashboard navigation dropdown; depicted state reached by opening the menu (read-only), no mutation needed to view the dropdown."
+    },
+    {
+      "id": "enter-name-org",
+      "source": "pages/accounts/account-types.mdx:49-53",
+      "doc_image": "public/static/images/accounts/enter-name-org.png",
+      "depicts": "New organization name entry form with Create button (Create a new Organization)",
+      "test_url": "https://expo.dev/create-organization",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "The Create organization form is its own page (/create-organization). View-only: capture the form, NEVER click Create."
+    },
+    {
+      "id": "members",
+      "source": "pages/accounts/account-types.mdx:79-82",
+      "doc_image": "public/static/images/accounts/members.png",
+      "depicts": "Members list with multiple members in an organization (Invite a member)",
+      "test_url": "https://expo.dev/accounts/[org]/settings/members",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Viewed read-only on the test org [org], which has members. A test org, so no real-people PII. Never invite or remove anyone."
+    },
+    {
+      "id": "rename-account",
+      "source": "pages/accounts/account-types.mdx:109-113",
+      "doc_image": "public/static/images/accounts/rename-account.png",
+      "depicts": "Rename account settings panel on the account Overview settings page (Rename an account)",
+      "test_url": "https://expo.dev/settings#rename-account",
+      "selector": null,
+      "scroll_to": "text=Rename account",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "On a personal account the Rename account card is at /settings (User settings), NOT the /accounts/[account]/settings path the docs give (that routing bug is ENG-21630). Inner scroll container, so scroll_to brings it into view."
+    },
+    {
+      "id": "transfer-project",
+      "source": "pages/accounts/account-types.mdx:119-123",
+      "doc_image": "public/static/images/accounts/transfer-project.png",
+      "depicts": "Transfer project settings panel on Project settings > General (Transfer projects between accounts)",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/settings",
+      "selector": null,
+      "scroll_to": "text=Transfer project",
+      "reach": [],
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project settings > General Danger zone. [project] resolves from the baseline `project` field. Static panel, reachable read-only; scroll_to brings the Danger zone into view."
+    },
+    {
+      "id": "audit-logs",
+      "source": "pages/accounts/audit-logs.mdx:19-22",
+      "doc_image": "public/static/images/accounts/audit-logs.png",
+      "theme": "dark",
+      "depicts": "Audit logs page for an account (Audit logs)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/audit-logs",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth",
+        "enterprise_plan",
+        "staff_mode"
+      ],
+      "in_scope": true,
+      "scope_note": "Reachable on this Enterprise account; the audit-logs page needs a step-up OTP, so capture with an elevated or attended session."
+    },
+    {
+      "id": "audit-logs-details",
+      "source": "pages/accounts/audit-logs.mdx:81-84",
+      "doc_image": "public/static/images/accounts/audit-logs-details.png",
+      "theme": "dark",
+      "depicts": "Details drawer for a single audit log entry (Structure)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/audit-logs",
+      "selector": null,
+      "clicks": [
+        ".cursor-pointer.border-t-secondary"
+      ],
+      "reach": [
+        "click an audit log row to open its details drawer"
+      ],
+      "requires": [
+        "auth",
+        "enterprise_plan",
+        "staff_mode"
+      ],
+      "in_scope": true,
+      "scope_note": "Reachable with staff mode on. clicks targets an audit-log row cell (class-based; no testid on the row, and the click bubbles up to the row's onClick to open the drawer). If it mis-clicks, refine the selector from the live DOM."
+    },
+    {
+      "id": "audit-logs-export-button",
+      "source": "pages/accounts/audit-logs.mdx:94-97",
+      "doc_image": "public/static/images/accounts/audit-logs-export-button.png",
+      "theme": "dark",
+      "depicts": "Export button on the audit logs page (Export)",
+      "test_url": "https://expo.dev/accounts/[account]/settings/audit-logs",
+      "selector": null,
+      "reach": [],
+      "requires": [
+        "auth",
+        "enterprise_plan",
+        "staff_mode"
+      ],
+      "in_scope": true,
+      "scope_note": "Reachable on this Enterprise account; the Export button sits on the audit-logs page (step-up OTP needed)."
+    }
+  ],
+  "settings": [
+    {
+      "id": "convert-account",
+      "source": "pages/accounts/account-types.mdx:57-61",
+      "doc_url": "https://expo.dev/settings#convert-account",
+      "test_url": "https://expo.dev/settings#convert-account",
+      "assert_present": [
+        "Convert your account into an organization"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "User settings page section; documented at user-level https://expo.dev/settings, anchor #convert-account."
+    },
+    {
+      "id": "members",
+      "source": "pages/accounts/account-types.mdx:73-77",
+      "doc_url": "https://expo.dev/settings/members",
+      "test_url": "https://expo.dev/accounts/[account]/settings/members",
+      "assert_present": [
+        "Members",
+        "Invite"
+      ],
+      "testid": null,
+      "requires": [
+        "auth",
+        "org"
+      ],
+      "in_scope": false,
+      "scope_note": "Members under Organization settings; requires an organization account. Doc URL https://expo.dev/settings/members resolves per-account; using account-scoped settings path as best guess."
+    },
+    {
+      "id": "change-member-role",
+      "source": "pages/accounts/account-types.mdx:90-95",
+      "doc_url": "https://expo.dev/settings/members",
+      "test_url": "https://expo.dev/accounts/[account]/settings/members",
+      "assert_present": [
+        "Members"
+      ],
+      "testid": null,
+      "requires": [
+        "auth",
+        "org"
+      ],
+      "in_scope": false,
+      "scope_note": "Organization Members page; role change requires an organization with existing members."
+    },
+    {
+      "id": "remove-member",
+      "source": "pages/accounts/account-types.mdx:97-103",
+      "doc_url": "https://expo.dev/settings/members",
+      "test_url": "https://expo.dev/accounts/[account]/settings/members",
+      "assert_present": [
+        "Members",
+        "Remove member"
+      ],
+      "testid": null,
+      "requires": [
+        "auth",
+        "org",
+        "mutation"
+      ],
+      "in_scope": false,
+      "scope_note": "Organization Members page; the Remove member control is per existing member, requires org plus members."
+    },
+    {
+      "id": "rename-account",
+      "source": "pages/accounts/account-types.mdx:105-113",
+      "doc_url": "https://expo.dev/accounts/[account]/settings#rename-account",
+      "test_url": "https://expo.dev/accounts/[account]/settings#rename-account",
+      "assert_present": [
+        "Overview",
+        "Rename account"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Account settings > Overview with a Rename account section; account-scoped settings path with [account] resolved from config."
+    },
+    {
+      "id": "transfer-project",
+      "source": "pages/accounts/account-types.mdx:115-123",
+      "doc_url": "https://expo.dev/accounts/[account]/projects/[project]/settings",
+      "test_url": "https://expo.dev/accounts/[account]/projects/[project]/settings",
+      "assert_present": [
+        "General",
+        "Transfer project"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Project settings > General; [project] resolves from config."
+    },
+    {
+      "id": "security-activity",
+      "source": "pages/accounts/account-types.mdx:140-144",
+      "doc_url": "https://expo.dev/settings",
+      "test_url": "https://expo.dev/settings",
+      "assert_present": [
+        "Security activity"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "User settings (Overview) lists Security activity; user-level settings URL kept as documented."
+    },
+    {
+      "id": "audit-logs",
+      "source": "pages/accounts/audit-logs.mdx:17-17",
+      "doc_url": "https://expo.dev/accounts/[account]/settings/audit-logs",
+      "test_url": "https://expo.dev/accounts/[account]/settings/audit-logs",
+      "assert_present": [
+        "Audit logs"
+      ],
+      "testid": null,
+      "requires": [
+        "auth",
+        "enterprise_plan",
+        "staff_mode"
+      ],
+      "in_scope": true,
+      "scope_note": "Account settings > Audit logs; reachable on this Enterprise account (step-up OTP needed)."
+    },
+    {
+      "id": "audit-logs-export",
+      "source": "pages/accounts/audit-logs.mdx:90-99",
+      "doc_url": "https://expo.dev/accounts/[account]/settings/audit-logs",
+      "test_url": "https://expo.dev/accounts/[account]/settings/audit-logs",
+      "assert_present": [
+        "Audit logs",
+        "Export"
+      ],
+      "testid": null,
+      "requires": [
+        "auth",
+        "enterprise_plan",
+        "staff_mode"
+      ],
+      "in_scope": true,
+      "scope_note": "Export button on the Audit logs page; reachable on this Enterprise account (step-up OTP needed)."
+    },
+    {
+      "id": "personal-access-tokens",
+      "source": "pages/accounts/programmatic-access.mdx:12-14",
+      "doc_url": "https://expo.dev/settings/access-tokens",
+      "test_url": "https://expo.dev/settings/access-tokens",
+      "assert_present": [
+        "Access tokens"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "User settings Access tokens page; user-level URL as documented."
+    },
+    {
+      "id": "revoke-access-tokens",
+      "source": "pages/accounts/programmatic-access.mdx:38-40",
+      "doc_url": "https://expo.dev/settings/access-tokens",
+      "test_url": "https://expo.dev/settings/access-tokens",
+      "assert_present": [
+        "Access tokens"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Same Access tokens page; revoke is a per-token delete control on the page."
+    },
+    {
+      "id": "two-factor-enable",
+      "source": "pages/accounts/two-factor.mdx:8-10",
+      "doc_url": "https://expo.dev/settings#two-factor-auth",
+      "test_url": "https://expo.dev/settings#two-factor-auth",
+      "assert_present": [
+        "Two-factor authentication"
+      ],
+      "testid": null,
+      "requires": [
+        "auth"
+      ],
+      "in_scope": true,
+      "scope_note": "Personal account settings two-factor-auth section; user-level URL with #two-factor-auth anchor as documented."
+    },
+    {
+      "id": "two-factor-change-settings",
+      "source": "pages/accounts/two-factor.mdx:42-49",
+      "doc_url": "https://expo.dev/settings",
+      "test_url": "https://expo.dev/settings",
+      "assert_present": [
+        "Two-factor authentication"
+      ],
+      "testid": null,
+      "requires": [
+        "auth",
+        "step_up"
+      ],
+      "in_scope": true,
+      "scope_note": "Change two-factor settings from personal account settings; docs note a one-time password (step-up) is required to make changes."
+    }
+  ]
+}
