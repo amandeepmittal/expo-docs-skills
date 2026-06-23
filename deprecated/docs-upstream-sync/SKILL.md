@@ -8,6 +8,8 @@ allowed-tools: Read, Bash(bash:*), Bash(git:*), Bash(pnpm:*)
 
 # docs-upstream-sync
 
+> **Deprecated (2026-06-23, ENG-22049).** The daily run is moving to a GitHub Action in `expo/expo` that runs the CI-safe generators on a schedule and raises a PR on real drift, so it no longer spends Claude tokens to act as a cron. The deterministic engine here (`scripts/run_syncs.sh` + `manifest.json`, including the `fetchedAt`-noise stripping) is the thing being ported. The one generator the Action cannot cover is `expo-mcp` (interactive OAuth to `mcp.expo.dev`); run that manually until a machine token exists. Kept here for reference and as the manual fallback.
+
 The expo/docs repo ships a set of generators that regenerate reference content: some from upstream packages (the app config schema, the Expo Skills registry, the Expo MCP tool list, the EAS CLI reference), some derived from local page frontmatter (the `@expo/ui` component tables). Each is an idempotent `pnpm` script: run it, and if its source moved, the working tree changes; if not, nothing changes. That `git diff` is the whole signal for "is there something new worth syncing today." This skill runs them all in one pass, so the recurring one-off sync PRs become a single daily check.
 
 The deterministic part lives in `scripts/run_syncs.sh`, driven by `manifest.json` (one entry per sync). The skill runs that, and only if something actually changed does it create a dated branch, run `pnpm lint`, and hand the result to the user to commit and open a PR. It never commits, pushes, or opens the PR.
