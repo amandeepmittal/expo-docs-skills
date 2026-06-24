@@ -44,7 +44,7 @@ Default: 1 sentence stating the motivation. Add a second sentence only when the 
 
 ### How
 
-Default: 1-2 sentences in prose describing the technical approach. Use inline code formatting for file names, function names, and config values. Keep it as one paragraph with no bullet lists, unless the PR spans 3+ unrelated changes; then group them with bold sub-headings, one line each.
+Always a bulleted list of the changes, one bullet per change, terse. Lead each bullet with an imperative verb (Add, Fix, Update, Remove). Use inline code formatting for file names, function names, and config values. Do not write a prose paragraph. For a PR spanning 3+ unrelated areas, group the bullets under bold sub-headings, one bullet per line.
 
 ### Test Plan
 
@@ -75,7 +75,7 @@ It is a known, purely informational warning from ESLint v9+ that does not affect
 
 # How
 
-Suppress the `ESLintPoorConcurrencyWarning` noise from `yarn lint` output by adding `NODE_OPTIONS='--no-warnings'` to the lint script.
+- Add `NODE_OPTIONS='--no-warnings'` to the `lint` script to suppress the `ESLintPoorConcurrencyWarning` noise from `yarn lint` output.
 
 # Test Plan
 
