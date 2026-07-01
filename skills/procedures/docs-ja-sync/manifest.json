@@ -11,8 +11,8 @@
       "target_root": "pages/ja/tutorial",
       "pages": {
         "pages/tutorial/overview.mdx": {
-          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
-          "syncedAt": "2026-06-13"
+          "syncedFromCommit": "fa84bbae698068d53450b0b929252ef6559badf1",
+          "syncedAt": "2026-06-30"
         },
         "pages/tutorial/introduction.mdx": {
           "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
@@ -51,8 +51,8 @@
           "syncedAt": "2026-06-13"
         },
         "pages/tutorial/configuration.mdx": {
-          "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
-          "syncedAt": "2026-06-13"
+          "syncedFromCommit": "fa84bbae698068d53450b0b929252ef6559badf1",
+          "syncedAt": "2026-06-30"
         },
         "pages/tutorial/follow-up.mdx": {
           "syncedFromCommit": "ff787a509ba8220c0193042c7570edbf919a869e",
